@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 type TimerProps = {
   duration: number; // duration in seconds
   onTimerEnd: () => void;
 };
 
-const Timer = ({ duration, onTimerEnd } : TimerProps) => {
+const Timer = ({ duration, onTimerEnd }: TimerProps) => {
   const [timeLeft, setTimeLeft] = useState(duration);
 
   useEffect(() => {
@@ -25,11 +25,7 @@ const Timer = ({ duration, onTimerEnd } : TimerProps) => {
     // Add timeLeft as a dependency to reset the interval when timeLeft changes
   }, [timeLeft, onTimerEnd]);
 
-  return (
-    <div>
-      Time Remaining: {timeLeft}
-    </div>
-  );
+  return <div>Time Remaining: {timeLeft}</div>;
 };
 
 export default Timer;

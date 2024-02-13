@@ -3,7 +3,7 @@
 import type { NextPage } from "next";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
-import styles from "../styles/Home.module.css";
+import styles from "../../../styles/Home.module.css";
 
 import usePlaylists from "@/hooks/usePlaylists";
 import Test from "@/components/Test";
@@ -13,29 +13,24 @@ import { useEffect } from "react";
 
 const Home: NextPage = () => {
   const session = useSession();
-  const userId = session?.status === 'authenticated' ? session.data.user?.id : null;
+  const userId =
+    session?.status === "authenticated" ? session.data.user?.id : null;
   const { data, loading, error, refetch } = usePlaylists(userId);
-  // console.log("session is ", session);
 
-  // useEffect(() => {
-  //   async function test() {
-  //     const res = await getPreviewUrl('7xCe8Ao7u6rKd8mBwXLzNO');
-  //     console.log('RES IS ', res);
-  //   }
-  //   test();
-  // }, [])
-
-  if (loading || session?.status !== 'authenticated') {
-    return <>Spinner placeholder.</>; 
+  if (loading || session?.status !== "authenticated") {
+    return <>Spinner placeholder.</>;
   }
   if (error) {
-    return <>error fetching user playlists</>
+    return <>error fetching user playlists</>;
   }
-  const playlists = data.items.map(playlist => ({ "name": playlist.name, "playlistId": playlist.id }));
+  const playlists = data.items.map((playlist) => ({
+    name: playlist.name,
+    playlistId: playlist.id,
+  }));
   const playlistId = playlists[4].playlistId;
 
   return (
-    <div className={styles.container}>
+    <div className="">
       {JSON.stringify(playlists)}
       <br />
       <br />
@@ -53,26 +48,6 @@ const Home: NextPage = () => {
             : "stranger"}
           !
         </h1>
-        <p>
-          {session.status === "authenticated" ? (
-            <button
-              className={styles.button}
-              type="button"
-              onClick={() => signOut()}
-            >
-              Sign out {session.data.user?.email}
-            </button>
-          ) : (
-            <button
-              className={styles.button}
-              type="button"
-              onClick={() => signIn("spotify")}
-              disabled={session.status === "loading"}
-            >
-              Sign in with Spotify
-            </button>
-          )}
-        </p>
       </main>
 
       <footer className={styles.footer}>

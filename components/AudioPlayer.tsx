@@ -44,8 +44,7 @@
 
 // export default AudioPlayer;
 
-
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 
 type AudioPlayerProps = {
   url: string;
@@ -62,7 +61,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ url, duration }) => {
       try {
         await audio.play();
       } catch (error) {
-        console.error('Error playing audio:', error);
+        console.error("Error playing audio:", error);
       }
     };
 
