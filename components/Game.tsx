@@ -4,18 +4,17 @@ import { useState, useEffect, useMemo } from "react";
 import AudioPlayer from "./AudioPlayer";
 import Timer from "./Timer";
 import Choices from "./Choices";
-import { Menu } from "./Menu";
+import Menu from "./Menu";
 import usePlaylist from "@/hooks/usePlaylist";
 import type { Song } from "@/types";
 
 const Game = ({ playlistId }: { playlistId: string }) => {
   const { data: songsArr, loading, error, refetch } = usePlaylist(playlistId);
   // State to hold the current round, score, and whether the game is over
-  const [currentRound, setCurrentRound] = useState<number>(0);
-  const [score, setScore] = useState<number>(0);
-  const [isGameOver, setIsGameOver] = useState<boolean>(true);
+  //   const [currentRound, setCurrentRound] = useState<number>(0);
+  const [score, setScore] = useState<number | null>(null);
   const [chosenSong, setChosenSong] = useState<Song | null>(null);
-  const [duration, setDuration] = useState<number>(10); // Replace with user input for duration
+  const [duration, setDuration] = useState<number>(0); // Replace with user input for duration
 
   // memoize correct song to prevent Choices component from re-choosing a new set
   // of incorrect choices on initial mount
@@ -25,59 +24,66 @@ const Game = ({ playlistId }: { playlistId: string }) => {
 
   // Function to start a new round
   const startRound = () => {
-    if (!songsArr) return;
+    if (!songsArr) {
+      return;
+    }
     // Randomly select a new song that hasn't been played in the last round
     const newSongsArr = songsArr.filter((song) => song.id !== chosenSong?.id);
     const newSong = newSongsArr[Math.floor(Math.random() * newSongsArr.length)];
-
     setChosenSong(newSong);
-    setCurrentRound((prevRound) => prevRound + 1);
-    // Reset any other state relevant to the round here
+    // setCurrentRound((prevRound) => prevRound + 1);
   };
 
   // Function to handle user's choice
   const handleChoice = (selectedName: string) => {
     if (!chosenSong) return;
     if (selectedName === chosenSong.name) {
-      setScore((prevScore) => prevScore + 1);
-      setDuration(10);
+      setScore((prevScore) => (prevScore as number) + 1);
       startRound(); // Start the next round if the answer is correct
     } else {
-      setIsGameOver(true); // End the game if the answer is wrong
+      setDuration(0); // End the game if the answer is wrong
     }
   };
 
-  // useEffect(() => {
-  //   if (!isGameOver && !loading) {
-  //     startRound(); // Start the first round when the component mounts
-  //   }
-  // }, [isGameOver, loading]);
+  useEffect(() => {
+    if (score !== null && duration && !loading) {
+      startRound();
+    }
+  }, [score, duration, loading]);
 
+  // score is null and no duration, player hasnt started yet
+  if (score === null && !duration) {
+    return (
+      <div className="flex justify-center items-center">
+        <Menu setDuration={setDuration} setScore={setScore} />
+      </div>
+    );
+  }
   if (error) {
     return <>error fetching playlist {playlistId}</>;
-  }
-  if (isGameOver && score) {
-    return <div>Game Over! Your score was: {score}</div>;
-  }
-
-  if (isGameOver) {
-    return <Menu />;
   }
   if (loading || !correct || !songsArr) {
     return <>Spinner placeholder.</>;
   }
+  // score is not null and duration is 0, player just lost
+  if (score !== null && !duration) {
+    return <div>Game Over! Your score was: {score}</div>;
+    // if play again, set score to null
+  }
+
+  // score is not null and theres a duration, game is ongoing
 
   return (
     <div>
-      <h1>Game Round: {currentRound}</h1>
+      {/* <h1>Game Round: {currentRound}</h1> */}
       <h2>Score: {score}</h2>
       {chosenSong && (
         <>
           <AudioPlayer url={chosenSong.url} duration={duration} />
           <Timer
-            key={currentRound}
+            key={score} // need the key to remount every round
             duration={duration}
-            onTimerEnd={() => setIsGameOver(true)}
+            onTimerEnd={() => setDuration(0)}
           />
           <Choices
             songs={songsArr}

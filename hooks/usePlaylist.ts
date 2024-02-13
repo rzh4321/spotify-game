@@ -9,6 +9,9 @@ export default function usePlaylist(playlistId: string) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
+  // only recreate this function if playlistId changes
+  // TODO: make this the fetcher in react query, playlistId is key
+  // if user refreshes playlist, revalidate fetcher to get updated playlist
   const getData = useCallback(
     async (accessToken?: string) => {
       setError(null);
@@ -73,7 +76,7 @@ export default function usePlaylist(playlistId: string) {
       return;
     }
     getData();
-  }, [getData, playlistId]);
+  }, [getData, playlistId]); // this will still be called twice if its called in 2 diff comps regardless if prop is the same
 
   return { data, loading, error, refetch: getData };
 }
