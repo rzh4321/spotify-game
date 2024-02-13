@@ -7,14 +7,23 @@ import styles from "../styles/Home.module.css";
 
 import usePlaylists from "@/hooks/usePlaylists";
 import Test from "@/components/Test";
+import Game from "@/components/Game";
+import getPreviewUrl from "@/actions/getPreviewUrl";
+import { useEffect } from "react";
 
 const Home: NextPage = () => {
   const session = useSession();
   const userId = session?.status === 'authenticated' ? session.data.user?.id : null;
   const { data, loading, error, refetch } = usePlaylists(userId);
-  console.log("session is ", session);
+  // console.log("session is ", session);
 
-  console.log('in page.tsx. id is ', userId);
+  // useEffect(() => {
+  //   async function test() {
+  //     const res = await getPreviewUrl('7xCe8Ao7u6rKd8mBwXLzNO');
+  //     console.log('RES IS ', res);
+  //   }
+  //   test();
+  // }, [])
 
   if (loading || session?.status !== 'authenticated') {
     return <>Spinner placeholder.</>; 
@@ -29,7 +38,12 @@ const Home: NextPage = () => {
     <div className={styles.container}>
       {JSON.stringify(playlists)}
       <br />
-      <Test playlistId={playlistId} />
+      <br />
+      <br />
+      <br />
+
+      {/* <Test playlistId={playlistId} /> */}
+      <Game playlistId={playlistId} />
 
       <main className={styles.main}>
         <h1 className={styles.title}>

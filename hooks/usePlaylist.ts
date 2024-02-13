@@ -1,9 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
 import getAccessToken from '@/actions/getAccessToken';
 import refreshAccessToken from '@/actions/refreshAccessToken';
+import getPreviewUrl from '@/actions/getPreviewUrl';
+import type { Track, Song } from '@/types';
 
 export default function usePlaylist(playlistId: string) {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<null | Song[]>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
@@ -26,7 +28,16 @@ export default function usePlaylist(playlistId: string) {
       }
 
       const data = await response.json();
-      const tracks = data.tracks.items.map(track => ({id: track.track.id, name: track.track.name, url: track.track.preview_url}));
+      const promises = data.tracks.items.map(async (track: Track) => {
+        let previewUrl: string | null = track.track.preview_url;
+        if (!previewUrl) {
+          previewUrl = await getPreviewUrl(track.track.id);
+        }
+        return { id: track.track.id, name: track.track.name, url: previewUrl };
+      });
+    
+      // Wait for all promises to resolve
+      const tracks = await Promise.all(promises);
       // console.log('TRACKS IS ', tracks)
       setData(tracks);
       
@@ -58,3 +69,5 @@ export default function usePlaylist(playlistId: string) {
 
   return { data, loading, error, refetch: getData };
 }
+
+

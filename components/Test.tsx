@@ -40,7 +40,7 @@ export default function Test({playlistId} : {playlistId: string}) {
             <audio controls src={track.url}></audio>
         </div>
     ))
-    playRandomSegment(data[0].url, 10);
+    // playRandomSegment(data[0].url, 10);
 
 
 
