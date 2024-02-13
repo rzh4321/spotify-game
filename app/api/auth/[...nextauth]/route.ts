@@ -9,13 +9,13 @@ export const authOptions: NextAuthOptions = {
   //   signIn: '/',
   //   signOut: '/',
   // },
-  secret: process.env.NEXT_AUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     SpotifyProvider({
       clientId: process.env.SPOTIFY_CLIENT_ID as any,
       clientSecret: process.env.SPOTIFY_CLIENT_SECRET as any,
       authorization:
-        "https://accounts.spotify.com/authorize?scope=user-read-email+playlist-read-private+user-top-read+user-follow-read+playlist-read-collaborative",
+        "https://accounts.spotify.com/authorize?scope=user-read-email+user-read-private+playlist-read-private+user-top-read+user-follow-read+playlist-read-collaborative",
     }),
     //   CredentialsProvider({
     //     name: "credentials",
