@@ -16,11 +16,14 @@ const AudioPlayer = ({ url, duration } : AudioPlayerProps) => {
 
     // Play the audio from the random start time
     const playAudio = async () => {
+      console.log('audio is ', audio, ' playing it now...');
       try {
         // Set the audio object to start at the random position
         audio.currentTime = randomStart;
         await audio.play();
+        console.log('this is after audio.play(). it should be playing rn.')
       } catch (error) {
+        console.log("Error playing audio:", error);
         console.error("Error playing audio:", error);
       }
     };
