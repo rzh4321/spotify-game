@@ -9,5 +9,5 @@ export default withAuth({
 
 // See "Matching Paths" below to learn more
 export const config = {
-  matcher: ["/((?!register|api|logo.png|$).*)"],
+  matcher: ["/((?!register|api|logo.png|callback|$).*)"],
 };
