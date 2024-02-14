@@ -100,3 +100,34 @@ export type ExternalIDS = {
 };
 
 export type LinkedFrom = {};
+
+export type Playlist = {
+  collaborative: boolean;
+  description: string;
+  external_urls: ExternalUrls;
+  href: string;
+  id: string;
+  images: Image[];
+  name: string;
+  owner: Owner;
+  public: boolean;
+  snapshot_id: string;
+  tracks: Tracks;
+  type: string;
+  uri: string;
+};
+
+export type Owner = {
+  external_urls: ExternalUrls;
+  followers: Tracks;
+  href: string;
+  id: string;
+  type: string;
+  uri: string;
+  display_name: string;
+};
+
+export type Tracks = {
+  href: string;
+  total: number;
+};

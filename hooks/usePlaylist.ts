@@ -61,6 +61,8 @@ export default function usePlaylist(playlistId: string) {
         throw error;
       }
     },
+    refetchInterval: 1000 * 60 * 5, // refetch songs every 5 mins
+    refetchIntervalInBackground: true,
   });
 
   return { data, isLoading, error, refetch };

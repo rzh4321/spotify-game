@@ -3,6 +3,7 @@ import "@/app/globals.css";
 import Provider from "@/components/Provider";
 import NavBar from "@/components/NavBar";
 import QueryProvider from "@/components/QueryProvider";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -23,7 +24,8 @@ export default function RootLayout({
               <NavBar />
               {children}
             </div>
-            {/* <Toaster />
+            <Toaster />
+            {/*
               <Footer /> */}
           </body>
         </QueryProvider>
