@@ -1,10 +1,8 @@
-import Image from "next/image";
 import styles from "../../../styles/Home.module.css";
 
 import { getServerSession } from "next-auth";
 import authOptions from "@/authOptions";
 import YourPlaylists from "@/components/YourPlaylists";
-import Game from "@/components/Game";
 
 const Home = async () => {
   const session = await getServerSession(authOptions);

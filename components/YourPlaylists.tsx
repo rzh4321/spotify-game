@@ -3,7 +3,6 @@ import { RefreshCw } from "lucide-react";
 import usePlaylists from "@/hooks/usePlaylists";
 import type { Playlist, SimplifiedPlaylistObject } from "@/types";
 import { useState } from "react";
-import Game from "./Game";
 import { useToast } from "@/components/ui/use-toast";
 import PlaylistCard from "./PlaylistCard";
 
@@ -26,7 +25,6 @@ export default function YourPlaylists({ userId }: { userId: string }) {
   const playlistCards = playlists.map((playlist : SimplifiedPlaylistObject) => (
     <PlaylistCard key={playlist.playlistId} playlist={playlist} />
   ))
-  const playlistId = playlists[4].playlistId;
 
   return (
     <div className="flex flex-col w-full gap-8 px-5">
@@ -55,7 +53,6 @@ export default function YourPlaylists({ userId }: { userId: string }) {
       <div className="flex flex-wrap lg:justify-between gap-10">
         {playlistCards}
         </div>
-      <Game playlistId={playlistId} />
     </div>
   );
 }

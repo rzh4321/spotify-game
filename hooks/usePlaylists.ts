@@ -43,7 +43,7 @@ export default function usePlaylists(userId: string) {
       }
     },
     enabled: !!userId, // query wont execute until userId exists
-    refetchInterval: 1000 * 60 * 5, // refetch songs every 5 mins
+    refetchInterval: 1000 * 60 * 60, // refetch songs every hour
     refetchIntervalInBackground: true,
   });
 
