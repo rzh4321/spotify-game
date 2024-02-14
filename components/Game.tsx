@@ -83,7 +83,7 @@ const Game = ({ playlistId }: { playlistId: string }) => {
           <AudioPlayer url={chosenSong.url} duration={duration} />
           <Timer
             key={score} // need the key to remount every round
-            duration={duration}
+            duration={100}
             onTimerEnd={() => setDuration(0)}
           />
           <Choices

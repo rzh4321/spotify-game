@@ -1,5 +1,6 @@
 import type { Song } from "@/types";
 import { useEffect, useState } from "react";
+import { Button } from "./ui/button";
 
 type ChoicesProps = {
   songs: Song[];
@@ -32,11 +33,15 @@ const Choices = ({ songs, correctSong, onChoiceSelected }: ChoicesProps) => {
   }, [correctSong]); // if correctSong (a memoized object) changes, get incorrect choices and shuffle
 
   return (
-    <div>
-      {choices.map((song, index) => (
-        <button key={song.id} onClick={() => onChoiceSelected(song.name)}>
+    <div className="flex flex-col space-y-4 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-4 sm:p-4">
+      {choices.map((song) => (
+        <Button
+          key={song.id}
+          className="md:text-md bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline transform transition duration-300 ease-in-out"
+          onClick={() => onChoiceSelected(song.name)}
+        >
           {song.name}
-        </button>
+        </Button>
       ))}
     </div>
   );

@@ -52,7 +52,7 @@ export default function YourPlaylists({ userId }: { userId: string }) {
           className={`cursor-pointer ${refetching ? "animate-spin" : null}`}
         />
       </div>
-      <div className="flex flex-wrap justify-center gap-7">
+      <div className="flex flex-wrap lg:justify-between gap-10">
         {playlistCards}
         </div>
       <Game playlistId={playlistId} />
