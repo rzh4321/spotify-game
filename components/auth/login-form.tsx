@@ -39,9 +39,7 @@ export const LoginForm = () => {
     startTransition(() => {
       console.log("hi");
       async function logIn() {
-        const res = await signIn("spotify", {
-          redirect: false,
-        });
+        const res = await signIn("spotify", { callbackUrl: "/home" });
         if (res && res.error) {
           setError(res.error);
         } else {
