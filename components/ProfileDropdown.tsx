@@ -19,7 +19,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { signOut } from "next-auth/react";
 
-const ProfileDropdown = ({ profilePicUrl } : {profilePicUrl : string}) => {
+const ProfileDropdown = ({ profilePicUrl } : {profilePicUrl? : string | undefined}) => {
   const router = useRouter();
   return (
     <DropdownMenu>

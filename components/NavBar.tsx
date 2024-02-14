@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useWindowScroll } from "react-use";
 import ProfileDropdown from "./ProfileDropdown";
-import { HomeIcon, Users } from "lucide-react";
+import { HomeIcon } from "lucide-react";
 
 export default function NavBar() {
   const { y: pageYOffset } = useWindowScroll(); // to determine if navbar is sticky
