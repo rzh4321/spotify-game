@@ -1,10 +1,11 @@
 "use client";
 import { RefreshCw } from "lucide-react";
 import usePlaylists from "@/hooks/usePlaylists";
-import type { Playlist } from "@/types";
+import type { Playlist, SimplifiedPlaylistObject } from "@/types";
 import { useState } from "react";
 import Game from "./Game";
 import { useToast } from "@/components/ui/use-toast";
+import PlaylistCard from "./PlaylistCard";
 
 export default function YourPlaylists({ userId }: { userId: string }) {
   const { data, isLoading, error, refetch } = usePlaylists(userId);
@@ -22,6 +23,9 @@ export default function YourPlaylists({ userId }: { userId: string }) {
     playlistId: playlist.id,
     image: playlist.images[0]?.url ?? null,
   }));
+  const playlistCards = playlists.map((playlist : SimplifiedPlaylistObject) => (
+    <PlaylistCard key={playlist.playlistId} playlist={playlist} />
+  ))
   const playlistId = playlists[4].playlistId;
 
   return (
@@ -48,12 +52,11 @@ export default function YourPlaylists({ userId }: { userId: string }) {
           className={`cursor-pointer ${refetching ? "animate-spin" : null}`}
         />
       </div>
-      {JSON.stringify(playlists)}
-      <br />
-      <br />
-      <br />
-      <br />
+      <div className="flex flex-wrap justify-center gap-7">
+        {playlistCards}
+        </div>
       <Game playlistId={playlistId} />
     </div>
   );
 }
+  

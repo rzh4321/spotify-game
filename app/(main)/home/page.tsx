@@ -11,7 +11,7 @@ const Home = async () => {
   const userId = (session?.user as { id: string }).id;
 
   return (
-    <div className="">
+    <div className="w-full">
       <YourPlaylists userId={userId} />
       <main className={styles.main}>
         <h1 className={styles.title}>Welcome, {session?.user?.name}!</h1>

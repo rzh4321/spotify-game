@@ -4,6 +4,12 @@ export type Song = {
   name: string;
 };
 
+export type SimplifiedPlaylistObject = {
+  name: string;
+  playlistId: string;
+  image: string | null;
+}
+
 export type Track = {
   added_at: string;
   added_by: AddedBy;

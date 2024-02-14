@@ -49,6 +49,7 @@ const Game = ({ playlistId }: { playlistId: string }) => {
     if (score !== null && duration && !isLoading) {
       startRound();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [score, duration, isLoading]);
 
   // score is null and no duration, player hasnt started yet
