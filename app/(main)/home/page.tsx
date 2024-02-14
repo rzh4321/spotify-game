@@ -15,9 +15,9 @@ const Home: NextPage = () => {
   const session = useSession();
   const userId =
     session?.status === "authenticated" ? session.data.user?.id : null;
-  const { data, loading, error, refetch } = usePlaylists(userId);
+  const { data, isLoading, error, refetch } = usePlaylists(userId);
 
-  if (loading || session?.status !== "authenticated") {
+  if (isLoading || session?.status !== "authenticated") {
     return <>Spinner placeholder.</>;
   }
   if (error) {

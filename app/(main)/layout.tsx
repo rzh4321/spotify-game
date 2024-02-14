@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "@/app/globals.css";
 import Provider from "@/components/Provider";
 import NavBar from "@/components/NavBar";
+import QueryProvider from "@/components/QueryProvider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,14 +17,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <Provider>
-        <body className="dark font-primary flex flex-col h-screen justify-between items-center">
-          <div className="bg-inherit w-full">
-            <NavBar />
-            {children}
-          </div>
-          {/* <Toaster />
-            <Footer /> */}
-        </body>
+        <QueryProvider>
+          <body className="dark font-primary flex flex-col h-screen justify-between items-center">
+            <div className="bg-inherit w-full">
+              <NavBar />
+              {children}
+            </div>
+            {/* <Toaster />
+              <Footer /> */}
+          </body>
+        </QueryProvider>
       </Provider>
     </html>
   );

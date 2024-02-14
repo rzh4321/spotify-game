@@ -9,7 +9,7 @@ import usePlaylist from "@/hooks/usePlaylist";
 import type { Song } from "@/types";
 
 const Game = ({ playlistId }: { playlistId: string }) => {
-  const { data: songsArr, loading, error, refetch } = usePlaylist(playlistId);
+  const { data: songsArr, isLoading, error, refetch } = usePlaylist(playlistId);
   // State to hold the current round, score, and whether the game is over
   //   const [currentRound, setCurrentRound] = useState<number>(0);
   const [score, setScore] = useState<number | null>(null);
@@ -46,10 +46,10 @@ const Game = ({ playlistId }: { playlistId: string }) => {
   };
 
   useEffect(() => {
-    if (score !== null && duration && !loading) {
+    if (score !== null && duration && !isLoading) {
       startRound();
     }
-  }, [score, duration, loading]);
+  }, [score, duration, isLoading]);
 
   // score is null and no duration, player hasnt started yet
   if (score === null && !duration) {
@@ -62,7 +62,7 @@ const Game = ({ playlistId }: { playlistId: string }) => {
   if (error) {
     return <>error fetching playlist {playlistId}</>;
   }
-  if (loading || !correct || !songsArr) {
+  if (isLoading || !correct || !songsArr) {
     return <>Spinner placeholder.</>;
   }
   // score is not null and duration is 0, player just lost

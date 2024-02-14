@@ -1,5 +1,5 @@
 "use server";
 
-export default async function getAccessToken() {
-  return process.env.ACCESS_TOKEN;
+export default async function getAccessToken(): Promise<string> {
+  return process.env.ACCESS_TOKEN as string;
 }
