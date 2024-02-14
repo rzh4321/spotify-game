@@ -41,13 +41,13 @@ const Game = ({ playlistId }: { playlistId: string }) => {
     if (!chosenSong) return;
     if (selectedName === chosenSong.name) {
       setScore((prevScore) => (prevScore as number) + 1);
-      startRound(); // Start the next round if the answer is correct
     } else {
       setDuration(0); // End the game if the answer is wrong
     }
   };
 
   useEffect(() => {
+    console.log('useEffect running')
     if (score !== null && duration && !isLoading) {
       startRound();
     }
@@ -85,7 +85,7 @@ const Game = ({ playlistId }: { playlistId: string }) => {
           <AudioPlayer url={chosenSong.url} duration={duration} />
           <Timer
             key={score} // need the key to remount every round
-            duration={100}
+            duration={duration}
             onTimerEnd={() => setDuration(0)}
           />
           <Choices

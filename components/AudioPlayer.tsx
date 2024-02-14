@@ -1,49 +1,3 @@
-// import { useEffect, useRef } from 'react';
-
-// type AudioPlayerProps = {
-//   url: string;
-//   duration: number; // duration in seconds
-// };
-
-// const AudioPlayer: React.FC<AudioPlayerProps> = ({ url, duration }) => {
-//   const audioRef = useRef<HTMLAudioElement>(null);
-//     console.log('audioRef is ', audioRef.current)
-//   useEffect(() => {
-//     console.log('url is ', url);
-//     // Play the audio when the component mounts
-//     const playAudio = () => {
-//       if (audioRef.current) {
-//         audioRef.current.play();
-//       }
-//     };
-
-//     // Stop the audio after the specified duration
-//     const timerId = setTimeout(() => {
-//       if (audioRef.current) {
-//         audioRef.current.pause();
-//         audioRef.current.currentTime = 0; // Reset the audio to the start
-//       }
-//     }, duration * 1000); // Convert duration to milliseconds
-
-//     playAudio();
-
-//     return () => {
-//       // Cleanup: stop the audio if the component is unmounted
-//       clearTimeout(timerId);
-//       if (audioRef.current) {
-//         audioRef.current.pause();
-//         audioRef.current.currentTime = 0;
-//       }
-//     };
-//   }, [url, duration, audioRef]);
-
-//   return (
-//     <audio ref={audioRef} src={url} preload="auto" />
-//   );
-// };
-
-// export default AudioPlayer;
-
 import React, { useEffect } from "react";
 
 type AudioPlayerProps = {
@@ -51,14 +5,20 @@ type AudioPlayerProps = {
   duration: number;
 };
 
-const AudioPlayer: React.FC<AudioPlayerProps> = ({ url, duration }) => {
+const AudioPlayer = ({ url, duration } : AudioPlayerProps) => {
   useEffect(() => {
     // Create a new audio object with the file URL
     const audio = new Audio(url);
 
-    // Play the audio
+    // Randomly choose a start time for the audio segment
+    const maxStart = 29 - duration; // Maximum start time to ensure we have a duration-long clip
+    const randomStart = Math.random() * maxStart;
+
+    // Play the audio from the random start time
     const playAudio = async () => {
       try {
+        // Set the audio object to start at the random position
+        audio.currentTime = randomStart;
         await audio.play();
       } catch (error) {
         console.error("Error playing audio:", error);
@@ -81,7 +41,6 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ url, duration }) => {
     };
   }, [url, duration]);
 
-  // No need to render an audio tag since we're not using refs or needing it in the DOM
   return null;
 };
 

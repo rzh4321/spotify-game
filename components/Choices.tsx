@@ -11,7 +11,6 @@ type ChoicesProps = {
 const Choices = ({ songs, correctSong, onChoiceSelected }: ChoicesProps) => {
   const [choices, setChoices] = useState<Song[]>([]);
   // Function to get 3 random songs that are not the correct song
-  console.log("correct song is ", correctSong);
   const getRandomSongs = (songs: Song[], correctSong: Song) => {
     // Filter out the correct song
     const incorrectSongs = songs.filter((song) => song.id !== correctSong.id);
