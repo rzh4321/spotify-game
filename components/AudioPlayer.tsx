@@ -93,8 +93,6 @@ type AudioPlayerProps = {
 const AudioPlayer = ({ url, duration }: AudioPlayerProps) => {
   // Create a ref for the audio element
   const audioRef = useRef<HTMLAudioElement>(null);
-  // const initialAudioRef = useRef<HTMLAudioElement>(audioRef.current);
-
 
   // On mount and url change, update the audio source
   useEffect(() => {
@@ -119,6 +117,7 @@ const AudioPlayer = ({ url, duration }: AudioPlayerProps) => {
       console.log('audioRef.current doesnt exist (it MUST be initial mount). if u see this then how ru gonna play it on initial mount?')
     }
     else {
+      audioRef.current.setAttribute('muted', '');
       audioRef.current.src = url;
       playAudio();
       prevAudioRef = audioRef;
@@ -167,7 +166,7 @@ const AudioPlayer = ({ url, duration }: AudioPlayerProps) => {
     };
   }, []);
 
-  return <audio ref={audioRef} playsInline className='hidden' />;
+  return <audio ref={audioRef} playsInline={true} className='hidden' />;
 };
 
 export default AudioPlayer;
