@@ -1,9 +1,10 @@
 "use client";
 
-import Link from "next/link";
+import { Loader } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { useState, useEffect } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -30,9 +31,16 @@ const FormSchema = z.object({
 type MenuProps = {
   setDuration: React.Dispatch<React.SetStateAction<number>>;
   setScore: React.Dispatch<React.SetStateAction<number | null>>;
+  setShowMenu: React.Dispatch<React.SetStateAction<boolean>>;
+  gameReady: boolean;
 };
 
-export default function Menu({ setDuration, setScore }: MenuProps) {
+export default function Menu({
+  setDuration,
+  setScore,
+  setShowMenu,
+  gameReady,
+}: MenuProps) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -43,6 +51,7 @@ export default function Menu({ setDuration, setScore }: MenuProps) {
   function onSubmit(data: z.infer<typeof FormSchema>) {
     setScore(0);
     setDuration(+data.timer);
+    setShowMenu(false);
   }
 
   return (
@@ -72,7 +81,9 @@ export default function Menu({ setDuration, setScore }: MenuProps) {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button type="submit" disabled={!gameReady}>
+          {gameReady ? "Play" : <Loader className="animate-spin" />}
+        </Button>
       </form>
     </Form>
   );

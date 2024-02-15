@@ -5,6 +5,7 @@ import AudioPlayer from "./AudioPlayer";
 import Timer from "./Timer";
 import Choices from "./Choices";
 import Menu from "./Menu";
+import GameOver from "./GameOver";
 import usePlaylist from "@/hooks/usePlaylist";
 import type { Song } from "@/types";
 
@@ -15,7 +16,8 @@ const Game = ({ playlistId }: { playlistId: string }) => {
   //   const [currentRound, setCurrentRound] = useState<number>(0);
   const [score, setScore] = useState<number | null>(null);
   const [chosenSong, setChosenSong] = useState<Song | null>(null);
-  const [duration, setDuration] = useState<number>(0); // Replace with user input for duration
+  const [duration, setDuration] = useState<number>(0);
+  const [showMenu, setShowMenu] = useState(true);
 
   // memoize correct song to prevent Choices component from re-choosing a new set
   // of incorrect choices on initial mount
@@ -24,15 +26,16 @@ const Game = ({ playlistId }: { playlistId: string }) => {
   }, [chosenSong]);
 
   // Function to start a new round
-  const startRound = () => {
+  const getSong = () => {
     if (!songsArr) {
       return;
     }
     // Randomly select a new song that didn't just play and has a preview url
-    const newSongsArr = songsArr.filter((song) => song.id !== chosenSong?.id && song.url);
+    const newSongsArr = songsArr.filter(
+      (song) => song.id !== chosenSong?.id && song.url,
+    );
     const newSong = newSongsArr[Math.floor(Math.random() * newSongsArr.length)];
     setChosenSong(newSong);
-    // setCurrentRound((prevRound) => prevRound + 1);
   };
 
   // Function to handle user's choice
@@ -46,34 +49,46 @@ const Game = ({ playlistId }: { playlistId: string }) => {
   };
 
   useEffect(() => {
-    if (score !== null && duration && !isLoading) {
-      startRound();
+    // first condition means game is ongoing. Second condition means menu is displayed
+    if ((score !== null && duration && !isLoading) || showMenu) {
+      getSong();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [score, duration, isLoading]);
 
-  // score is null and no duration, player hasnt started yet
-  if (score === null && !duration) {
+  if (showMenu) {
     return (
       <div className="flex justify-center items-center">
-        <Menu setDuration={setDuration} setScore={setScore} />
+        <Menu
+          setDuration={setDuration}
+          setScore={setScore}
+          setShowMenu={setShowMenu}
+          gameReady={!(isLoading || !correct || !songsArr)}
+        />
       </div>
     );
+  }
+  if (isLoading || !correct || !songsArr) {
+    console.log(
+      "isloading is ",
+      isLoading,
+      " !correct is ",
+      !correct,
+      " !songsArr is ",
+      !songsArr,
+    );
+    return <>Spinner placeholder.</>;
   }
   if (error) {
     return <>error fetching playlist {playlistId}</>;
   }
-  if (isLoading || !correct || !songsArr) {
-    return <>Spinner placeholder.</>;
-  }
   // score is not null and duration is 0, player just lost
   if (score !== null && !duration) {
-    return <div>Game Over! Your score was: {score}</div>;
-    // if play again, set score to null
+    return <GameOver score={score} setShowMenu={setShowMenu} />;
   }
 
   // score is not null and theres a duration, game is ongoing
-  console.log('a song has been chosen, its ', correct.name);
+  console.log("a song has been chosen, its ", correct.name);
   return (
     <div>
       <h2>Score: {score}</h2>

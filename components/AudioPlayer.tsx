@@ -80,9 +80,6 @@
 
 // export default AudioPlayer;
 
-
-
-
 import React, { useEffect, useRef } from "react";
 
 type AudioPlayerProps = {
@@ -112,12 +109,12 @@ const AudioPlayer = ({ url, duration }: AudioPlayerProps) => {
         console.error("Error playing audio:", error);
       }
     };
-    let prevAudioRef : React.RefObject<HTMLAudioElement>;
+    let prevAudioRef: React.RefObject<HTMLAudioElement>;
     if (!audioRef.current) {
-      console.log('audioRef.current doesnt exist (it MUST be initial mount). if u see this then how ru gonna play it on initial mount?')
-    }
-    else {
-      audioRef.current.setAttribute('muted', '');
+      console.log(
+        "audioRef.current doesnt exist (it MUST be initial mount). if u see this then how ru gonna play it on initial mount?",
+      );
+    } else {
       audioRef.current.src = url;
       playAudio();
       prevAudioRef = audioRef;
@@ -126,7 +123,7 @@ const AudioPlayer = ({ url, duration }: AudioPlayerProps) => {
     // Cleanup function to stop audio if the component unmounts or rerenders after every round
     return () => {
       if (prevAudioRef && prevAudioRef.current) {
-       prevAudioRef.current.pause();
+        prevAudioRef.current.pause();
       }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -155,7 +152,7 @@ const AudioPlayer = ({ url, duration }: AudioPlayerProps) => {
   useEffect(() => {
     // Capture the value of audioRef.current at the time the effect runs
     const currentAudio = audioRef.current;
-  
+
     return () => {
       // Use the captured value in the cleanup function
       if (currentAudio) {
@@ -166,8 +163,7 @@ const AudioPlayer = ({ url, duration }: AudioPlayerProps) => {
     };
   }, []);
 
-  return <audio ref={audioRef} playsInline={true} className='hidden' />;
+  return <audio ref={audioRef} className="hidden" />;
 };
 
 export default AudioPlayer;
-
