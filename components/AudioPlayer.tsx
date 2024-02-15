@@ -167,7 +167,7 @@ const AudioPlayer = ({ url, duration }: AudioPlayerProps) => {
     };
   }, []);
 
-  return <audio ref={audioRef} className='hidden' />;
+  return <audio ref={audioRef} playsInline className='hidden' />;
 };
 
 export default AudioPlayer;
