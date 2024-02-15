@@ -13,7 +13,7 @@ const Choices = ({ songs, correctSong, onChoiceSelected }: ChoicesProps) => {
   // Function to get 3 random songs that are not the correct song
   const getRandomSongs = (songs: Song[], correctSong: Song) => {
     // Filter out the correct song
-    const incorrectSongs = songs.filter((song) => song.id !== correctSong.id);
+    const incorrectSongs = songs.filter((song) => song.id !== correctSong.id && song.url);
     // Shuffle the incorrect songs
     const shuffled = incorrectSongs.sort(() => 0.5 - Math.random());
     // Get 3 incorrect songs

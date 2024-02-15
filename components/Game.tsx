@@ -9,7 +9,8 @@ import usePlaylist from "@/hooks/usePlaylist";
 import type { Song } from "@/types";
 
 const Game = ({ playlistId }: { playlistId: string }) => {
-  const { data: songsArr, isLoading, error, refetch } = usePlaylist(playlistId);
+  // will refetch songs every 5 mins
+  const { data: songsArr, isLoading, error } = usePlaylist(playlistId);
   // State to hold the current round, score, and whether the game is over
   //   const [currentRound, setCurrentRound] = useState<number>(0);
   const [score, setScore] = useState<number | null>(null);
@@ -27,8 +28,8 @@ const Game = ({ playlistId }: { playlistId: string }) => {
     if (!songsArr) {
       return;
     }
-    // Randomly select a new song that hasn't been played in the last round
-    const newSongsArr = songsArr.filter((song) => song.id !== chosenSong?.id);
+    // Randomly select a new song that didn't just play and has a preview url
+    const newSongsArr = songsArr.filter((song) => song.id !== chosenSong?.id && song.url);
     const newSong = newSongsArr[Math.floor(Math.random() * newSongsArr.length)];
     setChosenSong(newSong);
     // setCurrentRound((prevRound) => prevRound + 1);
@@ -63,6 +64,7 @@ const Game = ({ playlistId }: { playlistId: string }) => {
     return <>error fetching playlist {playlistId}</>;
   }
   if (isLoading || !correct || !songsArr) {
+    console.log('isloading is ', isLoading, ' correct is ', correct?.name, ' !songArr is ', !songsArr);
     return <>Spinner placeholder.</>;
   }
   // score is not null and duration is 0, player just lost
@@ -72,10 +74,9 @@ const Game = ({ playlistId }: { playlistId: string }) => {
   }
 
   // score is not null and theres a duration, game is ongoing
-
+  console.log('a song has been chosen, its ', correct.name);
   return (
     <div>
-      {/* <h1>Game Round: {currentRound}</h1> */}
       <h2>Score: {score}</h2>
       {chosenSong && (
         <>
