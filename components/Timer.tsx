@@ -11,6 +11,7 @@ const Timer = ({ duration, onTimerEnd }: TimerProps) => {
   useEffect(() => {
     // Exit early when we reach 0
     if (timeLeft === 0) {
+      console.log("(IN TIMER) 10s have passed. callign setDuration(0)");
       onTimerEnd();
       return;
     }

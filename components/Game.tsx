@@ -28,9 +28,7 @@ const Game = ({ playlistId }: { playlistId: string }) => {
       return;
     }
     // Randomly select a new song that hasn't been played in the last round
-    console.log('the song that just played was ', chosenSong?.name);
     const newSongsArr = songsArr.filter((song) => song.id !== chosenSong?.id);
-    console.log('newSongsArr shouldnt have ', chosenSong?.name, '. it is ', newSongsArr);
     const newSong = newSongsArr[Math.floor(Math.random() * newSongsArr.length)];
     setChosenSong(newSong);
     // setCurrentRound((prevRound) => prevRound + 1);
@@ -47,11 +45,10 @@ const Game = ({ playlistId }: { playlistId: string }) => {
   };
 
   useEffect(() => {
-    console.log('useEffect running')
     if (score !== null && duration && !isLoading) {
       startRound();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [score, duration, isLoading]);
 
   // score is null and no duration, player hasnt started yet

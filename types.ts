@@ -8,7 +8,7 @@ export type SimplifiedPlaylistObject = {
   name: string;
   playlistId: string;
   image: string | null;
-}
+};
 
 export type Track = {
   added_at: string;

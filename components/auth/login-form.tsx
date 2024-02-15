@@ -41,7 +41,7 @@ export const LoginForm = () => {
         const res = await signIn("spotify", { callbackUrl: "/home" });
         if (res && res.error) {
           setError(res.error);
-        } 
+        }
         // else {
         //   // if log in success, redirect to landing page
         //   router.push("/home");

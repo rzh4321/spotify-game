@@ -1,60 +1,3 @@
-// import { useEffect, useRef } from "react";
-
-// type AudioPlayerProps = {
-//   url: string;
-//   duration: number;
-// };
-
-// const AudioPlayer = ({ url, duration } : AudioPlayerProps) => {
-
-//   useEffect(() => {
-//     // Create a new audio object with the file URL
-//     const audio = new Audio(url);
-
-//     // Randomly choose a start time for the audio segment
-//     const maxStart = 29 - duration; // Maximum start time to ensure we have a duration-long clip
-//     const randomStart = Math.random() * maxStart;
-
-//     // Play the audio from the random start time
-//     const playAudio = async () => {
-//       console.log('audio is ', audio, ' playing it now...');
-//       try {
-//         // Set the audio object to start at the random position
-//         audio.currentTime = randomStart;
-//         await audio.play();
-//         console.log('this is after audio.play(). it should be playing rn.')
-//       } catch (error) {
-//         console.log("Error playing audio:", error);
-//         console.error("Error playing audio:", error);
-//       }
-//     };
-
-//     // Stop the audio after the specified duration
-//     const timerId = setTimeout(() => {
-//       audio.pause();
-//       audio.currentTime = 0;
-//     }, duration * 1000);
-
-//     playAudio();
-
-//     // Cleanup function to stop audio if the component unmounts
-//     return () => {
-//       clearTimeout(timerId);
-//       audio.pause();
-//       audio.currentTime = 0;
-//     };
-//   }, [url, duration]);
-
-//   return null;
-// };
-
-// export default AudioPlayer;
-
-
-
-
-
-
 import React, { useEffect, useRef } from "react";
 
 type AudioPlayerProps = {
@@ -76,7 +19,7 @@ const AudioPlayer = ({ url, duration }: AudioPlayerProps) => {
     audio.src = url;
 
     const playAudio = async () => {
-      console.log('audio is ', audio, ' playing it now...');
+      console.log("audio is ", audio, " playing it now...");
       try {
         // Randomly choose a start time for the audio segment
         const maxStart = Math.max(0, 29 - duration); // Ensure maxStart is not negative
@@ -84,7 +27,7 @@ const AudioPlayer = ({ url, duration }: AudioPlayerProps) => {
         audio.currentTime = randomStart; // Set the start time
 
         await audio.play();
-        console.log('this is after audio.play(). it should be playing rn.');
+        console.log("this is after audio.play(). it should be playing rn.");
       } catch (error) {
         console.error("Error playing audio:", error);
       }
@@ -95,36 +38,41 @@ const AudioPlayer = ({ url, duration }: AudioPlayerProps) => {
       playAudio();
     }
 
-    // Cleanup function to stop audio if the component unmounts
+    // Cleanup function to stop audio if the component unmounts or rerenders after every round
     return () => {
       audio.pause();
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [url]);
 
-  // Effect to stop the audio after the specified duration
+  // Effect to stop the audio after timer runs out
   useEffect(() => {
+    console.log(
+      "useEffect running in AudioPlayer since initial mount or duration has changed to ",
+      duration,
+    );
     const audio = audioRef.current;
-    let timerId: NodeJS.Timeout | null = null;
 
-    if (audio && duration > 0) {
-      timerId = setTimeout(() => {
-        audio.pause();
-        audio.currentTime = 0;
-      }, duration * 1000);
+    if (audio && duration === 0) {
+      console.log(
+        "theres audio and duration is 0, so we need to stop audio. stopping now...",
+      );
+      audio.pause();
+      audio.currentTime = 0;
+      console.log("audio has been stopped.");
     }
+  }, [duration]);
 
-    // Cleanup function to clear the timeout
+  // Effect to remove audio after unmounting. This prevents user from still being able to play audio
+  // after leaving the page
+  useEffect(() => {
     return () => {
-      if (timerId) {
-        clearTimeout(timerId);
-      }
+      const audio = audioRef.current;
       if (audio) {
-        audio.pause();
-        audio.currentTime = 0;
+        audio.src = "";
       }
     };
-  }, [duration]);
+  }, []);
 
   return null;
 };

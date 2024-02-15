@@ -14,7 +14,6 @@ const Home = async () => {
       <main className={styles.main}>
         <h1 className={styles.title}>Welcome, {session?.user?.name}!</h1>
       </main>
-
     </div>
   );
 };

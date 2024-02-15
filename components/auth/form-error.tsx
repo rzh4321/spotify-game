@@ -1,6 +1,6 @@
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 
-export default function FormError({ message } : {message: string}) {
+export default function FormError({ message }: { message: string }) {
   if (!message) return null;
 
   return (

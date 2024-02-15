@@ -15,14 +15,14 @@ type CardWrapperProps = {
   headerLabel: string;
   backButtonLabel: string;
   backButtonHref: string;
-}
+};
 
 export const CardWrapper = ({
   children,
   headerLabel,
   backButtonLabel,
   backButtonHref,
-} : CardWrapperProps) => {
+}: CardWrapperProps) => {
   return (
     <Card className="lg:w-[500px] min-w-[300px] border-none">
       <CardHeader>

@@ -22,9 +22,9 @@ export default function YourPlaylists({ userId }: { userId: string }) {
     playlistId: playlist.id,
     image: playlist.images[0]?.url ?? null,
   }));
-  const playlistCards = playlists.map((playlist : SimplifiedPlaylistObject) => (
+  const playlistCards = playlists.map((playlist: SimplifiedPlaylistObject) => (
     <PlaylistCard key={playlist.playlistId} playlist={playlist} />
-  ))
+  ));
 
   return (
     <div className="flex flex-col w-full gap-8 px-5">
@@ -52,8 +52,7 @@ export default function YourPlaylists({ userId }: { userId: string }) {
       </div>
       <div className="flex flex-wrap lg:justify-between gap-10">
         {playlistCards}
-        </div>
+      </div>
     </div>
   );
 }
-  

@@ -19,7 +19,11 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { signOut } from "next-auth/react";
 
-const ProfileDropdown = ({ profilePicUrl } : {profilePicUrl? : string | undefined}) => {
+const ProfileDropdown = ({
+  profilePicUrl,
+}: {
+  profilePicUrl?: string | undefined;
+}) => {
   const router = useRouter();
   return (
     <DropdownMenu>
@@ -27,7 +31,7 @@ const ProfileDropdown = ({ profilePicUrl } : {profilePicUrl? : string | undefine
         <Button variant="outline" size="circle" className="relative h-10 w-10">
           <Image
             className="rounded-full"
-            src={profilePicUrl ? profilePicUrl : ''}
+            src={profilePicUrl ? profilePicUrl : ""}
             alt="image"
             fill
           />
