@@ -12,6 +12,7 @@ const AudioPlayer = ({ url, duration }: AudioPlayerProps) => {
   // On mount and url change, update the audio source
   useEffect(() => {
     if (!audioRef.current) {
+      console.log('audioRef.current doesnt exist (it MUST be initial mount). attaching new Audio to ref.current...')
       audioRef.current = new Audio();
     }
 

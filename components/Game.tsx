@@ -64,7 +64,6 @@ const Game = ({ playlistId }: { playlistId: string }) => {
     return <>error fetching playlist {playlistId}</>;
   }
   if (isLoading || !correct || !songsArr) {
-    console.log('isloading is ', isLoading, ' correct is ', correct?.name, ' !songArr is ', !songsArr);
     return <>Spinner placeholder.</>;
   }
   // score is not null and duration is 0, player just lost
