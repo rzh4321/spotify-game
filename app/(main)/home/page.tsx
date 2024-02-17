@@ -8,6 +8,7 @@ const Home = async () => {
   const session = await getServerSession(authOptions);
   const userId = (session?.user as { id: string }).id;
 
+  console.log(userId);
   return (
     <div className="w-full">
       <YourPlaylists userId={userId} />

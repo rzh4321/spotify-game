@@ -69,14 +69,6 @@ const Game = ({ playlistId }: { playlistId: string }) => {
     );
   }
   if (isLoading || !correct || !songsArr) {
-    console.log(
-      "isloading is ",
-      isLoading,
-      " !correct is ",
-      !correct,
-      " !songsArr is ",
-      !songsArr,
-    );
     return <>Spinner placeholder.</>;
   }
   if (error) {

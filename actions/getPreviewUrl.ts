@@ -14,7 +14,6 @@ export default async function getPreviewUrl(trackId: string) {
     const audioPreviewUrl = matches[1];
     return audioPreviewUrl;
   } else {
-    console.log("Audio Preview URL not found");
     return null;
   }
 }

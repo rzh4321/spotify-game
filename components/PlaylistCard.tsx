@@ -13,7 +13,7 @@ const PlaylistCard = ({ playlist }: { playlist: SimplifiedPlaylistObject }) => {
       <Link href={`/play/${playlist.playlistId}`}>
         <Image
           alt={playlist.name}
-          src={playlist.image ? playlist.image : ""}
+          src={playlist.image === null ? "" : playlist.image}
           height={400}
           width={400}
         />

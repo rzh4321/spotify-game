@@ -1,13 +1,13 @@
 "use client";
 import { RefreshCw } from "lucide-react";
 import usePlaylists from "@/hooks/usePlaylists";
-import type { Playlist, SimplifiedPlaylistObject } from "@/types";
+import type { SimplifiedPlaylistObject } from "@/types";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import PlaylistCard from "./PlaylistCard";
 
 export default function YourPlaylists({ userId }: { userId: string }) {
-  const { data, isLoading, error, refetch } = usePlaylists(userId);
+  const { data : playlists, isLoading, error, refetch } = usePlaylists(userId);
   const { toast } = useToast();
   const [refetching, setRefetching] = useState(false);
 
@@ -17,11 +17,6 @@ export default function YourPlaylists({ userId }: { userId: string }) {
   if (error) {
     return <>error fetching user playlists</>;
   }
-  const playlists = data.items.map((playlist: Playlist) => ({
-    name: playlist.name,
-    playlistId: playlist.id,
-    image: playlist.images[0]?.url ?? null,
-  }));
   const playlistCards = playlists.map((playlist: SimplifiedPlaylistObject) => (
     <PlaylistCard key={playlist.playlistId} playlist={playlist} />
   ));
