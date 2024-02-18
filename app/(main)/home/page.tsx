@@ -1,22 +1,16 @@
-import styles from "../../../styles/Home.module.css";
+import Playlists from "@/components/Playlists";
 
 import { getServerSession } from "next-auth";
 import authOptions from "@/authOptions";
-import YourPlaylists from "@/components/YourPlaylists";
 
 const Home = async () => {
   const session = await getServerSession(authOptions);
   const userId = (session?.user as { id: string }).id;
+  const name = (session?.user as { name: string }).name;
 
-  console.log(userId);
   return (
-    <div className="w-full">
-      <YourPlaylists userId={userId} />
-      <main className={styles.main}>
-        <h1 className={styles.title}>Welcome, {session?.user?.name}!</h1>
-      </main>
-    </div>
-  );
+    <Playlists userId={userId} name={name} />
+  )
 };
 
 export default Home;

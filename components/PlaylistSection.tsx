@@ -1,13 +1,28 @@
 "use client";
-import { RefreshCw } from "lucide-react";
-import usePlaylists from "@/hooks/usePlaylists";
+import { RefreshCw, StepBack, StepForward } from "lucide-react";
 import type { SimplifiedPlaylistObject } from "@/types";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import PlaylistCard from "./PlaylistCard";
+import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
 
-export default function YourPlaylists({ userId }: { userId: string }) {
-  const { data : playlists, isLoading, error, refetch } = usePlaylists(userId);
+type usePlaylistReturnTypes = {
+  data: any;
+  isLoading: boolean;
+  error: Error | null;
+  refetch: (options?: RefetchOptions | undefined) => Promise<QueryObserverResult<any, Error>>;
+}
+
+type UsePlaylistHook<T extends any[]> = (pageNumber : number, ...args: T) => usePlaylistReturnTypes;
+
+type PlaylistSectionProps<T extends any[]> = {
+  usePlaylistHook: UsePlaylistHook<T>;
+  hookParams: T;
+}
+
+export default function PlaylistSection({usePlaylistHook, hookParams} : PlaylistSectionProps<any[]>) {
+  const [pageNumber, setPageNumber] = useState(0);
+  const { data : playlists, isLoading, error, refetch } = usePlaylistHook(pageNumber, ...hookParams);
   const { toast } = useToast();
   const [refetching, setRefetching] = useState(false);
 
@@ -47,6 +62,12 @@ export default function YourPlaylists({ userId }: { userId: string }) {
       </div>
       <div className="flex flex-wrap lg:justify-between gap-10">
         {playlistCards}
+      </div>
+      <div className="flex justify-center items-center gap-4">
+        <StepBack className="cursor-pointer" onClick={() => setPageNumber((prevPageNumber) => Math.max(prevPageNumber - 1, 0))} />
+        <span>{pageNumber+1}</span>
+        <StepForward className="cursor-pointer" onClick={() => setPageNumber((prevPageNumber) => prevPageNumber + 1)} />
+
       </div>
     </div>
   );

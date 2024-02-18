@@ -1,11 +1,11 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import getAccessToken from "@/actions/getAccessToken";
 import refreshAccessToken from "@/actions/refreshAccessToken";
 import type { Playlist } from "@/types";
 
-async function fetchUserPlaylists(userId: string, accessToken: string) {
+async function fetchUserPlaylists(userId: string, accessToken: string, pageNumber: number) {
   const response = await fetch(
-    `https://api.spotify.com/v1/users/${userId}/playlists?limit=50`,
+    `https://api.spotify.com/v1/users/${userId}/playlists?offset=${pageNumber}&limit=6`,
     {
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -25,15 +25,15 @@ async function fetchUserPlaylists(userId: string, accessToken: string) {
   return playlists;
 }
 
-export default function usePlaylists(userId: string) {
-  const queryKey = ["userPlaylists", userId];
+export default function useUserPlaylists(pageNumber: number, userId: string) {
+  const queryKey = ["userPlaylists", userId, pageNumber];
 
   const { data, error, isLoading, refetch } = useQuery({
     queryKey: queryKey,
     queryFn: async () => {
       try {
         let accessToken = await getAccessToken();
-        return await fetchUserPlaylists(userId, accessToken);
+        return await fetchUserPlaylists(userId, accessToken, pageNumber);
       } catch (error) {
         if (
           error instanceof Error &&
@@ -43,7 +43,7 @@ export default function usePlaylists(userId: string) {
           const newAccessToken = await refreshAccessToken();
           if (newAccessToken) {
             try {
-              return fetchUserPlaylists(userId, newAccessToken);
+              return fetchUserPlaylists(userId, newAccessToken, pageNumber);
 
             }
             catch(err) {
@@ -60,6 +60,8 @@ export default function usePlaylists(userId: string) {
     enabled: !!userId, // query wont execute until userId exists
     refetchInterval: 1000 * 60 * 60, // refetch playlists every hour
     refetchIntervalInBackground: true,
+    placeholderData: keepPreviousData
+    
   });
 
   return { data, isLoading, error, refetch };
