@@ -3,13 +3,9 @@ import getAccessToken from "@/actions/getAccessToken";
 import refreshAccessToken from "@/actions/refreshAccessToken";
 import type { Playlist } from "@/types";
 
-async function fetchUserPlaylists(
-  userId: string,
-  accessToken: string,
-  pageNumber: number,
-) {
+async function fetchFeaturedPlaylists(accessToken: string, pageNumber: number) {
   const response = await fetch(
-    `https://api.spotify.com/v1/users/${userId}/playlists?offset=${pageNumber}&limit=6`,
+    `https://api.spotify.com/v1/browse/featured-playlists?offset=${pageNumber}&limit=6`,
     {
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -22,7 +18,7 @@ async function fetchUserPlaylists(
   }
   const data = await response.json();
   // map each playlist data to a more readable object that has name, playlistId, and image
-  const playlists = data.items.map((playlist: Playlist) => ({
+  const playlists = data.playlists.items.map((playlist: Playlist) => ({
     name: playlist.name,
     playlistId: playlist.id,
     image: playlist.images[0]?.url ?? null,
@@ -30,15 +26,15 @@ async function fetchUserPlaylists(
   return playlists;
 }
 
-export default function useUserPlaylists(pageNumber: number, userId: string) {
-  const queryKey = ["userPlaylists", userId, pageNumber];
+export default function useFeaturedPlaylists(pageNumber: number) {
+  const queryKey = ["featuredPlaylists", pageNumber];
 
   const { data, error, isLoading, refetch } = useQuery({
     queryKey: queryKey,
     queryFn: async () => {
       try {
         let accessToken = await getAccessToken();
-        return await fetchUserPlaylists(userId, accessToken, pageNumber);
+        return await fetchFeaturedPlaylists(accessToken, pageNumber);
       } catch (error) {
         if (
           error instanceof Error &&
@@ -48,11 +44,7 @@ export default function useUserPlaylists(pageNumber: number, userId: string) {
           const newAccessToken = await refreshAccessToken();
           if (newAccessToken) {
             try {
-              return await fetchUserPlaylists(
-                userId,
-                newAccessToken,
-                pageNumber,
-              );
+              return await fetchFeaturedPlaylists(newAccessToken, pageNumber);
             } catch (err) {
               console.log("NEW ACCESS TOKEN FAILED: ", err);
             }
@@ -63,8 +55,7 @@ export default function useUserPlaylists(pageNumber: number, userId: string) {
         throw error;
       }
     },
-    enabled: !!userId, // query wont execute until userId exists
-    refetchInterval: 1000 * 60 * 60, // refetch playlists every hour
+    refetchInterval: 1000 * 60 * 1440, // refetch playlists every day
     refetchIntervalInBackground: true,
     placeholderData: keepPreviousData,
   });

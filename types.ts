@@ -1,3 +1,5 @@
+import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
+
 export type Song = {
   id: string;
   url: string;
@@ -10,11 +12,26 @@ export type SimplifiedPlaylistObject = {
   image: string | null;
 };
 
+export type SimplifiedCategoryObject = {
+  name: string;
+  categoryId: string;
+  image: string | null;
+};
+
 export type Track = {
   added_at: string;
   added_by: AddedBy;
   is_local: boolean;
   track: TrackClass;
+};
+
+export type usePlaylistReturnTypes = {
+  data: any;
+  isLoading: boolean;
+  error: Error | null;
+  refetch: (
+    options?: RefetchOptions | undefined,
+  ) => Promise<QueryObserverResult<any, Error>>;
 };
 
 export type AddedBy = {
@@ -136,4 +153,17 @@ export type Owner = {
 export type Tracks = {
   href: string;
   total: number;
+};
+
+export type Category = {
+  href: string;
+  icons: Icon[];
+  id: string;
+  name: string;
+};
+
+export type Icon = {
+  url: string;
+  height: number;
+  width: number;
 };

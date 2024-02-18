@@ -1,42 +1,26 @@
 "use client";
 import { RefreshCw, StepBack, StepForward } from "lucide-react";
-import type { SimplifiedPlaylistObject, usePlaylistReturnTypes } from "@/types";
+import type { SimplifiedCategoryObject, usePlaylistReturnTypes } from "@/types";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
-import ContentCard from "./ContentCard";
+import PlaylistCard from "./ContentCard";
+import useCategories from "@/hooks/useCategories";
 
-// all usePlaylist hooks have pageNumber param. We dont know the rest of the args so we use T extends any[]
-type UsePlaylistHook<T extends any[]> = (
-  pageNumber: number,
-  ...args: T
-) => usePlaylistReturnTypes;
-
-type PlaylistSectionProps<T extends any[]> = {
-  usePlaylistHook: UsePlaylistHook<T>;
-  hookParams: T;
-  label: string;
-};
-
-// accepts a usePlaylist hook and all of its params in an array
-export default function PlaylistSection({
-  usePlaylistHook,
-  hookParams,
-  label,
-}: PlaylistSectionProps<any[]>) {
+export default function Categories() {
   const [pageNumber, setPageNumber] = useState(0);
   const {
-    data: playlists,
+    data: categories,
     isLoading,
     error,
     refetch,
-  } = usePlaylistHook(pageNumber, ...hookParams);
+  } = useCategories(pageNumber);
   const { toast } = useToast();
   const [refetching, setRefetching] = useState(false);
 
   return (
     <div className="flex flex-col w-full gap-8 px-5">
       <div className="flex justify-between">
-        <h1 className="text-4xl font-semibold">{label}</h1>
+        <h1 className="text-4xl font-semibold">All Categories</h1>
         <RefreshCw
           size={40}
           onClick={async () => {
@@ -60,12 +44,8 @@ export default function PlaylistSection({
       <div className="flex flex-wrap lg:justify-between gap-10">
         {!isLoading &&
           !error &&
-          playlists.map((playlist: SimplifiedPlaylistObject) => (
-            <ContentCard
-              key={playlist.playlistId}
-              infoObject={playlist}
-              type="playlist"
-            />
+          categories.map((category: SimplifiedCategoryObject) => (
+            <PlaylistCard key={category.categoryId} playlist={playlist} />
           ))}
         {isLoading && <>Spinner placeholder</>}
         {error && <>Error fetching playlists</>}

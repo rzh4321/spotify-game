@@ -22,6 +22,7 @@ async function fetchPlaylistData(
   }
 
   const data = await response.json();
+  // map each song to a more readable object that includes its previewUrl. If null, fetch it
   const promises = data.tracks.items.map(async (track: Track) => {
     let previewUrl: string | null = track.track.preview_url;
     if (!previewUrl) {
