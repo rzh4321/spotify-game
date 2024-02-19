@@ -8,7 +8,7 @@ const Home = async () => {
   const userId = (session?.user as { id: string }).id;
   const name = (session?.user as { name: string }).name;
 
-  return <Playlists userId={userId} name={name} />;
+  return <Playlists userId={userId} />;
 };
 
 export default Home;

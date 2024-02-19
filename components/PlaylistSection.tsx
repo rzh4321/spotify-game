@@ -65,6 +65,7 @@ export default function PlaylistSection({
               key={playlist.playlistId}
               infoObject={playlist}
               type="playlist"
+              displayNames={label !== "Charts"}
             />
           ))}
         {isLoading && <>Spinner placeholder</>}

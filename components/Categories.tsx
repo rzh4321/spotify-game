@@ -45,7 +45,12 @@ export default function Categories() {
         {!isLoading &&
           !error &&
           categories.map((category: SimplifiedCategoryObject) => (
-            <ContentCard key={category.categoryId} infoObject={category} type='category' />
+            <ContentCard
+              key={category.categoryId}
+              infoObject={category}
+              type="category"
+              displayNames={true}
+            />
           ))}
         {isLoading && <>Spinner placeholder</>}
         {error && <>Error fetching playlists</>}

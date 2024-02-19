@@ -8,16 +8,17 @@ import Link from "next/link";
 type ContentCardProps = {
   infoObject: SimplifiedPlaylistObject | SimplifiedCategoryObject;
   type: "playlist" | "category";
+  displayNames: boolean;
 };
 
-const ContentCard = ({ infoObject, type }: ContentCardProps) => {
+const ContentCard = ({ infoObject, type, displayNames }: ContentCardProps) => {
   let url;
   if (type === "playlist") {
     const playlistInfo = infoObject as SimplifiedPlaylistObject;
     url = `/play/${playlistInfo.playlistId}`;
   } else {
     const categoryInfo = infoObject as SimplifiedCategoryObject;
-    url = `/category/${categoryInfo.categoryId}`;
+    url = `/categories/${categoryInfo.categoryId}`;
   }
   return (
     <div
@@ -32,9 +33,13 @@ const ContentCard = ({ infoObject, type }: ContentCardProps) => {
           height={400}
           width={400}
         />
-        <div className={`absolute shadow-lg m-auto inset-x-0 text-center ${type === 'playlist' ? 'top-[45%]' : 'bottom-[10px]'} xl:text-3xl lg:text-2xl md:text-xl font-semibold`}>
-          {infoObject.name}
-        </div>
+        {displayNames && (
+          <div
+            className={`absolute shadow-lg m-auto inset-x-0 text-center ${type === "playlist" ? "top-[45%]" : "bottom-[10px]"} xl:text-3xl lg:text-2xl md:text-xl font-semibold`}
+          >
+            {infoObject.name}
+          </div>
+        )}
       </Link>
     </div>
   );
