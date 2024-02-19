@@ -5,7 +5,7 @@ import type { Playlist } from "@/types";
 
 async function fetchFeaturedPlaylists(accessToken: string, pageNumber: number) {
   const response = await fetch(
-    `https://api.spotify.com/v1/browse/featured-playlists?offset=${pageNumber}&limit=6`,
+    `https://api.spotify.com/v1/browse/featured-playlists?offset=${pageNumber * 6}&limit=6`,
     {
       headers: {
         Authorization: `Bearer ${accessToken}`,

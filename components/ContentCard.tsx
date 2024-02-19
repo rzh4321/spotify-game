@@ -32,7 +32,7 @@ const ContentCard = ({ infoObject, type }: ContentCardProps) => {
           height={400}
           width={400}
         />
-        <div className="absolute shadow-lg inset-0 m-auto text-center top-[45%] xl:text-4xl lg:text-3xl md:text-2xl font-semibold">
+        <div className={`absolute shadow-lg m-auto inset-x-0 text-center ${type === 'playlist' ? 'top-[45%]' : 'bottom-[10px]'} xl:text-3xl lg:text-2xl md:text-xl font-semibold`}>
           {infoObject.name}
         </div>
       </Link>

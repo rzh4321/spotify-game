@@ -9,7 +9,7 @@ async function fetchUserPlaylists(
   pageNumber: number,
 ) {
   const response = await fetch(
-    `https://api.spotify.com/v1/users/${userId}/playlists?offset=${pageNumber}&limit=6`,
+    `https://api.spotify.com/v1/users/${userId}/playlists?offset=${pageNumber * 6}&limit=6`,
     {
       headers: {
         Authorization: `Bearer ${accessToken}`,

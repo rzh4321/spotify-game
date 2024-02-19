@@ -6,7 +6,7 @@ import type { Category } from "@/types";
 async function fetchCategories(accessToken: string, pageNumber: number) {
   const response = await fetch(
     `
-    https://api.spotify.com/v1/browse/categories?offset=${pageNumber}&limit=6`,
+    https://api.spotify.com/v1/browse/categories?offset=${pageNumber * 9}&limit=9`,
     {
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -19,7 +19,7 @@ async function fetchCategories(accessToken: string, pageNumber: number) {
   }
   const data = await response.json();
   // map each playlist data to a more readable object that has name, playlistId, and image
-  const categories = data.items.map((category: Category) => ({
+  const categories = data.categories.items.map((category: Category) => ({
     name: category.name,
     categoryId: category.id,
     image: category.icons[0]?.url ?? null,

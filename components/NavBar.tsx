@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useWindowScroll } from "react-use";
 import ProfileDropdown from "./ProfileDropdown";
 import { HomeIcon } from "lucide-react";
+import { Button } from "./ui/button";
 
 export default function NavBar() {
   const { y: pageYOffset } = useWindowScroll(); // to determine if navbar is sticky
@@ -22,7 +23,12 @@ export default function NavBar() {
       <Link href="/home" className="cursor-pointer">
         <HomeIcon />
       </Link>
-      <ProfileDropdown />
+      <div className="flex gap-3">
+        <Button variant={'outline'} asChild>
+          <Link href={'/categories'}>All Categories</Link>
+        </Button>
+        <ProfileDropdown />
+      </div>
     </div>
   );
 }
