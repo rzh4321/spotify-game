@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/card";
 import { Header } from "@/components/auth/header";
 import { Social } from "@/components/auth/social";
-// import { BackButton } from "@/components/auth/back-button";
+import { BackButton } from "@/components/auth/back-button";
 
 type CardWrapperProps = {
   children: React.ReactNode;
@@ -28,15 +28,10 @@ export const CardWrapper = ({
       <CardHeader>
         <Header label={headerLabel} />
       </CardHeader>
-      <CardContent className="flex items-center justify-center">
-        {children}
-      </CardContent>
-      {/* <CardFooter>
-        <BackButton
-          label={backButtonLabel}
-          href={backButtonHref}
-        />
-      </CardFooter> */}
+      <CardContent>{children}</CardContent>
+      <CardFooter>
+        <BackButton label={backButtonLabel} href={backButtonHref} />
+      </CardFooter>
     </Card>
   );
 };

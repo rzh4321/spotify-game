@@ -32,7 +32,6 @@ export default function PlaylistSection({
   } = usePlaylistHook(pageNumber, ...hookParams);
   const { toast } = useToast();
   const [refetching, setRefetching] = useState(false);
-
   return (
     <div className="flex flex-col w-full gap-8 px-5">
       <div className="flex justify-between">
@@ -60,7 +59,7 @@ export default function PlaylistSection({
       <div className="flex flex-wrap lg:justify-between gap-10">
         {!isLoading &&
           !error &&
-          playlists.map((playlist: SimplifiedPlaylistObject) => (
+          playlists?.map((playlist: SimplifiedPlaylistObject) => (
             <ContentCard
               key={playlist.playlistId}
               infoObject={playlist}

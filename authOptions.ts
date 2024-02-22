@@ -1,8 +1,14 @@
 import NextAuth from "next-auth/next";
 // import CredentialsProvider from "next-auth/providers/credentials";
 import SpotifyProvider from "next-auth/providers/spotify";
-import bcrypt from "bcryptjs";
+import CredentialsProvider from "next-auth/providers/credentials";
 import { NextAuthOptions } from "next-auth";
+import createUser from "./actions/createUser";
+import { LoginSchema } from "./schemas";
+import bcrypt from "bcryptjs";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
 
 const authOptions: NextAuthOptions = {
   // pages: {
@@ -17,57 +23,65 @@ const authOptions: NextAuthOptions = {
       authorization:
         "https://accounts.spotify.com/authorize?scope=user-read-email+user-read-private+playlist-read-private+user-top-read+user-follow-read+playlist-read-collaborative",
     }),
-    //   CredentialsProvider({
-    //     name: "credentials",
-    //     credentials: {
-    //       username: { label: "username", type: "text", placeholder: "username" },
-    //       password: { label: "password", type: "password" },
-    //     },
-    //     // this will be called when we sign in with normal credentials
-    //     async authorize(credentials) {
-    //       const validatedFields = LoginSchema.safeParse(credentials);
+    CredentialsProvider({
+      name: "credentials",
+      credentials: {
+        username: { label: "username", type: "text", placeholder: "username" },
+        password: { label: "password", type: "password" },
+      },
+      // this will be called when we sign in with normal credentials
+      async authorize(credentials: any): Promise<any> {
+        const validatedFields = LoginSchema.safeParse(credentials);
 
-    //       if (validatedFields.success) {
-    //         await connectToDB();
+        if (validatedFields.success) {
+          // authenticate the user
+          const { username, password } = validatedFields.data;
+          console.log(validatedFields.data);
+          try {
+            // Search for the user by username
+            const user = await prisma.user.findUnique({
+              where: {
+                username,
+              },
+            });
 
-    //         // authenticate the user
-    //         const { username, password } = validatedFields.data;
-    //         const regex = new RegExp(username, "i");
-    //         const user = await User.findOne({ username: { $regex: regex } });
-    //         if (!user) {
-    //           throw new Error("Username does not exist");
-    //         }
-    //         const match = await bcrypt.compare(password, user.password);
+            // If user is not found or it was registered via spotify login, throw an error
+            if (!user || !user.password) {
+              throw new Error("Username does not exist");
+            }
+            // Compare provided password with the hashed password in the database
+            const match = await bcrypt.compare(password, user.password);
 
-    //         if (!match) {
-    //           // passwords do not match
-    //           throw new Error('Passwords not matching');
-    //         }
-    //         return user;
-    //       }
-    //       return null;
-
-    //     },
-    //   }),
+            // If passwords do not match, throw an error
+            if (!match) {
+              throw new Error("Passwords not matching");
+            }
+            return user;
+          } catch (error) {
+            console.error("Authentication error:", error);
+            throw error;
+          }
+        }
+        return null;
+      },
+    }),
   ],
   session: {
     strategy: "jwt",
   },
   callbacks: {
     async signIn({ user, account }: any): Promise<any> {
-      // Google login: finding an existing account or creating a new account
-      // in the database with the provided name, username and profilePicUrl provided by google
       if (account.provider === "spotify") {
-        // user object has details from google account, use those details to retrieve or create user object
-        // in api call later
-        const credentials = {
-          name: user.name,
-          username: user.email,
-          profilePicUrl: user.image,
-        };
-        //   console.log('in signin(). u signed in with spotify. user is ', user);
-        // check if user with this google acc exists. Otherwise create new user based off google acc
-        // attach database user id to user.id
+        /*user object has details from spotify account, looks like this: 
+          {
+            id: '31wlnie55epplz45o62tp66peuba',
+            name: 'ricky',
+            email: 'email@gmail.com',
+            image: undefined
+          }
+        */
+        // will create user in database if they're new
+        await createUser(user.email, user.name, user.id);
         return true;
       } else if (account.provider === "credentials") {
         // we already have all the necessary data from authorize(), just return true
@@ -87,20 +101,20 @@ const authOptions: NextAuthOptions = {
         //   account,
         // );
         token.accessToken = account.access_token;
-        token.id = user.id;
+        token.spotifyUserId = user.id;
+        token.username = user.email;
       } else if (account?.provider === "credentials") {
-        token.userId = user._id;
+        // get all the info that should be stored in session
+        token.spotifyUserId = user.spotifyUserId;
         token.username = user.username;
       }
       return token;
     },
     // transfer token data to session object
     async session({ session, token }: any) {
-      // session.user.userId = token.userId;
-      // session.user.username = token.username;
-      // session only stores userId and username
-      session.user.id = token.id;
-      session.user.accessToken = token.accessToken;
+      session.user.id = token.spotifyUserId;
+      session.user.accessToken = token.accessToken; // for development purposes
+      session.user.username = token.username;
       // console.log('in session(). sessio is ', session);
       return session;
     },

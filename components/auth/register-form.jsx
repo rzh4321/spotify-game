@@ -3,11 +3,7 @@
 import { useForm } from "react-hook-form";
 import { useState, useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FileUpload } from "../file-upload";
 import { signIn } from "next-auth/react";
-
-import { useRouter } from "next/navigation";
-
 import { RegisterSchema } from "@/schemas";
 import { Input } from "@/components/ui/input";
 import {
@@ -20,13 +16,10 @@ import {
 } from "@/components/ui/form";
 import { CardWrapper } from "@/components/auth/card-wrapper";
 import { Button } from "@/components/ui/button";
-import { FormError } from "../form-error";
-import { FormSuccess } from "../form-success";
-import { createUser } from "@/actions/actions";
+import FormError from "./form-error";
+import createUser from "@/actions/createUser";
 
 export const RegisterForm = () => {
-  const router = useRouter();
-
   const [error, setError] = useState("");
   const [isPending, startTransition] = useTransition();
 
@@ -36,7 +29,6 @@ export const RegisterForm = () => {
       username: "",
       password: "",
       name: "",
-      profilePicUrl: "",
     },
   });
 
@@ -46,7 +38,12 @@ export const RegisterForm = () => {
     startTransition(() => {
       async function create() {
         try {
-          const userString = await createUser(values);
+          const userString = await createUser(
+            values.username,
+            values.name,
+            values.spotifyUserId,
+            values.password,
+          );
           const user = JSON.parse(userString);
           const res = await signIn("credentials", {
             redirect: true,
@@ -54,7 +51,6 @@ export const RegisterForm = () => {
             password: user.password,
             callbackUrl: "/home", // should redirect to home page after successful signup
           });
-          // router.push('/home');
         } catch (err) {
           setError(err.message);
         }
@@ -68,10 +64,9 @@ export const RegisterForm = () => {
       headerLabel="Create an account"
       backButtonLabel="Already have an account?"
       backButtonHref="/"
-      showSocial
     >
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="space-y-4">
             <FormField
               control={form.control}
@@ -119,24 +114,20 @@ export const RegisterForm = () => {
             />
             <FormField
               control={form.control}
-              name="profilePicUrl"
+              name="spotifyUserId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Profile Image</FormLabel>
+                  <FormLabel>Spotify User ID (add hovercard)</FormLabel>
                   <FormControl>
-                    <FileUpload
-                      endpoint={"newUserImage"}
-                      value={field.value}
-                      onChange={field.onChange}
-                    />
+                    <Input {...field} disabled={isPending} />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
           </div>
           <FormError message={error} />
-          {/* <FormSuccess message={success} /> */}
-          <Button disabled={isPending} type="submit" className="w-full">
+          <Button disabled={isPending} type="submit" className="w-full text-lg">
             Create an account
           </Button>
         </form>
