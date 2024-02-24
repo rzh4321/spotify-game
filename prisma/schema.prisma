@@ -15,12 +15,28 @@ model User {
   name      String
   spotifyUserId    String?   @unique
   playlists Playlist[]
+  plays     Play[]
 }
 
 model Playlist {
   playlistId Int    @id @default(autoincrement())
   userId     Int
   playCount  Int
-  highScore  Int
   user       User   @relation(fields: [userId], references: [userId])
+  showHints  Boolean
+  timer      Int
+  spotifyPlaylistId    String
+  createdAt              DateTime            @default(now())
+  updatedAt              DateTime            @updatedAt
+  plays     Play[]
+}
+
+model Play {
+  playId Int    @id @default(autoincrement())
+  playlistId  Int
+  playlist       Playlist   @relation(fields: [playlistId], references: [playlistId])
+  score       Int
+  userId      Int
+  user       User   @relation(fields: [userId], references: [userId])
+  createdAt              DateTime            @default(now())
 }

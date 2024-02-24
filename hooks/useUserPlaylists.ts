@@ -4,7 +4,7 @@ import refreshAccessToken from "@/actions/refreshAccessToken";
 import type { Playlist } from "@/types";
 
 async function fetchUserPlaylists(
-  userId: string,
+  userId: string | undefined,
   accessToken: string,
   pageNumber: number,
 ) {
@@ -30,7 +30,7 @@ async function fetchUserPlaylists(
   return playlists;
 }
 
-export default function useUserPlaylists(pageNumber: number, userId: string) {
+export default function useUserPlaylists(pageNumber: number, userId: string | undefined) {
   const queryKey = ["userPlaylists", userId, pageNumber];
 
   const { data, error, isLoading, refetch } = useQuery({

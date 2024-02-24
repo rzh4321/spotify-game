@@ -6,9 +6,10 @@ type ChoicesProps = {
   songs: Song[];
   correctSong: Song; // The current song that is the correct answer
   onChoiceSelected: (choice: string) => void;
+  showHints: boolean;
 };
 
-const Choices = ({ songs, correctSong, onChoiceSelected }: ChoicesProps) => {
+const Choices = ({ songs, correctSong, onChoiceSelected, showHints }: ChoicesProps) => {
   const [choices, setChoices] = useState<Song[]>([]);
   // Function to get 3 random songs that are not the correct song
   const getRandomSongs = (songs: Song[], correctSong: Song) => {

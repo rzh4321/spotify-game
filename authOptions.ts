@@ -36,7 +36,6 @@ const authOptions: NextAuthOptions = {
         if (validatedFields.success) {
           // authenticate the user
           const { username, password } = validatedFields.data;
-          console.log(validatedFields.data);
           try {
             // Search for the user by username
             const user = await prisma.user.findUnique({
@@ -81,7 +80,10 @@ const authOptions: NextAuthOptions = {
           }
         */
         // will create user in database if they're new
-        await createUser(user.email, user.name, user.id);
+        const stringData = await createUser(user.email, user.name, user.id);
+        const obj = JSON.parse(stringData);
+        // transfer database userId to user since we need to store it in session
+          user.userId = obj.userId;
         return true;
       } else if (account.provider === "credentials") {
         // we already have all the necessary data from authorize(), just return true
@@ -101,18 +103,18 @@ const authOptions: NextAuthOptions = {
         //   account,
         // );
         token.accessToken = account.access_token;
-        token.spotifyUserId = user.id;
+        token.userId = user.userId;
         token.username = user.email;
       } else if (account?.provider === "credentials") {
         // get all the info that should be stored in session
-        token.spotifyUserId = user.spotifyUserId;
+        token.userId = user.userId;
         token.username = user.username;
       }
       return token;
     },
     // transfer token data to session object
     async session({ session, token }: any) {
-      session.user.id = token.spotifyUserId;
+      session.user.userId = token.userId;
       session.user.accessToken = token.accessToken; // for development purposes
       session.user.username = token.username;
       // console.log('in session(). sessio is ', session);

@@ -10,7 +10,7 @@ export default function Playlists({
   categoryId,
   categoryName,
 }: {
-  userId?: string;
+  userId?: string | null;
   categoryId?: string;
   categoryName?: string;
 }) {

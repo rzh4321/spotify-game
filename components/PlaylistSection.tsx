@@ -59,14 +59,14 @@ export default function PlaylistSection({
       <div className="flex flex-wrap lg:justify-between gap-10">
         {!isLoading &&
           !error &&
-          playlists?.map((playlist: SimplifiedPlaylistObject) => (
+          (playlists? playlists.map((playlist: SimplifiedPlaylistObject) => (
             <ContentCard
               key={playlist.playlistId}
               infoObject={playlist}
               type="playlist"
               displayNames={label !== "Charts"}
             />
-          ))}
+          )) : <div>No playlists. Check user id</div>)}
         {isLoading && <>Spinner placeholder</>}
         {error && <>Error fetching playlists</>}
       </div>

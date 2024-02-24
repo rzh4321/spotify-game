@@ -27,7 +27,7 @@ export default async function createUser(
 
     if (existingUser.length > 0) {
       console.log("this username or spotify id already exists");
-      return;
+      return JSON.stringify(existingUser[0]);
     }
 
     // Hash the password if it is provided

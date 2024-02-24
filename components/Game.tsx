@@ -9,15 +9,16 @@ import GameOver from "./GameOver";
 import usePlaylist from "@/hooks/usePlaylist";
 import type { Song } from "@/types";
 
-const Game = ({ playlistId }: { playlistId: string }) => {
+const Game = ({ playlistId, userId }: { playlistId: string; userId: number }) => {
   // will refetch songs every 5 mins
   const { data: songsArr, isLoading, error } = usePlaylist(playlistId);
-  // State to hold the current round, score, and whether the game is over
-  //   const [currentRound, setCurrentRound] = useState<number>(0);
   const [score, setScore] = useState<number | null>(null);
   const [chosenSong, setChosenSong] = useState<Song | null>(null);
   const [duration, setDuration] = useState<number>(0);
+  // timer doesn't change once it's set, unlike duration. This is for updating db
+  const [timer, setTimer] = useState(0);
   const [showMenu, setShowMenu] = useState(true);
+  const [showHints, setShowHints] = useState(false);
 
   // memoize correct song to prevent Choices component from re-choosing a new set
   // of incorrect choices on initial mount
@@ -61,9 +62,12 @@ const Game = ({ playlistId }: { playlistId: string }) => {
       <div className="flex justify-center items-center">
         <Menu
           setDuration={setDuration}
+          setTimer={setTimer}
           setScore={setScore}
           setShowMenu={setShowMenu}
           gameReady={!(isLoading || !correct || !songsArr)}
+          playlistId={playlistId}
+          setShowHints={setShowHints}
         />
       </div>
     );
@@ -76,7 +80,7 @@ const Game = ({ playlistId }: { playlistId: string }) => {
   }
   // score is not null and duration is 0, player just lost
   if (score !== null && !duration) {
-    return <GameOver score={score} setShowMenu={setShowMenu} />;
+    return <GameOver score={score} setShowMenu={setShowMenu} playlistId={playlistId} timer={timer} userId={userId} showHints={showHints} />;
   }
 
   // score is not null and theres a duration, game is ongoing
@@ -96,6 +100,7 @@ const Game = ({ playlistId }: { playlistId: string }) => {
             songs={songsArr}
             correctSong={correct}
             onChoiceSelected={handleChoice}
+            showHints={showHints}
           />
         </>
       )}

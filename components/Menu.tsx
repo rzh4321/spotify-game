@@ -4,7 +4,6 @@ import { Loader } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useState, useEffect } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -23,35 +22,48 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox"
+
 
 const FormSchema = z.object({
   timer: z.string(),
+  showHints: z.boolean().default(false),
 });
 
 type MenuProps = {
   setDuration: React.Dispatch<React.SetStateAction<number>>;
+  setTimer: React.Dispatch<React.SetStateAction<number>>
   setScore: React.Dispatch<React.SetStateAction<number | null>>;
   setShowMenu: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowHints: React.Dispatch<React.SetStateAction<boolean>>
   gameReady: boolean;
+  playlistId: string;
 };
 
+// TODO: add an onchange to select element. It changes users top score for that timer
 export default function Menu({
   setDuration,
+  setTimer,
   setScore,
   setShowMenu,
+  setShowHints,
   gameReady,
+  playlistId,
 }: MenuProps) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       timer: "10",
+      showHints: false,
     },
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     setScore(0);
     setDuration(+data.timer);
+    setTimer(+data.timer);
     setShowMenu(false);
+    setShowHints(data.showHints);
   }
 
   return (
@@ -78,6 +90,28 @@ export default function Menu({
                 </SelectContent>
               </Select>
               <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="showHints"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+              <FormControl>
+                <Checkbox
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
+              <div className="space-y-1 leading-none">
+                <FormLabel>
+                  Show Hints
+                </FormLabel>
+                <FormDescription>
+                  Two choices will be eliminated just before the timer expires.
+                </FormDescription>
+              </div>
             </FormItem>
           )}
         />
