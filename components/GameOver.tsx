@@ -12,14 +12,27 @@ type GameOverProps = {
   showHints: boolean;
 };
 
-export default function GameOver({ score, setShowMenu, playlistId, timer, userId, showHints }: GameOverProps) {
+export default function GameOver({
+  score,
+  setShowMenu,
+  playlistId,
+  timer,
+  userId,
+  showHints,
+}: GameOverProps) {
   useEffect(() => {
     async function updateDatabase() {
-      await UpdatePlaylistAndCreatePlay(userId, playlistId, showHints, timer, score);
+      await UpdatePlaylistAndCreatePlay(
+        userId,
+        playlistId,
+        showHints,
+        timer,
+        score,
+      );
     }
     updateDatabase();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])  // make sure its only run once to avoid updating db multiple times
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // make sure its only run once to avoid updating db multiple times
   return (
     <div>
       Game Over! Your score was: {score}

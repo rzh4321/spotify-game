@@ -30,7 +30,10 @@ async function fetchUserPlaylists(
   return playlists;
 }
 
-export default function useUserPlaylists(pageNumber: number, userId: string | undefined) {
+export default function useUserPlaylists(
+  pageNumber: number,
+  userId: string | undefined,
+) {
   const queryKey = ["userPlaylists", userId, pageNumber];
 
   const { data, error, isLoading, refetch } = useQuery({

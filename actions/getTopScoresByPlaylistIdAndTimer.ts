@@ -1,27 +1,28 @@
-'use server';
+"use server";
 
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from "@prisma/client";
+import type { ScoreEntry } from "@/types";
 
 const prisma = new PrismaClient();
 
-type ScoreEntry = {
-  score: number;
-  timestamp: Date;
-  username: string;
-}
-
 export default async function getTopScoresByPlaylistIdAndTimer(
-  spotifyPlaylistId: string
-): Promise<{ topScoresWithHints: ScoreEntry[]; topScoresWithoutHints: ScoreEntry[] } | null> {
+  spotifyPlaylistId: string,
+  timer: number,
+): Promise<{
+  topScoresWithHints: ScoreEntry[];
+  topScoresWithoutHints: ScoreEntry[];
+} | null> {
   // Find all playlists with the given spotifyPlaylistId
   const playlists = await prisma.playlist.findMany({
     where: {
       spotifyPlaylistId: spotifyPlaylistId,
+      timer: timer,
     },
     include: {
       plays: {
         include: {
           user: true,
+          playlist: true,
         },
       },
     },
@@ -33,14 +34,14 @@ export default async function getTopScoresByPlaylistIdAndTimer(
   }
 
   // Flatten all plays from all playlists
-  const allPlays = playlists.flatMap(playlist => playlist.plays);
+  const allPlays = playlists.flatMap((playlist) => playlist.plays);
 
   // Filter and sort the plays for showHints = false
   const topScoresWithoutHints = allPlays
-    .filter(play => !play.playlist.showHints)
+    .filter((play) => !play.playlist.showHints)
     .sort((a, b) => b.score - a.score)
     .slice(0, 5)
-    .map(play => ({
+    .map((play) => ({
       score: play.score,
       timestamp: play.createdAt,
       username: play.user.username,
@@ -48,10 +49,10 @@ export default async function getTopScoresByPlaylistIdAndTimer(
 
   // Filter and sort the plays for showHints = true
   const topScoresWithHints = allPlays
-    .filter(play => play.playlist.showHints)
+    .filter((play) => play.playlist.showHints)
     .sort((a, b) => b.score - a.score)
     .slice(0, 5)
-    .map(play => ({
+    .map((play) => ({
       score: play.score,
       timestamp: play.createdAt,
       username: play.user.username,

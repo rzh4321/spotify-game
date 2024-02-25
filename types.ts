@@ -12,6 +12,18 @@ export type SimplifiedPlaylistObject = {
   image: string | null;
 };
 
+export type ScoreEntry = {
+  score: number;
+  timestamp: Date;
+  username: string;
+};
+
+export type HighestScoreAndPosition = {
+  score: number;
+  timestamp: Date;
+  position: number;
+} | null;
+
 export type SimplifiedCategoryObject = {
   name: string;
   categoryId: string;

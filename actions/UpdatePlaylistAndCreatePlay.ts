@@ -1,5 +1,5 @@
-'use server';
-import { PrismaClient } from '@prisma/client';
+"use server";
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -8,7 +8,7 @@ export default async function UpdatePlaylistAndCreatePlay(
   spotifyPlaylistId: string,
   showHints: boolean,
   timer: number,
-  score: number
+  score: number,
 ): Promise<void> {
   // Start a transaction to ensure data consistency
   const result = await prisma.$transaction(async (prisma) => {
@@ -21,10 +21,23 @@ export default async function UpdatePlaylistAndCreatePlay(
         timer,
       },
     });
-    console.log('userId: ', userId, ' playlistId: ',  spotifyPlaylistId, ' showHints: ', showHints, ' timer: ', timer, ' score: ', score);
+    console.log(
+      "userId: ",
+      userId,
+      " playlistId: ",
+      spotifyPlaylistId,
+      " showHints: ",
+      showHints,
+      " timer: ",
+      timer,
+      " score: ",
+      score,
+    );
     if (playlist) {
       // If the playlist exists, increment the playCount
-      console.log('THIS USER HAS PLAYED THIS PLAYLIST WITH THESE SETTINGS BEFORE, UPDATINGS ITS PLAYCOUNT')
+      console.log(
+        "THIS USER HAS PLAYED THIS PLAYLIST WITH THESE SETTINGS BEFORE, UPDATINGS ITS PLAYCOUNT",
+      );
       playlist = await prisma.playlist.update({
         where: {
           playlistId: playlist.playlistId,
@@ -37,7 +50,9 @@ export default async function UpdatePlaylistAndCreatePlay(
       });
     } else {
       // If the playlist does not exist, create a new one with playCount initialized to 1
-      console.log('THIS USER NEVER PLAYED THIS PLAYLIST WITH THESE SETTINGS BEFORE, CREATING NEW ENTRY')
+      console.log(
+        "THIS USER NEVER PLAYED THIS PLAYLIST WITH THESE SETTINGS BEFORE, CREATING NEW ENTRY",
+      );
       playlist = await prisma.playlist.create({
         data: {
           userId,
@@ -57,7 +72,6 @@ export default async function UpdatePlaylistAndCreatePlay(
         score,
       },
     });
-    console.log('CREATED NEW PLAY ENTRY. IT IS ', newPlay);
+    console.log("CREATED NEW PLAY ENTRY. IT IS ", newPlay);
   });
-
 }
