@@ -52,16 +52,14 @@ export default function useCategoryPlaylists(
           error.message.includes("The access token expired")
         ) {
           console.log("Refreshing access token");
-          const newAccessToken = await refreshAccessToken();
-          if (newAccessToken) {
-            try {
-              return await fetchCategoryPlaylists(
-                categoryId,
-                newAccessToken,
-                pageNumber,
-              );
-            } catch (err) {
-              console.log("NEW ACCESS TOKEN FAILED: ", err);
+          while (true) {
+            const newAccessToken = await refreshAccessToken();
+            if (newAccessToken) {
+              try {
+                return await fetchCategoryPlaylists(categoryId, newAccessToken, pageNumber);
+              } catch (err) {
+                console.log("NEW ACCESS TOKEN FAILED: ", err);
+              }
             }
           }
         } else {

@@ -26,12 +26,14 @@ export default async function getCategoryName(categoryId: string) {
       error instanceof Error &&
       error.message.includes("The access token expired")
     ) {
-      const newAccessToken = await refreshAccessToken();
-      if (newAccessToken) {
-        try {
-          return await fetchCategoryName(categoryId, newAccessToken);
-        } catch (err) {
-          console.log("NEW ACCESS TOKEN FAILED: ", err);
+      while (true) {
+        const newAccessToken = await refreshAccessToken();
+        if (newAccessToken) {
+          try {
+            return await fetchCategoryName(categoryId, newAccessToken);
+          } catch (err) {
+            console.log("NEW ACCESS TOKEN FAILED: ", err);
+          }
         }
       }
     } else {
