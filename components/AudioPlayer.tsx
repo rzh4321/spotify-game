@@ -28,7 +28,7 @@ const AudioPlayer = ({ url, timer, duration }: AudioPlayerProps) => {
         console.error("Error playing audio:", error);
       }
     };
-    
+
     let prevAudioRef: React.RefObject<HTMLAudioElement>;
     if (!audioRef.current) {
       console.log(

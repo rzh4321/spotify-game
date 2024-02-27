@@ -122,9 +122,7 @@ export default function TopScoresTable({
               topHints.map((entry, ind) => (
                 <TableRow key={uuidv4()}>
                   <TableCell className="text-xs">{ind + 1}</TableCell>
-                  <TableCell className="text-xs">
-                    {entry.username}
-                  </TableCell>
+                  <TableCell className="text-xs">{entry.username}</TableCell>
                   <TableCell className="text-xs">{entry.score}</TableCell>
                   <TableCell className="text-xs">
                     {formatDateString(entry.timestamp.toDateString())}

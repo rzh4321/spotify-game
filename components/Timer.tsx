@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 type TimerProps = {
   duration: number; // duration in seconds
   // onTimerEnd: () => void;
-  setDuration: React.Dispatch<React.SetStateAction<number>>
+  setDuration: React.Dispatch<React.SetStateAction<number>>;
 };
 
 const Timer = ({ duration, setDuration }: TimerProps) => {

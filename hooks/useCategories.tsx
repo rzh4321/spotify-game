@@ -42,14 +42,18 @@ export default function useCategories(pageNumber: number) {
           error.message.includes("The access token expired")
         ) {
           console.log("Refreshing access token");
-            const newAccessToken = await refreshAccessToken();
-            if (newAccessToken) {
-              try {
-                return await fetchCategories(newAccessToken, pageNumber);
-              } catch (err) {
-                console.log("NEW ACCESS TOKEN FAILED OR ANOTHER ERROR OCCURRED: ", err);
-                throw err;              }
+          const newAccessToken = await refreshAccessToken();
+          if (newAccessToken) {
+            try {
+              return await fetchCategories(newAccessToken, pageNumber);
+            } catch (err) {
+              console.log(
+                "NEW ACCESS TOKEN FAILED OR ANOTHER ERROR OCCURRED: ",
+                err,
+              );
+              throw err;
             }
+          }
         } else {
           console.log("An error unrelated to access token occurred: ", error);
         }

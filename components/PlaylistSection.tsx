@@ -71,7 +71,11 @@ export default function PlaylistSection({
           ) : (
             <div>No playlists. Check user id</div>
           ))}
-        {isLoading && <div className="w-full"><Loader className="animate-spin m-auto" /></div>}
+        {isLoading && (
+          <div className="w-full">
+            <Loader className="animate-spin m-auto" />
+          </div>
+        )}
         {error && <>Error fetching playlists</>}
       </div>
       <div className="flex justify-center items-center gap-4 mb-10">

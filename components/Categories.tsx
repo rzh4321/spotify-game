@@ -52,7 +52,11 @@ export default function Categories() {
               displayNames={true}
             />
           ))}
-        {isLoading && <div className="w-full"><Loader className="animate-spin m-auto" /></div>}
+        {isLoading && (
+          <div className="w-full">
+            <Loader className="animate-spin m-auto" />
+          </div>
+        )}
         {error && <>Error fetching playlists</>}
       </div>
       <div className="flex justify-center items-center gap-4">

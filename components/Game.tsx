@@ -80,7 +80,11 @@ const Game = ({
           userId={userId}
           timer={timer}
         />
-       {error && <ErrorMessage message={`Failed to fetch playlist: ${error.message}`} />}
+        {error && (
+          <ErrorMessage
+            message={`Failed to fetch playlist: ${error.message}`}
+          />
+        )}
       </div>
     );
   }

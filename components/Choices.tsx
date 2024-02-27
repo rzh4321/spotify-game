@@ -19,7 +19,7 @@ const Choices = ({
   duration,
   timer,
 }: ChoicesProps) => {
-  console.log('showhints is ', showHints, 'duration is ', duration)
+  console.log("showhints is ", showHints, "duration is ", duration);
   const [choices, setChoices] = useState<Song[]>([]);
   // Function to get 3 random songs that are not the correct song
   const getRandomSongs = (songs: Song[], correctSong: Song) => {
@@ -37,8 +37,14 @@ const Choices = ({
     return threeIncorrects;
   };
 
-  function shouldDisappear(song : Song) {
-    if (showHints && song.hide && ((timer === 15 && duration === 5) || (timer === 10 && duration === 3) || (timer === 5 && duration === 2))) {
+  function shouldDisappear(song: Song) {
+    if (
+      showHints &&
+      song.hide &&
+      ((timer === 15 && duration <= 5) ||
+        (timer === 10 && duration <= 3) ||
+        (timer === 5 && duration <= 2))
+    ) {
       return true;
     }
     return false;
@@ -60,7 +66,7 @@ const Choices = ({
       {choices.map((song) => (
         <Button
           key={song.id}
-          className={`${shouldDisappear(song) ? 'hidden' : null} md:text-md bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline transform transition duration-300 ease-in-out`}
+          className={`${shouldDisappear(song) ? "hidden" : null} md:text-md bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline transform transition duration-300 ease-in-out`}
           onClick={() => onChoiceSelected(song.name)}
         >
           {song.name}
