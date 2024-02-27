@@ -48,16 +48,15 @@ export default function useUserPlaylists(
           error.message.includes("The access token expired")
         ) {
           console.log("Refreshing access token");
-          while (true) {
             const newAccessToken = await refreshAccessToken();
             if (newAccessToken) {
               try {
                 return await fetchUserPlaylists(userId, newAccessToken, pageNumber);
               } catch (err) {
-                console.log("NEW ACCESS TOKEN FAILED: ", err);
+                console.log("NEW ACCESS TOKEN FAILED OR ANOTHER ERROR OCCURRED: ", err);
+                throw err;
               }
             }
-          }
         } else {
           console.log("An error unrelated to access token occurred: ", error);
         }

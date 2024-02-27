@@ -54,16 +54,15 @@ export default function usePlaylist(playlistId: string) {
           error.message.includes("The access token expired")
         ) {
           console.log("refreshing access token");
-          while (true) {
             const newAccessToken = await refreshAccessToken();
             if (newAccessToken) {
               try {
                 return await fetchPlaylistData(playlistId, newAccessToken);
               } catch (err) {
-                console.log("NEW ACCESS TOKEN FAILED: ", err);
+                console.log("NEW ACCESS TOKEN FAILED OR ANOTHER ERROR OCCURRED: ", err);
+                throw err;
               }
             }
-          }
         }
         throw error;
       }

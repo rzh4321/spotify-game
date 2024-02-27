@@ -1,5 +1,5 @@
 "use client";
-import { RefreshCw, StepBack, StepForward } from "lucide-react";
+import { RefreshCw, StepBack, StepForward, Loader } from "lucide-react";
 import type { SimplifiedCategoryObject } from "@/types";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
@@ -52,7 +52,7 @@ export default function Categories() {
               displayNames={true}
             />
           ))}
-        {isLoading && <>Spinner placeholder</>}
+        {isLoading && <div className="w-full"><Loader className="animate-spin m-auto" /></div>}
         {error && <>Error fetching playlists</>}
       </div>
       <div className="flex justify-center items-center gap-4">

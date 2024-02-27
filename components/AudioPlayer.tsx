@@ -2,10 +2,11 @@ import React, { useEffect, useRef } from "react";
 
 type AudioPlayerProps = {
   url: string;
+  timer: number;
   duration: number;
 };
 
-const AudioPlayer = ({ url, duration }: AudioPlayerProps) => {
+const AudioPlayer = ({ url, timer, duration }: AudioPlayerProps) => {
   // Create a ref for the audio element
   const audioRef = useRef<HTMLAudioElement>(null);
 
@@ -17,7 +18,7 @@ const AudioPlayer = ({ url, duration }: AudioPlayerProps) => {
       console.log("audio is ", audioRef.current, " playing it now...");
       try {
         // Randomly choose a start time for the audio segment
-        const maxStart = Math.max(0, 29 - duration); // Ensure maxStart is not negative
+        const maxStart = Math.max(0, 29 - timer); // Ensure maxStart is not negative
         const randomStart = Math.random() * maxStart;
         audioRef.current.currentTime = randomStart; // Set the start time
 
@@ -27,6 +28,7 @@ const AudioPlayer = ({ url, duration }: AudioPlayerProps) => {
         console.error("Error playing audio:", error);
       }
     };
+    
     let prevAudioRef: React.RefObject<HTMLAudioElement>;
     if (!audioRef.current) {
       console.log(
@@ -49,10 +51,10 @@ const AudioPlayer = ({ url, duration }: AudioPlayerProps) => {
 
   // Effect to stop the audio after timer runs out
   useEffect(() => {
-    console.log(
-      "useEffect running in AudioPlayer since initial mount or duration has changed to ",
-      duration,
-    );
+    // console.log(
+    //   "useEffect running in AudioPlayer since initial mount or duration has changed to ",
+    //   duration,
+    // );
     const audio = audioRef.current;
 
     if (audio && duration === 0) {
@@ -61,7 +63,7 @@ const AudioPlayer = ({ url, duration }: AudioPlayerProps) => {
       );
       audio.pause();
       audio.currentTime = 0;
-      console.log("audio has been stopped.");
+      // console.log("audio has been stopped.");
     }
   }, [duration]);
 

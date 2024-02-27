@@ -1,5 +1,5 @@
 "use client";
-import { RefreshCw, StepBack, StepForward } from "lucide-react";
+import { RefreshCw, StepBack, StepForward, Loader } from "lucide-react";
 import type { SimplifiedPlaylistObject, usePlaylistReturnTypes } from "@/types";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
@@ -71,10 +71,10 @@ export default function PlaylistSection({
           ) : (
             <div>No playlists. Check user id</div>
           ))}
-        {isLoading && <>Spinner placeholder</>}
+        {isLoading && <div className="w-full"><Loader className="animate-spin m-auto" /></div>}
         {error && <>Error fetching playlists</>}
       </div>
-      <div className="flex justify-center items-center gap-4">
+      <div className="flex justify-center items-center gap-4 mb-10">
         <StepBack
           className="cursor-pointer"
           onClick={() =>

@@ -71,6 +71,7 @@ const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ user, account }: any): Promise<any> {
       if (account.provider === "spotify") {
+        console.log(account);
         /*user object has details from spotify account, looks like this: 
           {
             id: '31wlnie55epplz45o62tp66peuba',

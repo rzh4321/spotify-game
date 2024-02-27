@@ -100,7 +100,7 @@ export default function TopScoresTable({
   return (
     <div className="flex flex-col">
       <div className="relative flex items-center justify-center">
-        <TableCaption className="text-md">{`Top Scores ${showHintsLeaderboard ? "w/" : "w/o"} Hints (${timer}s)`}</TableCaption>
+        <TableCaption className="text-xs">{`Top Scores ${showHintsLeaderboard ? "w/" : "w/o"} Hints (${timer}s)`}</TableCaption>
         <FlipHorizontal
           className="absolute right-0 bottom-1 cursor-pointer"
           size={20}
@@ -111,9 +111,9 @@ export default function TopScoresTable({
         <TableHeader>
           <TableRow>
             <TableHead>#</TableHead>
-            <TableHead className="w-[100px]">Username</TableHead>
-            <TableHead>Score</TableHead>
-            <TableHead>Date</TableHead>
+            <TableHead className="w-[100px] text-xs">Username</TableHead>
+            <TableHead className="text-xs">Score</TableHead>
+            <TableHead className="text-xs">Date</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -121,19 +121,19 @@ export default function TopScoresTable({
             topHints.length > 0 ? (
               topHints.map((entry, ind) => (
                 <TableRow key={uuidv4()}>
-                  <TableCell>{ind + 1}</TableCell>
-                  <TableCell className="font-medium">
+                  <TableCell className="text-xs">{ind + 1}</TableCell>
+                  <TableCell className="text-xs">
                     {entry.username}
                   </TableCell>
-                  <TableCell>{entry.score}</TableCell>
-                  <TableCell>
+                  <TableCell className="text-xs">{entry.score}</TableCell>
+                  <TableCell className="text-xs">
                     {formatDateString(entry.timestamp.toDateString())}
                   </TableCell>
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={4}>
+                <TableCell className="text-xs" colSpan={4}>
                   Be the first to play this playlist!
                 </TableCell>
               </TableRow>
@@ -141,17 +141,17 @@ export default function TopScoresTable({
           ) : topNoHints.length > 0 ? (
             topNoHints.map((entry, ind) => (
               <TableRow key={uuidv4()}>
-                <TableCell>{ind + 1}</TableCell>
-                <TableCell className="font-medium">{entry.username}</TableCell>
-                <TableCell>{entry.score}</TableCell>
-                <TableCell>
+                <TableCell className="text-xs">{ind + 1}</TableCell>
+                <TableCell className="text-xs">{entry.username}</TableCell>
+                <TableCell className="text-xs">{entry.score}</TableCell>
+                <TableCell className="text-xs">
                   {formatDateString(entry.timestamp.toDateString())}
                 </TableCell>
               </TableRow>
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={4}>
+              <TableCell className="text-xs" colSpan={4}>
                 Be the first to play this playlist!
               </TableCell>
             </TableRow>
@@ -161,11 +161,11 @@ export default function TopScoresTable({
           <TableRow
             className={
               timer === gameTimer && showHints === showHintsLeaderboard
-                ? "bg-green-700"
-                : ""
+                ? "bg-green-700 text-sm"
+                : "text-sm"
             }
           >
-            <TableCell>
+            <TableCell className="text-xs">
               {showHintsLeaderboard
                 ? userTopScoreHints
                   ? userTopScoreHints.position
@@ -174,8 +174,8 @@ export default function TopScoresTable({
                   ? userTopScoreNoHints.position
                   : "N/A"}
             </TableCell>
-            <TableCell>You</TableCell>
-            <TableCell>
+            <TableCell className="text-xs">You</TableCell>
+            <TableCell className="text-xs">
               {showHintsLeaderboard
                 ? userTopScoreHints
                   ? userTopScoreHints.score
@@ -184,7 +184,7 @@ export default function TopScoresTable({
                   ? userTopScoreNoHints.score
                   : "N/A"}
             </TableCell>
-            <TableCell>
+            <TableCell className="text-xs">
               {showHintsLeaderboard
                 ? userTopScoreHints
                   ? formatDateString(userTopScoreHints.timestamp.toDateString())

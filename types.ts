@@ -4,6 +4,7 @@ export type Song = {
   id: string;
   url: string;
   name: string;
+  hide?: boolean;
 };
 
 export type SimplifiedPlaylistObject = {
