@@ -13,6 +13,7 @@ type MenuProps = {
   userId: number;
   showHints: boolean;
   timer: number;
+  getHighScore: () => Promise<void>;
 };
 
 export default function Menu({
@@ -26,6 +27,7 @@ export default function Menu({
   userId,
   showHints,
   timer,
+  getHighScore,
 }: MenuProps) {
   return (
     <div className="flex flex-col gap-4 items-center">
@@ -60,6 +62,7 @@ export default function Menu({
         setShowMenu={setShowMenu}
         setShowHints={setShowHints}
         gameReady={gameReady}
+        getHighScore={getHighScore}
       />
     </div>
   );

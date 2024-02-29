@@ -9,6 +9,7 @@ import GameOver from "./GameOver";
 import usePlaylist from "@/hooks/usePlaylist";
 import type { Song } from "@/types";
 import ErrorMessage from "./ErrorMessage";
+import getHighScore from "@/actions/getHighScore";
 
 const Game = ({
   playlistId,
@@ -26,6 +27,8 @@ const Game = ({
   const [timer, setTimer] = useState(10);
   const [showMenu, setShowMenu] = useState(true);
   const [showHints, setShowHints] = useState(false);
+  const [highScore, setHighScore] = useState<null | number>(null);
+  const [selectedSong, setSelectedSong] = useState<string>();
 
   // memoize correct song to prevent Choices component from re-choosing a new set
   // of incorrect choices on initial mount
@@ -48,12 +51,19 @@ const Game = ({
   // Function to handle user's choice
   const handleChoice = (selectedName: string) => {
     if (!chosenSong) return;
+    setSelectedSong(selectedName);
     if (selectedName === chosenSong.name) {
       setScore((prevScore) => (prevScore as number) + 1);
       setDuration(timer);
     } else {
       setDuration(0); // End the game if the answer is wrong
     }
+  };
+
+  const getHighScoreAtGameStart = async () => {
+    const score = await getHighScore(playlistId, timer, userId, showHints);
+    console.log("score is ", score);
+    setHighScore(score);
   };
 
   useEffect(() => {
@@ -79,6 +89,7 @@ const Game = ({
           setShowHints={setShowHints}
           userId={userId}
           timer={timer}
+          getHighScore={getHighScoreAtGameStart}
         />
         {error && (
           <ErrorMessage
@@ -98,6 +109,9 @@ const Game = ({
         timer={timer}
         userId={userId}
         showHints={showHints}
+        correct={correct?.name as string}
+        selected={selectedSong as string}
+        beatHighScore={score > (highScore as number)}
       />
     );
   }
@@ -105,17 +119,19 @@ const Game = ({
   // score is not null and theres a duration, game is ongoing
   console.log("a song has been chosen, its ", correct?.name);
   return (
-    <div>
-      <h2>Score: {score}</h2>
+    <div className="px-5 flex flex-col">
+      <div className="flex justify-between items-center">
+        <h3 className="text-xs">High score: {highScore ?? "N/A"}</h3>
+        <Timer
+          key={score} // need the key to remount every round
+          duration={duration}
+          setDuration={setDuration}
+        />
+      </div>
+      <h2 className="text-3xl text-center mb-7">{score}</h2>
       {chosenSong && (
-        <>
+        <div>
           <AudioPlayer url={chosenSong.url} timer={timer} duration={duration} />
-          <Timer
-            key={score} // need the key to remount every round
-            duration={duration}
-            // onTimerEnd={() => setDuration(0)}
-            setDuration={setDuration}
-          />
           <Choices
             songs={songsArr as Song[]}
             correctSong={correct as Song}
@@ -124,7 +140,7 @@ const Game = ({
             duration={duration}
             timer={timer}
           />
-        </>
+        </div>
       )}
     </div>
   );

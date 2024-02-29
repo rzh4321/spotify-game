@@ -35,9 +35,9 @@ type MenuOptionsProps = {
   setShowMenu: React.Dispatch<React.SetStateAction<boolean>>;
   setShowHints: React.Dispatch<React.SetStateAction<boolean>>;
   gameReady: boolean;
+  getHighScore: () => Promise<void>;
 };
 
-// TODO: add an onchange to select element. It changes users top score for that timer
 export default function MenuOptions({
   setDuration,
   setTimer,
@@ -45,6 +45,7 @@ export default function MenuOptions({
   setShowMenu,
   setShowHints,
   gameReady,
+  getHighScore,
 }: MenuOptionsProps) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -60,6 +61,7 @@ export default function MenuOptions({
     setTimer(+data.timer);
     setShowMenu(false);
     setShowHints(data.showHints);
+    getHighScore();
   }
   return (
     <div>

@@ -19,7 +19,6 @@ const Choices = ({
   duration,
   timer,
 }: ChoicesProps) => {
-  console.log("showhints is ", showHints, "duration is ", duration);
   const [choices, setChoices] = useState<Song[]>([]);
   // Function to get 3 random songs that are not the correct song
   const getRandomSongs = (songs: Song[], correctSong: Song) => {
@@ -29,11 +28,14 @@ const Choices = ({
     );
     // Shuffle the incorrect songs
     const shuffled = incorrectSongs.sort(() => 0.5 - Math.random());
-    // Get 3 incorrect songs
-    const threeIncorrects = shuffled.slice(0, 3);
+    // Get 3 incorrect songs and create new objects
+    const threeIncorrects = shuffled.slice(0, 3).map((song) => ({ ...song }));
+    console.log("threeincorrects (before assigning) is ", threeIncorrects);
     // if show hints is enabled, two of three incorrects will disappear
-    threeIncorrects[0].hide = true;
-    threeIncorrects[1].hide = true;
+    if (showHints) {
+      threeIncorrects[0].hide = true;
+      threeIncorrects[1].hide = true;
+    }
     return threeIncorrects;
   };
 
@@ -53,6 +55,7 @@ const Choices = ({
   useEffect(() => {
     // Get 3 random incorrect songs
     const incorrectChoices = getRandomSongs(songs, correctSong);
+
     // Combine the correct song with the incorrect choices and shuffle
     const choices = [correctSong, ...incorrectChoices].sort(
       () => 0.5 - Math.random(),
@@ -66,7 +69,7 @@ const Choices = ({
       {choices.map((song) => (
         <Button
           key={song.id}
-          className={`${shouldDisappear(song) ? "hidden" : null} md:text-md bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline transform transition duration-300 ease-in-out`}
+          className={`${shouldDisappear(song) ? "invisible" : null} md:text-md bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline transform transition duration-300 ease-in-out`}
           onClick={() => onChoiceSelected(song.name)}
         >
           {song.name}
