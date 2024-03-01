@@ -24,16 +24,15 @@ export default function PlaylistSection({
   label,
 }: PlaylistSectionProps<any[]>) {
   const [pageNumber, setPageNumber] = useState(0);
-  const {
-    data: playlists,
-    isLoading,
-    error,
-    refetch,
-  } = usePlaylistHook(pageNumber, ...hookParams);
+  const { data, isLoading, error, refetch } = usePlaylistHook(
+    pageNumber,
+    ...hookParams,
+  );
   const { toast } = useToast();
   const [refetching, setRefetching] = useState(false);
+
   return (
-    <div className="flex flex-col w-full gap-8 px-5">
+    <div className="flex flex-col w-full gap-8">
       <div className="flex justify-between">
         <h1 className="text-4xl font-semibold">{label}</h1>
         <RefreshCw
@@ -59,8 +58,8 @@ export default function PlaylistSection({
       <div className="flex flex-wrap lg:justify-between gap-10">
         {!isLoading &&
           !error &&
-          (playlists ? (
-            playlists.map((playlist: SimplifiedPlaylistObject) => (
+          (data?.playlists ? (
+            data.playlists.map((playlist: SimplifiedPlaylistObject) => (
               <ContentCard
                 key={playlist.playlistId}
                 infoObject={playlist}
@@ -69,7 +68,7 @@ export default function PlaylistSection({
               />
             ))
           ) : (
-            <div>No playlists. Check user id</div>
+            <div className="text-red-700">No playlists found</div>
           ))}
         {isLoading && (
           <div className="w-full">
@@ -93,6 +92,7 @@ export default function PlaylistSection({
           onClick={() =>
             !isLoading &&
             !error &&
+            pageNumber + 1 < Math.ceil(data?.count / 6) &&
             setPageNumber((prevPageNumber) => prevPageNumber + 1)
           }
         />

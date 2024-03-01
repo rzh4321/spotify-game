@@ -8,12 +8,7 @@ import useCategories from "@/hooks/useCategories";
 
 export default function Categories() {
   const [pageNumber, setPageNumber] = useState(0);
-  const {
-    data: categories,
-    isLoading,
-    error,
-    refetch,
-  } = useCategories(pageNumber);
+  const { data, isLoading, error, refetch } = useCategories(pageNumber);
   const { toast } = useToast();
   const [refetching, setRefetching] = useState(false);
 
@@ -44,7 +39,7 @@ export default function Categories() {
       <div className="flex flex-wrap lg:justify-between gap-10">
         {!isLoading &&
           !error &&
-          categories.map((category: SimplifiedCategoryObject) => (
+          data?.categories.map((category: SimplifiedCategoryObject) => (
             <ContentCard
               key={category.categoryId}
               infoObject={category}
@@ -74,6 +69,7 @@ export default function Categories() {
           onClick={() =>
             !isLoading &&
             !error &&
+            pageNumber + 1 < Math.ceil(data?.count / 9) &&
             setPageNumber((prevPageNumber) => prevPageNumber + 1)
           }
         />

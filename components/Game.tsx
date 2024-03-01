@@ -94,6 +94,7 @@ const Game = ({
         {error && (
           <ErrorMessage
             message={`Failed to fetch playlist: ${error.message}`}
+            type="regular"
           />
         )}
       </div>

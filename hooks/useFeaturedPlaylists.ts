@@ -23,7 +23,8 @@ async function fetchFeaturedPlaylists(accessToken: string, pageNumber: number) {
     playlistId: playlist.id,
     image: playlist.images[0]?.url ?? null,
   }));
-  return playlists;
+  const count = data.playlists.total;
+  return { playlists, count };
 }
 
 export default function useFeaturedPlaylists(pageNumber: number) {

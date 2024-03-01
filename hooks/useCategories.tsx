@@ -24,7 +24,8 @@ async function fetchCategories(accessToken: string, pageNumber: number) {
     categoryId: category.id,
     image: category.icons[0]?.url ?? null,
   }));
-  return categories;
+  const count = data.categories.total;
+  return { categories, count };
 }
 
 export default function useCategories(pageNumber: number) {

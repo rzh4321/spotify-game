@@ -27,7 +27,8 @@ async function fetchUserPlaylists(
     playlistId: playlist.id,
     image: playlist.images[0]?.url ?? null,
   }));
-  return playlists;
+  const count = data.total;
+  return { playlists, count };
 }
 
 export default function useUserPlaylists(

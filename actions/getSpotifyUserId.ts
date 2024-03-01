@@ -6,6 +6,7 @@ const prisma = new PrismaClient();
 export default async function getSpotifyUserId(
   username: string,
 ): Promise<string | undefined> {
+  if (!username) return undefined;
   // Retrieve the user with the given username
   const user = await prisma.user.findUnique({
     where: {
