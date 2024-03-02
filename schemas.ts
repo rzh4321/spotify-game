@@ -21,3 +21,10 @@ export const LoginSchema = z.object({
     message: "Password is required.",
   }),
 });
+
+export const EditProfileSchema = z.object({
+  name: z.string().min(1, {
+    message: "Name is required.",
+  }),
+  spotifyUserId: z.string().optional(),
+});

@@ -17,7 +17,7 @@ async function fetchFeaturedPlaylists(accessToken: string, pageNumber: number) {
     throw new Error("Failed to fetch data: " + (await response.text()));
   }
   const data = await response.json();
-  // map each playlist data to a more readable object that has name, playlistId, and image
+  // map each playlist data to a more readable object
   const playlists = data.playlists.items.map((playlist: Playlist) => ({
     name: playlist.name,
     playlistId: playlist.id,

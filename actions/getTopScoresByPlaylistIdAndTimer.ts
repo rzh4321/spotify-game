@@ -6,12 +6,13 @@ import type { ScoreEntry } from "@/types";
 const prisma = new PrismaClient();
 
 export default async function getTopScoresByPlaylistIdAndTimer(
-  spotifyPlaylistId: string,
+  spotifyPlaylistId: string | undefined,
   timer: number,
 ): Promise<{
   topScoresWithHints: ScoreEntry[];
   topScoresWithoutHints: ScoreEntry[];
 } | null> {
+  if (!spotifyPlaylistId) return null;
   // Find all playlists with the given spotifyPlaylistId
   const playlists = await prisma.playlist.findMany({
     where: {

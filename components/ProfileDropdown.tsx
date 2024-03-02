@@ -43,7 +43,7 @@ const ProfileDropdown = ({
         <DropdownMenuGroup>
           <DropdownMenuItem
             className="cursor-pointer"
-            onClick={() => router.push("/profile")}
+            onClick={() => router.push("/profile/account")}
           >
             <User className="mr-2 h- w-4" />
             <span>Profile</span>

@@ -28,7 +28,7 @@ export default function ErrorMessage({
     return (
       <>
         {parts[0]}
-        <Link href="/profile" className="text-green-600 underline">
+        <Link href="/profile/account" className="text-green-600 underline">
           {linkWord}
         </Link>
         {parts[1]}

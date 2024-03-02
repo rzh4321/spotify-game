@@ -13,7 +13,7 @@ export default function Categories() {
   const [refetching, setRefetching] = useState(false);
 
   return (
-    <div className="flex flex-col w-full gap-8 px-5">
+    <div className="flex flex-col w-full gap-8">
       <div className="flex justify-between">
         <h1 className="text-4xl font-semibold">All Categories</h1>
         <RefreshCw

@@ -1,6 +1,16 @@
 import { Loader } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Play } from "lucide-react";
+
 import { z } from "zod";
 import TopScoresTable from "./TopScoresTable";
 
@@ -22,6 +32,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
+import type { PlaylistInfo } from "@/types";
 
 const FormSchema = z.object({
   timer: z.string(),
@@ -36,6 +47,7 @@ type MenuOptionsProps = {
   setShowHints: React.Dispatch<React.SetStateAction<boolean>>;
   gameReady: boolean;
   getHighScore: () => Promise<void>;
+  playlistInfo: PlaylistInfo | undefined;
 };
 
 export default function MenuOptions({
@@ -46,6 +58,7 @@ export default function MenuOptions({
   setShowHints,
   gameReady,
   getHighScore,
+  playlistInfo,
 }: MenuOptionsProps) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -64,7 +77,15 @@ export default function MenuOptions({
     getHighScore();
   }
   return (
-    <div>
+    <Dialog>
+      <DialogTrigger asChild><Button variant={'spotify'}><Play />Play</Button></DialogTrigger>
+      <DialogContent className='flex flex-col items-center justify-center'>
+        <DialogHeader>
+          <DialogTitle className="text-center">{playlistInfo?.name}</DialogTitle>
+          <DialogDescription className="">
+            Choose the game settings.
+          </DialogDescription>
+        </DialogHeader>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -124,11 +145,14 @@ export default function MenuOptions({
               </FormItem>
             )}
           />
-          <Button type="submit" disabled={!gameReady}>
-            {gameReady ? "Play" : <Loader className="animate-spin" />}
+          <Button variant={'spotify'} type="submit" disabled={!gameReady}>
+            {gameReady ? "Start" : <Loader className="animate-spin" />}
           </Button>
         </form>
       </Form>
-    </div>
+      </DialogContent>
+  </Dialog>
   );
 }
+
+

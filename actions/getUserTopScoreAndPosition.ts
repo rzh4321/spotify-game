@@ -5,11 +5,12 @@ import type { HighestScoreAndPosition } from "@/types";
 const prisma = new PrismaClient();
 
 export default async function getUserTopScoreAndPosition(
-  spotifyPlaylistId: string,
+  spotifyPlaylistId: string | undefined,
   timer: number,
   userId: number,
   showHints: boolean,
 ): Promise<HighestScoreAndPosition> {
+  if (!spotifyPlaylistId) return null;
   // Retrieve all plays for the given spotifyPlaylistId, timer, and showHints, ordered by score descending.
   const plays = await prisma.play.findMany({
     where: {

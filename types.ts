@@ -13,6 +13,15 @@ export type SimplifiedPlaylistObject = {
   image: string | null;
 };
 
+export type PlaylistInfo = {
+  name: string,
+  playlistId: string,
+  image: string | null,
+  description: string,
+  count: number,
+  owner: string,
+}
+
 export type ScoreEntry = {
   score: number;
   timestamp: Date;

@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/table";
 
 type TopScoresTableProps = {
-  playlistId: string;
+  playlistId: string | undefined;
   gameTimer: number;
   timer: number;
   userId: number;

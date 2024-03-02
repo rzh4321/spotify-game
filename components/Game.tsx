@@ -19,7 +19,7 @@ const Game = ({
   userId: number;
 }) => {
   // will refetch songs every 5 mins
-  const { data: songsArr, isLoading, error } = usePlaylist(playlistId);
+  const { data, isLoading, error } = usePlaylist(playlistId);
   const [score, setScore] = useState<number | null>(null);
   const [chosenSong, setChosenSong] = useState<Song | null>(null);
   const [duration, setDuration] = useState<number>(0);
@@ -37,11 +37,11 @@ const Game = ({
   }, [chosenSong]);
 
   const getSong = () => {
-    if (!songsArr) {
+    if (!data?.songsArr) {
       return;
     }
     // Randomly select a new song that didn't just play and has a preview url
-    const newSongsArr = songsArr.filter(
+    const newSongsArr = data?.songsArr.filter(
       (song) => song.id !== chosenSong?.id && song.url,
     );
     const newSong = newSongsArr[Math.floor(Math.random() * newSongsArr.length)];
@@ -83,13 +83,14 @@ const Game = ({
           setTimer={setTimer}
           setScore={setScore}
           setShowMenu={setShowMenu}
-          gameReady={!(isLoading || !correct || !songsArr)}
+          gameReady={!(isLoading || !correct || !data?.songsArr)}
           showHints={showHints}
-          playlistId={playlistId}
           setShowHints={setShowHints}
           userId={userId}
           timer={timer}
           getHighScore={getHighScoreAtGameStart}
+          playlistInfo={data?.playlistInfo}
+          songs={data?.songsArr}
         />
         {error && (
           <ErrorMessage
@@ -134,7 +135,7 @@ const Game = ({
         <div>
           <AudioPlayer url={chosenSong.url} timer={timer} duration={duration} />
           <Choices
-            songs={songsArr as Song[]}
+            songs={data?.songsArr as Song[]}
             correctSong={correct as Song}
             onChoiceSelected={handleChoice}
             showHints={showHints}

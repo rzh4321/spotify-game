@@ -18,7 +18,7 @@ export default function Playlists({
   const pathname = usePathname();
   if (pathname === "/home") {
     return (
-      <div className="w-full px-5 flex flex-col gap-3">
+      <div className="w-full flex flex-col gap-3">
         {!userId && (
           <ErrorMessage
             message="Connect your Spotify ID to see your playlists!"

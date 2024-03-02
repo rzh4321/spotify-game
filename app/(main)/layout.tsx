@@ -19,7 +19,7 @@ export default function RootLayout({
     <html lang="en">
       <Provider>
         <QueryProvider>
-          <body className="dark font-primary flex flex-col h-screen justify-between items-center">
+          <body className="dark px-5 font-primary flex flex-col h-screen justify-between items-center">
             <div className="bg-inherit w-full">
               <NavBar />
               {children}

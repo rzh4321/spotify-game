@@ -8,6 +8,7 @@ async function fetchUserPlaylists(
   accessToken: string,
   pageNumber: number,
 ) {
+  console.log('userid is ', userId);
   const response = await fetch(
     `https://api.spotify.com/v1/users/${userId}/playlists?offset=${pageNumber * 6}&limit=6`,
     {
@@ -40,6 +41,8 @@ export default function useUserPlaylists(
   const { data, error, isLoading, refetch } = useQuery({
     queryKey: queryKey,
     queryFn: async () => {
+      if (!userId) throw new Error("No Spotify ID detected. If you've just linked it, try refreshing the page.")
+
       try {
         let accessToken = await getAccessToken();
         return await fetchUserPlaylists(userId, accessToken, pageNumber);

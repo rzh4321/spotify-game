@@ -18,9 +18,6 @@ export default async function createUser(
           {
             username,
           },
-          {
-            spotifyUserId: spotifyUserId ?? undefined, // This will be ignored if spotifyUserId is not provided
-          },
         ],
       },
     });
