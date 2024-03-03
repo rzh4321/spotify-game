@@ -24,7 +24,7 @@ export default function NavBar() {
         <HomeIcon />
       </Link>
       <div className="flex gap-3">
-        <Button variant={"outline"} asChild>
+        <Button variant={"blue"} asChild>
           <Link href={"/categories"}>All Categories</Link>
         </Button>
         <ProfileDropdown />

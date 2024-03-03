@@ -45,7 +45,8 @@ export default async function getTopScoresByPlaylistIdAndTimer(
     .map((play) => ({
       score: play.score,
       timestamp: play.createdAt,
-      username: play.user.username,
+      name: play.user.name,
+      id: play.user.userId,
     }));
 
   // Filter and sort the plays for showHints = true
@@ -56,7 +57,8 @@ export default async function getTopScoresByPlaylistIdAndTimer(
     .map((play) => ({
       score: play.score,
       timestamp: play.createdAt,
-      username: play.user.username,
+      name: play.user.name,
+      id: play.user.userId,
     }));
 
   return {

@@ -58,7 +58,7 @@ export default function PlaylistSection({
       <div className="flex flex-wrap lg:justify-between gap-10">
         {!isLoading &&
           !error &&
-          (data?.playlists ? (
+          (data?.playlists && data?.playlists.length > 0 ? (
             data.playlists.map((playlist: SimplifiedPlaylistObject) => (
               <ContentCard
                 key={playlist.playlistId}

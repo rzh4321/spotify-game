@@ -25,7 +25,8 @@ export type PlaylistInfo = {
 export type ScoreEntry = {
   score: number;
   timestamp: Date;
-  username: string;
+  name: string;
+  id: number;
 };
 
 export type HighestScoreAndPosition = {

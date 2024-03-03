@@ -1,7 +1,7 @@
 "use server";
 
 export default async function refreshAccessToken() {
-  const authOptions = {
+  const authOptions: any = {
     method: "POST",
     headers: {
       Authorization:
@@ -17,6 +17,7 @@ export default async function refreshAccessToken() {
       grant_type: "refresh_token",
       refresh_token: process.env.REFRESH_TOKEN as any,
     }),
+    cache: "no-store",
   };
 
   try {

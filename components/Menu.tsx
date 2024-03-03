@@ -3,6 +3,7 @@
 import type { PlaylistInfo, Song } from "@/types";
 import TopScoresTable from "./TopScoresTable";
 import MenuOptions from "./MenuOptions";
+import Leaderboard from "./Leaderboard";
 import Image from "next/image";
 type MenuProps = {
   setDuration: React.Dispatch<React.SetStateAction<number>>;
@@ -35,31 +36,6 @@ export default function Menu({
 }: MenuProps) {
   return (
     <div className="w-full">
-      <div className="flex flex-col gap-4 items-center">
-        <div className="flex justify-between gap-10 min-h-[315px]">
-          <TopScoresTable
-            playlistId={playlistInfo?.playlistId}
-            gameTimer={timer}
-            timer={5}
-            userId={userId}
-            showHints={showHints}
-          />
-          <TopScoresTable
-            playlistId={playlistInfo?.playlistId}
-            gameTimer={timer}
-            timer={10}
-            userId={userId}
-            showHints={showHints}
-          />
-          <TopScoresTable
-            playlistId={playlistInfo?.playlistId}
-            gameTimer={timer}
-            timer={15}
-            userId={userId}
-            showHints={showHints}
-          />
-        </div>
-      </div>
       <div className="flex flex-col gap-5">
         <div className="flex justify-between">
           <div className="flex gap-2 items-center">
@@ -81,7 +57,11 @@ export default function Menu({
             </div>
           </div>
           <div className="flex gap-2 items-center">
-            <div>leaderboard button</div>
+            <Leaderboard
+              playlistId={playlistInfo?.playlistId}
+              userId={userId}
+              name={playlistInfo?.name}
+            />
             <MenuOptions
               setDuration={setDuration}
               setTimer={setTimer}

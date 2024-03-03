@@ -64,7 +64,7 @@ export const LoginForm = () => {
 
   return (
     <CardWrapper
-      headerLabel="Happening now"
+      headerLabel="the Spotify guessing game"
       backButtonLabel="Don't have an account?"
       backButtonHref="/register"
     >

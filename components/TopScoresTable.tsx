@@ -18,10 +18,8 @@ import {
 
 type TopScoresTableProps = {
   playlistId: string | undefined;
-  gameTimer: number;
   timer: number;
   userId: number;
-  showHints: boolean;
 };
 
 function formatDateString(dateString: string): string {
@@ -51,10 +49,8 @@ export default function TopScoresTable({
   playlistId,
   timer,
   userId,
-  showHints,
-  gameTimer,
 }: TopScoresTableProps) {
-  const [showHintsLeaderboard, setShowHintsLeaderboard] = useState(showHints);
+  const [showHintsLeaderboard, setShowHintsLeaderboard] = useState(false);
   const [topHints, setTopHints] = useState<ScoreEntry[]>([]);
   const [topNoHints, setTopNoHints] = useState<ScoreEntry[]>([]);
   const [userTopScoreHints, setUserTopScoreHints] =
@@ -87,14 +83,10 @@ export default function TopScoresTable({
       // user top scores are either null (never played) or an object
       setLoading(false);
     }
-    getTopScores();
+    if (playlistId) getTopScores();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [playlistId]);
 
-  // toggling "Show Hints" checkbox will display correct leaderboard
-  useEffect(() => {
-    setShowHintsLeaderboard(showHints);
-  }, [showHints]);
   if (loading) return <Loader className="animate-spin" />;
 
   return (
@@ -102,7 +94,7 @@ export default function TopScoresTable({
       <div className="relative flex items-center justify-center">
         <TableCaption className="text-xs">{`Top Scores ${showHintsLeaderboard ? "w/" : "w/o"} Hints (${timer}s)`}</TableCaption>
         <FlipHorizontal
-          className="absolute right-0 bottom-1 cursor-pointer"
+          className="absolute right-0 bottom-0 cursor-pointer"
           size={20}
           onClick={() => setShowHintsLeaderboard((prev) => !prev)}
         />
@@ -120,9 +112,12 @@ export default function TopScoresTable({
           {showHintsLeaderboard ? (
             topHints.length > 0 ? (
               topHints.map((entry, ind) => (
-                <TableRow key={uuidv4()}>
+                <TableRow
+                  key={uuidv4()}
+                  className={entry.id === userId ? "bg-green-700" : ""}
+                >
                   <TableCell className="text-xs">{ind + 1}</TableCell>
-                  <TableCell className="text-xs">{entry.username}</TableCell>
+                  <TableCell className="text-xs">{entry.name}</TableCell>
                   <TableCell className="text-xs">{entry.score}</TableCell>
                   <TableCell className="text-xs">
                     {formatDateString(entry.timestamp.toDateString())}
@@ -138,9 +133,12 @@ export default function TopScoresTable({
             )
           ) : topNoHints.length > 0 ? (
             topNoHints.map((entry, ind) => (
-              <TableRow key={uuidv4()}>
+              <TableRow
+                key={uuidv4()}
+                className={entry.id === userId ? "bg-green-700" : ""}
+              >
                 <TableCell className="text-xs">{ind + 1}</TableCell>
-                <TableCell className="text-xs">{entry.username}</TableCell>
+                <TableCell className="text-xs">{entry.name}</TableCell>
                 <TableCell className="text-xs">{entry.score}</TableCell>
                 <TableCell className="text-xs">
                   {formatDateString(entry.timestamp.toDateString())}
@@ -156,13 +154,7 @@ export default function TopScoresTable({
           )}
         </TableBody>
         <TableFooter>
-          <TableRow
-            className={
-              timer === gameTimer && showHints === showHintsLeaderboard
-                ? "bg-green-700 text-sm"
-                : "text-sm"
-            }
-          >
+          <TableRow>
             <TableCell className="text-xs">
               {showHintsLeaderboard
                 ? userTopScoreHints
