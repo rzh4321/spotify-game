@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import AudioPlayer from "./AudioPlayer";
 import Timer from "./Timer";
 import Choices from "./Choices";
@@ -10,6 +10,7 @@ import usePlaylist from "@/hooks/usePlaylist";
 import type { Song } from "@/types";
 import ErrorMessage from "./ErrorMessage";
 import getHighScore from "@/actions/getHighScore";
+import UpdatePlaylistAndCreatePlay from "@/actions/UpdatePlaylistAndCreatePlay";
 
 const Game = ({
   playlistId,
@@ -28,7 +29,8 @@ const Game = ({
   const [showMenu, setShowMenu] = useState(true);
   const [showHints, setShowHints] = useState(false);
   const [highScore, setHighScore] = useState<null | number>(null);
-  const [selectedSong, setSelectedSong] = useState<string>();
+  const [selectedSong, setSelectedSong] = useState<string>("");
+  const [choseSongThisRound, setChoseSongThisRound] = useState(false);
 
   // memoize correct song to prevent Choices component from re-choosing a new set
   // of incorrect choices on initial mount
@@ -40,6 +42,7 @@ const Game = ({
     if (!data?.songsArr) {
       return;
     }
+    setChoseSongThisRound(false);
     // Randomly select a new song that didn't just play and has a preview url
     const newSongsArr = data?.songsArr.filter(
       (song) => song.id !== chosenSong?.id && song.url,
@@ -48,15 +51,33 @@ const Game = ({
     setChosenSong(newSong);
   };
 
+  const updateDatabase = async () => {
+    await UpdatePlaylistAndCreatePlay(
+      userId,
+      playlistId,
+      showHints,
+      timer,
+      score as number,
+    );
+  };
+
   // Function to handle user's choice
   const handleChoice = (selectedName: string) => {
     if (!chosenSong) return;
-    setSelectedSong(selectedName);
+    // if timer didnt expire and player made a choice
+    if (selectedName !== "expired") {
+      setSelectedSong(selectedName);
+      setChoseSongThisRound(true);
+    }
     if (selectedName === chosenSong.name) {
       setScore((prevScore) => (prevScore as number) + 1);
       setDuration(timer);
     } else {
       setDuration(0); // End the game if the answer is wrong
+      if (score === 0) {
+        setScore(-1); // need this to make the useEffect() that calls getSong() to be
+        // called in case player gets a score of 0
+      }
     }
   };
 
@@ -67,9 +88,8 @@ const Game = ({
   };
 
   useEffect(() => {
-    // first condition means game is ongoing. Second condition means menu is displayed. If either
-    // is true, get a new song
-    if ((score !== null && timer && !isLoading) || showMenu) {
+    // condition means game is ongoing, get a new song after score changes after every round
+    if (score !== null && score !== -1 && timer && !isLoading) {
       getSong();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -83,7 +103,7 @@ const Game = ({
           setTimer={setTimer}
           setScore={setScore}
           setShowMenu={setShowMenu}
-          gameReady={!(isLoading || !correct || !data?.songsArr)}
+          gameReady={!(isLoading || !data?.songsArr)}
           showHints={showHints}
           setShowHints={setShowHints}
           userId={userId}
@@ -105,14 +125,11 @@ const Game = ({
   if (score !== null && !duration) {
     return (
       <GameOver
-        score={score}
+        score={score === -1 ? 0 : score}
         setShowMenu={setShowMenu}
-        playlistId={playlistId}
-        timer={timer}
-        userId={userId}
-        showHints={showHints}
+        updateDatabase={updateDatabase}
         correct={correct?.name as string}
-        selected={selectedSong as string}
+        selected={choseSongThisRound ? (selectedSong as string) : ""}
         beatHighScore={score > (highScore as number)}
       />
     );
@@ -128,6 +145,7 @@ const Game = ({
           key={score} // need the key to remount every round
           duration={duration}
           setDuration={setDuration}
+          handleChoice={handleChoice}
         />
       </div>
       <h2 className="text-3xl text-center mb-7">{score}</h2>

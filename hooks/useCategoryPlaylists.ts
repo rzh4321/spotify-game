@@ -27,7 +27,7 @@ async function fetchCategoryPlaylists(
     playlistId: playlist.id,
     image: playlist.images[0]?.url ?? null,
   }));
-  return playlists;
+  return { playlists };
 }
 
 export default function useCategoryPlaylists(

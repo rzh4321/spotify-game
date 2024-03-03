@@ -4,9 +4,10 @@ import { useEffect } from "react";
 type TimerProps = {
   duration: number;
   setDuration: React.Dispatch<React.SetStateAction<number>>;
+  handleChoice: (selectedName: string) => void;
 };
 
-const Timer = ({ duration, setDuration }: TimerProps) => {
+const Timer = ({ duration, setDuration, handleChoice }: TimerProps) => {
   useEffect(() => {
     // Set up the interval to decrement the duration every second
     const intervalId = setInterval(() => {
@@ -15,6 +16,7 @@ const Timer = ({ duration, setDuration }: TimerProps) => {
         // When the duration reaches 0, clear the interval
         if (nextDuration <= 0) {
           clearInterval(intervalId);
+          handleChoice("expired");
         }
         return Math.max(nextDuration, 0); // Ensure duration doesn't go below 0
       });
@@ -24,7 +26,8 @@ const Timer = ({ duration, setDuration }: TimerProps) => {
     return () => {
       clearInterval(intervalId);
     };
-  }, [setDuration]); // Only re-run the effect if setDuration changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="flex w-[70px] items-center gap-1">

@@ -43,6 +43,8 @@ export default function useFeaturedPlaylists(pageNumber: number) {
         ) {
           console.log("Refreshing access token");
           const newAccessToken = await refreshAccessToken();
+          console.log("new acces token is ", newAccessToken);
+
           if (newAccessToken) {
             try {
               return await fetchFeaturedPlaylists(newAccessToken, pageNumber);

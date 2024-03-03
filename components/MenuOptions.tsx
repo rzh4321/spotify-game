@@ -78,81 +78,86 @@ export default function MenuOptions({
   }
   return (
     <Dialog>
-      <DialogTrigger asChild><Button variant={'spotify'}><Play />Play</Button></DialogTrigger>
-      <DialogContent className='flex flex-col items-center justify-center'>
+      <DialogTrigger asChild>
+        <Button variant={"spotify"}>
+          <Play />
+          Play
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="flex flex-col items-center justify-center">
         <DialogHeader>
-          <DialogTitle className="text-center">{playlistInfo?.name}</DialogTitle>
+          <DialogTitle className="text-center">
+            {playlistInfo?.name}
+          </DialogTitle>
           <DialogDescription className="">
             Choose the game settings.
           </DialogDescription>
         </DialogHeader>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="w-2/3 space-y-6"
-        >
-          <FormField
-            control={form.control}
-            name="timer"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Timer</FormLabel>
-                <Select
-                  onValueChange={(val) => {
-                    field.onChange(val);
-                    setTimer(+val);
-                  }}
-                  defaultValue={"10"}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="5">5</SelectItem>
-                    <SelectItem value="10" defaultChecked>
-                      10
-                    </SelectItem>
-                    <SelectItem value="15">15</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="showHints"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
-                <FormControl>
-                  <Checkbox
-                    checked={field.value}
-                    onCheckedChange={(val) => {
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="w-2/3 space-y-6"
+          >
+            <FormField
+              control={form.control}
+              name="timer"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Timer</FormLabel>
+                  <Select
+                    onValueChange={(val) => {
                       field.onChange(val);
-                      setShowHints(val as boolean);
+                      setTimer(+val);
                     }}
-                  />
-                </FormControl>
-                <div className="space-y-1 leading-none">
-                  <FormLabel>Show Hints</FormLabel>
-                  <FormDescription>
-                    Two choices will be eliminated just before the timer
-                    expires.
-                  </FormDescription>
-                </div>
-              </FormItem>
-            )}
-          />
-          <Button variant={'spotify'} type="submit" disabled={!gameReady}>
-            {gameReady ? "Start" : <Loader className="animate-spin" />}
-          </Button>
-        </form>
-      </Form>
+                    defaultValue={"10"}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="5">5</SelectItem>
+                      <SelectItem value="10" defaultChecked>
+                        10
+                      </SelectItem>
+                      <SelectItem value="15">15</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="showHints"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={(val) => {
+                        field.onChange(val);
+                        setShowHints(val as boolean);
+                      }}
+                    />
+                  </FormControl>
+                  <div className="space-y-1 leading-none">
+                    <FormLabel>Show Hints</FormLabel>
+                    <FormDescription>
+                      Two choices will be eliminated just before the timer
+                      expires.
+                    </FormDescription>
+                  </div>
+                </FormItem>
+              )}
+            />
+            <Button variant={"spotify"} type="submit" disabled={!gameReady}>
+              {gameReady ? "Start" : <Loader className="animate-spin" />}
+            </Button>
+          </form>
+        </Form>
       </DialogContent>
-  </Dialog>
+    </Dialog>
   );
 }
-
-

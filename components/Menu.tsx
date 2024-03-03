@@ -59,17 +59,25 @@ export default function Menu({
             showHints={showHints}
           />
         </div>
-
       </div>
       <div className="flex flex-col gap-5">
         <div className="flex justify-between">
           <div className="flex gap-2 items-center">
-            <div><Image alt="playlist-image" src={playlistInfo?.image as string} width={200} height={200} /></div>
+            <div>
+              <Image
+                alt="playlist-image"
+                src={playlistInfo?.image as string}
+                width={200}
+                height={200}
+              />
+            </div>
             <div className="space-y-3">
               <div className="tracking-tighter">PLAYLIST</div>
               <div className="text-3xl font-bold">{playlistInfo?.name}</div>
               <div className="text-xs">{playlistInfo?.description}</div>
-              <div className="text-xs">{playlistInfo?.owner} - {playlistInfo?.count} Songs</div>
+              <div className="text-xs">
+                {playlistInfo?.owner} - {playlistInfo?.count} Songs
+              </div>
             </div>
           </div>
           <div className="flex gap-2 items-center">

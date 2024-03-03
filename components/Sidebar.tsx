@@ -13,9 +13,7 @@ export default function SideBar() {
   return (
     <aside>
       <nav className="flex flex-col flex-wrap pr-2 md:sticky md:top-20">
-        <div className="pl-2 text-3xl md:w-auto font-medium">
-          Profile
-        </div>
+        <div className="pl-2 text-3xl md:w-auto font-medium">Profile</div>
         <SideBarList />
       </nav>
     </aside>
@@ -41,7 +39,13 @@ function SideBarList() {
   );
 }
 
-function SideBarLink({ link, activeNavLink } : {link: string; activeNavLink: string}) {
+function SideBarLink({
+  link,
+  activeNavLink,
+}: {
+  link: string;
+  activeNavLink: string;
+}) {
   return (
     // display the link, change its color if active
     <li

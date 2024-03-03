@@ -30,7 +30,6 @@ const Choices = ({
     const shuffled = incorrectSongs.sort(() => 0.5 - Math.random());
     // Get 3 incorrect songs and create new objects
     const threeIncorrects = shuffled.slice(0, 3).map((song) => ({ ...song }));
-    console.log("threeincorrects (before assigning) is ", threeIncorrects);
     // if show hints is enabled, two of three incorrects will disappear
     if (showHints) {
       threeIncorrects[0].hide = true;

@@ -14,13 +14,13 @@ export type SimplifiedPlaylistObject = {
 };
 
 export type PlaylistInfo = {
-  name: string,
-  playlistId: string,
-  image: string | null,
-  description: string,
-  count: number,
-  owner: string,
-}
+  name: string;
+  playlistId: string;
+  image: string | null;
+  description: string;
+  count: number;
+  owner: string;
+};
 
 export type ScoreEntry = {
   score: number;

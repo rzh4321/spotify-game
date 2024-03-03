@@ -7,7 +7,7 @@ import type { Track, Song, Playlist, PlaylistInfo } from "@/types";
 async function fetchPlaylistData(
   playlistId: string,
   accessToken: string,
-): Promise<{songsArr: Song[]; playlistInfo : PlaylistInfo}> {
+): Promise<{ songsArr: Song[]; playlistInfo: PlaylistInfo }> {
   const response = await fetch(
     `https://api.spotify.com/v1/playlists/${playlistId}?limit=10000`,
     {
@@ -22,15 +22,15 @@ async function fetchPlaylistData(
   }
 
   const data = await response.json();
-  
-    const playlistInfo = {
-      name: data.name,
-      playlistId: data.id,
-      image: data.images[0]?.url ?? null,
-      description: data.description,
-      count: data.tracks.total,
-      owner: data.owner.display_name,
-    };
+
+  const playlistInfo = {
+    name: data.name,
+    playlistId: data.id,
+    image: data.images[0]?.url ?? null,
+    description: data.description,
+    count: data.tracks.total,
+    owner: data.owner.display_name,
+  };
 
   // map each song to a more readable object that includes its previewUrl. If null, fetch it
   const promises = data.tracks.items.map(async (track: Track) => {
@@ -45,11 +45,9 @@ async function fetchPlaylistData(
     };
   });
 
-  
-
   // Wait for all promises to resolve
   const songs = await Promise.all(promises);
-  return {songsArr: songs, playlistInfo};
+  return { songsArr: songs, playlistInfo };
 }
 
 export default function usePlaylist(playlistId: string) {

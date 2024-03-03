@@ -8,14 +8,14 @@ export default async function updateNameAndSpotifyId(
   name: string,
   spotifyId: string | undefined,
 ): Promise<void> {
-    if (!name) {
-        throw new Error('Name is required')
-    }
+  if (!name) {
+    throw new Error("Name is required");
+  }
   // Start a transaction to ensure data consistency
   const result = await prisma.$transaction(async (prisma) => {
     let user = await prisma.user.findFirst({
       where: {
-        username
+        username,
       },
     });
     if (user) {
@@ -28,10 +28,10 @@ export default async function updateNameAndSpotifyId(
           spotifyUserId: spotifyId ?? null,
         },
       });
-      console.log('update success. the updated user is now ', updatedUser);
+      console.log("update success. the updated user is now ", updatedUser);
     } else {
-      console.log('cant find user ', username);
-      throw new Error('Unable to find user');
+      console.log("cant find user ", username);
+      throw new Error("Unable to find user");
     }
   });
 }

@@ -8,6 +8,7 @@ export default async function CategoryPage({
   params: { categoryId: string };
 }) {
   const categoryName = await getCategoryName(params.categoryId);
+  console.log("category name is ", categoryName);
 
   return (
     <Playlists categoryId={params.categoryId} categoryName={categoryName} />

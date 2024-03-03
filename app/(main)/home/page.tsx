@@ -9,7 +9,7 @@ const Home = async () => {
   // const userId = (session?.user as { id: string }).id;
   const username = (session?.user as { username: string }).username;
   const userId = await getSpotifyUserId(username);
-  console.log('in home page. user id is ', userId);
+  console.log("in home page. user id is ", userId);
   return <Playlists userId={userId} />;
 };
 
