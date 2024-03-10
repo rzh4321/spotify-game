@@ -1,9 +1,9 @@
 "use client";
 
 import type { PlaylistInfo, Song } from "@/types";
-import TopScoresTable from "./TopScoresTable";
 import MenuOptions from "./MenuOptions";
 import Leaderboard from "./Leaderboard";
+import SongCard from "./SongCard";
 import Image from "next/image";
 type MenuProps = {
   setDuration: React.Dispatch<React.SetStateAction<number>>;
@@ -30,8 +30,6 @@ export default function Menu({
   playlistInfo,
   songs,
   userId,
-  showHints,
-  timer,
   getHighScore,
 }: MenuProps) {
   return (
@@ -74,8 +72,9 @@ export default function Menu({
             />
           </div>
         </div>
-        <div>playlist1</div>
-        <div>playlist2</div>
+        {songs?.map((song : Song, ind) => (
+          <SongCard key={song.id} songObj={song} num={ind+1} />
+        ))}
       </div>
     </div>
   );

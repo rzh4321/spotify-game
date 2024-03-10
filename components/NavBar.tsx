@@ -16,7 +16,7 @@ export default function NavBar() {
 
   return (
     <div
-      className={`self-end flex justify-between w-full items-center mb-16 py-8 h-3 sticky top-0 z-50 transition-all duration-300 bg-inherit ${
+      className={`self-end flex justify-between w-full items-center px-5 py-9 h-3 sticky top-0 z-50 transition-all duration-300 bg-navbar-bg ${
         scrolled ? "shadow-md border-b border-gray-600" : null
       }`}
     >

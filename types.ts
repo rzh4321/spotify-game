@@ -5,6 +5,12 @@ export type Song = {
   url: string;
   name: string;
   hide?: boolean;
+  album: string;
+  date_added: string;
+  artists: string[];
+  duration: number;
+  image: string;
+  popularity: number;
 };
 
 export type SimplifiedPlaylistObject = {
@@ -144,6 +150,8 @@ export type ExternalIDS = {
   ean: string;
   upc: string;
 };
+
+
 
 export type LinkedFrom = {};
 

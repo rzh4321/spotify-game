@@ -21,18 +21,7 @@ export default async function UpdatePlaylistAndCreatePlay(
         timer,
       },
     });
-    console.log(
-      "userId: ",
-      userId,
-      " playlistId: ",
-      spotifyPlaylistId,
-      " showHints: ",
-      showHints,
-      " timer: ",
-      timer,
-      " score: ",
-      score,
-    );
+    
     if (playlist) {
       // If the playlist exists, increment the playCount
       console.log(
