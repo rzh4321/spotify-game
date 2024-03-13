@@ -87,10 +87,15 @@ export default function TopScoresTable({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [playlistId]);
 
-  if (loading) return <div className="flex items-center justify-center"><Loader className="animate-spin" /></div>;
+  if (loading)
+    return (
+      <div className="flex items-center justify-center">
+        <Loader className="animate-spin" />
+      </div>
+    );
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col mb-2">
       <div className="relative flex items-center justify-center">
         <TableCaption className="text-xs">{`Top Scores ${showHintsLeaderboard ? "w/" : "w/o"} Hints (${timer}s)`}</TableCaption>
         <FlipHorizontal

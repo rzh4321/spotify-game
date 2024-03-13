@@ -25,21 +25,31 @@ export default function Leaderboard({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant={"blue"}>
+        <Button variant={"blue"} className="text-xs sm:text-base">
           <BarChart2 />
-          Leaderboards
+          <span className="hidden sm:block">Leaderboards</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="flex flex-col items-center justify-center max-w-[1100px]">
-        <DialogHeader>
-          <DialogTitle className="text-center">
-            Top Scores for {name ?? ""}
-          </DialogTitle>
-        </DialogHeader>
-        <div className="flex justify-between gap-10 min-h-[315px]">
-          <TopScoresTable playlistId={playlistId} timer={5} userId={userId} />
-          <TopScoresTable playlistId={playlistId} timer={10} userId={userId} />
-          <TopScoresTable playlistId={playlistId} timer={15} userId={userId} />
+      <DialogContent className="bg-old-bg flex flex-col items-center justify-center overflow-auto max-h-screen max-w-[500px] lg:max-w-[1000px]">
+        <div className="max-h-screen pt-5">
+          <DialogHeader>
+            <DialogTitle className="text-center">
+              Top Scores for {name ?? ""}
+            </DialogTitle>
+          </DialogHeader>
+          <div className="flex flex-col lg:flex-row mt-2 justify-between gap-10">
+            <TopScoresTable playlistId={playlistId} timer={5} userId={userId} />
+            <TopScoresTable
+              playlistId={playlistId}
+              timer={10}
+              userId={userId}
+            />
+            <TopScoresTable
+              playlistId={playlistId}
+              timer={15}
+              userId={userId}
+            />
+          </div>
         </div>
       </DialogContent>
     </Dialog>

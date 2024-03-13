@@ -79,12 +79,12 @@ export default function MenuOptions({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant={"spotify"}>
+        <Button variant={"spotify"} className="px-3 sm:px-4">
           <Play />
-          Play
+          <span className="hidden sm:block">Play</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="flex flex-col items-center justify-center">
+      <DialogContent className="flex flex-col items-center justify-center max-w-[500px]">
         <DialogHeader>
           <DialogTitle className="text-center">
             {playlistInfo?.name}

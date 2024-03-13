@@ -5,14 +5,11 @@ import getPreviewUrl from "@/actions/getPreviewUrl";
 import type { Track, Song, PlaylistInfo } from "@/types";
 
 async function fetchNextSongs(url: string, accessToken: string) {
-  const response = await fetch(
-    url,
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
+  const response = await fetch(url, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
     },
-  );
+  });
 
   if (!response.ok) {
     throw new Error("Failed to fetch data: " + (await response.text()));
@@ -30,13 +27,13 @@ async function fetchNextSongs(url: string, accessToken: string) {
       url: previewUrl,
       album: track.track.album.name,
       date_added: track.added_at,
-      artists: track.track.artists.map(artist => artist.name),
+      artists: track.track.artists.map((artist) => artist.name),
       duration: track.track.duration_ms,
       popularity: track.track.popularity,
       image: track.track.album.images[0],
     };
   });
-  return {nextPromises: promises, url: data.next};
+  return { nextPromises: promises, url: data.next };
 }
 
 async function fetchPlaylistData(
@@ -79,7 +76,7 @@ async function fetchPlaylistData(
       url: previewUrl,
       album: track.track.album.name,
       date_added: track.added_at,
-      artists: track.track.artists.map(artist => artist.name),
+      artists: track.track.artists.map((artist) => artist.name),
       duration: track.track.duration_ms,
       popularity: track.track.popularity,
       image: track.track.album.images[0],
@@ -87,7 +84,7 @@ async function fetchPlaylistData(
   });
   let nextUrl = data.tracks.next;
   while (nextUrl) {
-    let {nextPromises, url} = await fetchNextSongs(nextUrl, accessToken);
+    let { nextPromises, url } = await fetchNextSongs(nextUrl, accessToken);
     promises = [...promises, ...nextPromises];
     nextUrl = url;
   }

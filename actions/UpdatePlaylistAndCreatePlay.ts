@@ -21,7 +21,7 @@ export default async function UpdatePlaylistAndCreatePlay(
         timer,
       },
     });
-    
+
     if (playlist) {
       // If the playlist exists, increment the playCount
       console.log(
