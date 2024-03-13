@@ -66,21 +66,24 @@ async function fetchPlaylistData(
 
   // map each song to a more readable object that includes its previewUrl. If null, fetch it
   let promises = data.tracks.items.map(async (track: Track) => {
-    let previewUrl: string | null = track.track.preview_url;
-    if (!previewUrl) {
-      previewUrl = await getPreviewUrl(track.track.id);
+    if (track.track) {
+      let previewUrl: string | null = track.track.preview_url;
+      if (!previewUrl) {
+        previewUrl = await getPreviewUrl(track.track.id);
+      }
+      return {
+        id: track.track.id,
+        name: track.track.name,
+        url: previewUrl,
+        album: track.track.album.name,
+        date_added: track.added_at,
+        artists: track.track.artists.map((artist) => artist.name),
+        duration: track.track.duration_ms,
+        popularity: track.track.popularity,
+        image: track.track.album.images[0],
+      };
+
     }
-    return {
-      id: track.track.id,
-      name: track.track.name,
-      url: previewUrl,
-      album: track.track.album.name,
-      date_added: track.added_at,
-      artists: track.track.artists.map((artist) => artist.name),
-      duration: track.track.duration_ms,
-      popularity: track.track.popularity,
-      image: track.track.album.images[0],
-    };
   });
   let nextUrl = data.tracks.next;
   while (nextUrl) {
