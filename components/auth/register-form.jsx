@@ -18,6 +18,7 @@ import { CardWrapper } from "@/components/auth/card-wrapper";
 import { Button } from "@/components/ui/button";
 import FormError from "./form-error";
 import createUser from "@/actions/createUser";
+import SpotifyIdInfoCard from "../SpotifyIdInfoCard";
 
 export const RegisterForm = () => {
   const [error, setError] = useState("");
@@ -67,7 +68,7 @@ export const RegisterForm = () => {
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="space-y-4">
+          <div className="flex flex-col gap-4 mb-5">
             <FormField
               control={form.control}
               name="name"
@@ -101,12 +102,7 @@ export const RegisterForm = () => {
                 <FormItem>
                   <FormLabel>Password*</FormLabel>
                   <FormControl>
-                    <Input
-                      {...field}
-                      disabled={isPending}
-                      placeholder="******"
-                      type="password"
-                    />
+                    <Input {...field} disabled={isPending} type="password" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -117,7 +113,9 @@ export const RegisterForm = () => {
               name="spotifyUserId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Spotify User ID (add hovercard)</FormLabel>
+                  <FormLabel className="flex gap-1">
+                    Spotify User ID <SpotifyIdInfoCard />
+                  </FormLabel>
                   <FormControl>
                     <Input {...field} disabled={isPending} />
                   </FormControl>

@@ -4,12 +4,11 @@ import { useState, useTransition } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { signIn } from "next-auth/react";
 import FormError from "./form-error";
 import FormSuccess from "./form-success";
 import { LoginSchema } from "@/schemas";
 import { Input } from "@/components/ui/input";
-import { FaSpotify } from "react-icons/fa";
+import { signIn } from "next-auth/react";
 import {
   Form,
   FormControl,
@@ -21,8 +20,14 @@ import {
 import { CardWrapper } from "@/components/auth/card-wrapper";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import SpotifyLoginButton from "../SpotifyLoginButton";
+import VisitorLoginButton from "../VisitorLoginButton";
 
-export const LoginForm = () => {
+export const LoginForm = ({
+  visitorUsername,
+}: {
+  visitorUsername: string | undefined;
+}) => {
   const router = useRouter();
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -91,12 +96,7 @@ export const LoginForm = () => {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input
-                      {...field}
-                      disabled={isPending}
-                      placeholder="******"
-                      type="password"
-                    />
+                    <Input {...field} disabled={isPending} type="password" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -107,23 +107,22 @@ export const LoginForm = () => {
           <Button
             disabled={isPending || spotifyLoggedIn}
             type="submit"
+            variant={"blue"}
             className="w-full text-lg"
           >
             Login
           </Button>
-          <Button
-            type="button"
-            className="text-lg w-full bg-green-500"
-            onClick={() => {
-              setSpotifyLoggedIn(true);
-              signIn("spotify", { callbackUrl: "/home" });
-            }}
-            disabled={isPending}
-          >
-            <span className="md:block hidden">Log in with</span>
-            <FaSpotify className="mx-1" />
-            <span className="text-sm">(Approved users only)</span>
-          </Button>
+          <div className="flex flex-col gap-3">
+            <SpotifyLoginButton
+              setSpotifyLoggedIn={setSpotifyLoggedIn}
+              isPending={isPending}
+            />
+            <VisitorLoginButton
+              isPending={isPending}
+              spotifyLoggedIn={spotifyLoggedIn}
+              visitorUsername={visitorUsername}
+            />
+          </div>
         </form>
       </Form>
       <FormError message={error} />

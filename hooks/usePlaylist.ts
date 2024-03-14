@@ -82,7 +82,6 @@ async function fetchPlaylistData(
         popularity: track.track.popularity,
         image: track.track.album.images[0],
       };
-
     }
   });
   let nextUrl = data.tracks.next;
