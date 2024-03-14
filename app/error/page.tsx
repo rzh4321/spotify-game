@@ -1,5 +1,6 @@
 "use client";
 import { useSearchParams } from "next/navigation";
+
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
@@ -8,6 +9,7 @@ export default function Error() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const error = searchParams.get("error");
+  // if (!error) router.back();
   let displayMsg;
   if (error === "Username does not exist") {
     displayMsg = "Try clearing cookies for this site";
@@ -31,7 +33,7 @@ export default function Error() {
       <div className="p-5 flex flex-col gap-4 items-center justify-center">
         <h2 className="font-semibold text-2xl">Something went wrong!</h2>
         <span className="text-muted-foreground">{displayMsg}</span>
-        <Button className="p-2" variant={"blue"}>
+        <Button className="p-2" variant={"blue"} onClick={() => router.back()}>
           Go Back
         </Button>
       </div>
