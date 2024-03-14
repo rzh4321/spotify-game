@@ -16,21 +16,22 @@ import {
 import SpotifyIdInfoCard from "./SpotifyIdInfoCard";
 
 type VisitorLoginButtonProps = {
-  spotifyLoggedIn: boolean;
-  isPending: boolean;
+  loading: boolean;
   visitorUsername: string | undefined;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function VisitorLoginButton({
-  spotifyLoggedIn,
-  isPending,
+  loading,
   visitorUsername,
+  setIsLoading,
 }: VisitorLoginButtonProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [spotifyId, setSpotifyId] = useState("");
 
   if (visitorUsername) {
     const signInVisitor = async () => {
+      setIsLoading(true);
       const signInRes = await signIn("credentials", {
         redirect: true,
         username: visitorUsername,
@@ -44,7 +45,7 @@ export default function VisitorLoginButton({
         onClick={signInVisitor}
         className="text-lg w-full"
         variant={"outline"}
-        disabled={isPending || spotifyLoggedIn}
+        disabled={loading}
       >
         <span>Log in as visitor</span>
       </Button>
@@ -57,6 +58,7 @@ export default function VisitorLoginButton({
       // If input is empty, focus the input element
       inputRef.current?.focus();
     } else {
+      setIsLoading(true);
       const res = await fetch(`/api/auth/visitor-login`, {
         method: "POST",
         body: JSON.stringify({ spotifyUserId: spotifyId }),
@@ -93,7 +95,7 @@ export default function VisitorLoginButton({
           type="button"
           className="text-lg w-full"
           variant={"outline"}
-          disabled={isPending || spotifyLoggedIn}
+          disabled={loading}
         >
           <span>Log in as visitor</span>
         </Button>

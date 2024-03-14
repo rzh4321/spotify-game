@@ -68,7 +68,7 @@ export const RegisterForm = () => {
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="flex flex-col gap-4 mb-5">
+          <div className="flex flex-col gap-4 mb-7">
             <FormField
               control={form.control}
               name="name"

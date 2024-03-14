@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import ContentCard from "./ContentCard";
 import useCategories from "@/hooks/useCategories";
+import ErrorMessage from "./ErrorMessage";
 
 export default function Categories() {
   const [pageNumber, setPageNumber] = useState(0);
@@ -52,7 +53,9 @@ export default function Categories() {
             <Loader className="animate-spin m-auto" />
           </div>
         )}
-        {error && <>Error fetching playlists</>}
+        {error && (
+          <ErrorMessage message="Error fetching playlists" type="link" />
+        )}
       </div>
       <div className="flex justify-center items-center gap-4">
         <StepBack

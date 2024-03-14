@@ -11,10 +11,11 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 const authOptions: NextAuthOptions = {
-  // pages: {
-  //   signIn: '/',
-  //   signOut: '/',
-  // },
+  pages: {
+    signIn: "/",
+    signOut: "/",
+    error: "/error",
+  },
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
     SpotifyProvider({

@@ -13,13 +13,13 @@ import {
 } from "@/components/ui/dialog";
 
 type SpotifyLoginButtonProps = {
-  setSpotifyLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
-  isPending: boolean;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  loading: boolean;
 };
 
 export default function SpotifyLoginButton({
-  setSpotifyLoggedIn,
-  isPending,
+  setIsLoading,
+  loading,
 }: SpotifyLoginButtonProps) {
   return (
     <Dialog>
@@ -27,7 +27,7 @@ export default function SpotifyLoginButton({
         <Button
           type="button"
           className="text-lg w-full bg-green-500"
-          disabled={isPending}
+          disabled={loading}
         >
           <span className="md:block hidden">Log in with</span>
           <FaSpotify className="mx-1" />
@@ -58,7 +58,7 @@ export default function SpotifyLoginButton({
             type="button"
             variant={"spotify"}
             onClick={() => {
-              setSpotifyLoggedIn(true);
+              setIsLoading(true);
               signIn("spotify", { callbackUrl: "/home" });
             }}
           >

@@ -1,4 +1,5 @@
-import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
+import { FaExclamationTriangle } from "react-icons/fa";
+
 import Link from "next/link";
 
 type ErrorMessageProps = {
@@ -40,7 +41,7 @@ export default function ErrorMessage({
     <div
       className={`${type === "form" || type === "link" ? "bg-destructive/15 text-red-700" : "bg-destructive"} p-3 rounded-md flex items-center gap-x-2 text-md`}
     >
-      <ExclamationTriangleIcon className="h-4 w-4" />
+      <FaExclamationTriangle className="h-4 w-4" />
       <p>{type === "link" ? createMessageWithLink(message, link) : message}</p>
     </div>
   );

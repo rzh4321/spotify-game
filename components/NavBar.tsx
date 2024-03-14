@@ -5,6 +5,7 @@ import { useWindowScroll } from "react-use";
 import ProfileDropdown from "./ProfileDropdown";
 import { HomeIcon } from "lucide-react";
 import { Button } from "./ui/button";
+import Image from "next/image";
 
 export default function NavBar() {
   const { y: pageYOffset } = useWindowScroll(); // to determine if navbar is sticky
@@ -20,8 +21,12 @@ export default function NavBar() {
         scrolled ? "shadow-md border-b border-gray-600" : null
       }`}
     >
-      <Link href="/home" className="cursor-pointer">
-        <HomeIcon />
+      <Link
+        href="/home"
+        className="cursor-pointer flex items-end tracking-wider text-xl"
+      >
+        <Image alt="logo" src={"/icon.ico"} width={30} height={0} />
+        <span className="hidden sm:block">uessify</span>
       </Link>
       <div className="flex gap-3">
         <Button variant={"blue"} asChild>

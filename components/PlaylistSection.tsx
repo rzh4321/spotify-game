@@ -4,6 +4,7 @@ import type { SimplifiedPlaylistObject, usePlaylistReturnTypes } from "@/types";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import ContentCard from "./ContentCard";
+import ErrorMessage from "./ErrorMessage";
 
 // all usePlaylist hooks have pageNumber param. We dont know the rest of the args so we use T extends any[]
 type UsePlaylistHook<T extends any[]> = (
@@ -75,7 +76,9 @@ export default function PlaylistSection({
             <Loader className="animate-spin m-auto" />
           </div>
         )}
-        {error && <>Error fetching playlists</>}
+        {error && (
+          <ErrorMessage message="Error fetching playlists" type="link" />
+        )}
       </div>
       <div className="flex justify-center items-center gap-4 mb-10">
         <StepBack

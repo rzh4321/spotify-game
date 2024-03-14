@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 
 const navLinks: { [key: string]: string } = {
   "/profile/account": "Account",
-  "/about": "about",
 };
 
 export default function SideBar() {
@@ -31,7 +30,7 @@ function SideBarList() {
 
   return (
     // loop over link objects, pass active url as a prop
-    <ul className="flex flex-row md:flex-col">
+    <ul className="flex flex-row mb-5 md:flex-col">
       {Object.keys(navLinks).map((link) => (
         <SideBarLink key={link} link={link} activeNavLink={activeNavLink} />
       ))}

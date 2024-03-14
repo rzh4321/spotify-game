@@ -31,8 +31,7 @@ export const LoginForm = ({
   const router = useRouter();
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const [isPending, startTransition] = useTransition();
-  const [spotifyLoggedIn, setSpotifyLoggedIn] = useState(false);
+  const [loading, setIsLoading] = useState(false);
 
   const form = useForm({
     resolver: zodResolver(LoginSchema),
@@ -46,24 +45,24 @@ export const LoginForm = ({
     setError("");
     setSuccess("");
 
-    startTransition(() => {
-      async function logIn() {
-        const res = await signIn("credentials", {
-          redirect: false,
-          username: values.username,
-          password: values.password,
-        });
-        if (res && res.error) {
-          setError(res.error);
-        }
-        // if log in success, redirect to landing page
-        else {
-          setSuccess("Logging in...");
-          router.push("/home");
-        }
+    async function logIn() {
+      setIsLoading(true);
+      const res = await signIn("credentials", {
+        redirect: false,
+        username: values.username,
+        password: values.password,
+      });
+      if (res && res.error) {
+        setIsLoading(false);
+        setError(res.error);
       }
-      logIn();
-    });
+      // if log in success, redirect to landing page
+      else {
+        setSuccess("Logging in...");
+        router.push("/home");
+      }
+    }
+    logIn();
     if (success) router.push("/all");
   };
 
@@ -83,7 +82,7 @@ export const LoginForm = ({
                 <FormItem>
                   <FormLabel>Username</FormLabel>
                   <FormControl>
-                    <Input {...field} disabled={isPending} />
+                    <Input {...field} disabled={loading} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -96,7 +95,7 @@ export const LoginForm = ({
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input {...field} disabled={isPending} type="password" />
+                    <Input {...field} disabled={loading} type="password" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -105,7 +104,7 @@ export const LoginForm = ({
           </div>
           <FormSuccess message={success} />
           <Button
-            disabled={isPending || spotifyLoggedIn}
+            disabled={loading}
             type="submit"
             variant={"blue"}
             className="w-full text-lg"
@@ -113,13 +112,10 @@ export const LoginForm = ({
             Login
           </Button>
           <div className="flex flex-col gap-3">
-            <SpotifyLoginButton
-              setSpotifyLoggedIn={setSpotifyLoggedIn}
-              isPending={isPending}
-            />
+            <SpotifyLoginButton setIsLoading={setIsLoading} loading={loading} />
             <VisitorLoginButton
-              isPending={isPending}
-              spotifyLoggedIn={spotifyLoggedIn}
+              loading={loading}
+              setIsLoading={setIsLoading}
               visitorUsername={visitorUsername}
             />
           </div>
