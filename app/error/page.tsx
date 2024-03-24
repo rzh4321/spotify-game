@@ -4,12 +4,17 @@ import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import { useEffect } from "react";
 
 export default function Error() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const error = searchParams.get("error");
-  // if (!error) router.back();
+
+  useEffect(() => {
+    if (!error) router.back();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [error])
   let displayMsg;
   if (error === "Username does not exist") {
     displayMsg = "Try clearing cookies for this site";
