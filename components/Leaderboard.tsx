@@ -30,7 +30,7 @@ export default function Leaderboard({
           <span className="hidden sm:block">Leaderboards</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="bg-old-bg flex flex-col items-center justify-center overflow-auto max-h-screen max-w-[500px] lg:max-w-[1000px]">
+      <DialogContent className="bg-old-bg flex flex-col items-center justify-center overflow-auto max-h-screen max-w-[500px] lg:max-w-[1000px] mt-2">
         <div className="max-h-screen pt-5">
           <DialogHeader>
             <DialogTitle className="text-center">
