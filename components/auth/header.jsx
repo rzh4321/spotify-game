@@ -12,14 +12,14 @@ export const Header = ({ label }) => {
     <div className="w-full flex flex-col gap-1 items-center justify-center">
       <h1
         className={cn(
-          "text-2xl font-semibold flex tracking-wide",
+          "text-3xl font-semibold flex tracking-wide",
           font.className,
         )}
       >
-        <Image alt="logo" src={"/icon.ico"} width={30} height={0} />
+        <Image alt="logo" src={"/icon.ico"} width={40} height={0} />
         <span className="hidden sm:block">uessify</span>
       </h1>
-      <p className="text-muted-foreground text-md">{label}</p>
+      <p className="text-white text-md">{label}</p>
     </div>
   );
 };

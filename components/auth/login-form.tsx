@@ -9,6 +9,7 @@ import FormSuccess from "./form-success";
 import { LoginSchema } from "@/schemas";
 import { Input } from "@/components/ui/input";
 import { signIn } from "next-auth/react";
+import AuthLine from "../AuthLine";
 import {
   Form,
   FormControl,
@@ -111,6 +112,7 @@ export const LoginForm = ({
           >
             Login
           </Button>
+          <AuthLine />
           <div className="flex flex-col gap-3">
             <SpotifyLoginButton setIsLoading={setIsLoading} loading={loading} />
             <VisitorLoginButton

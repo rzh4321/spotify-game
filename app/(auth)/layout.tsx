@@ -22,7 +22,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <Provider>
-        <body className="dark">{children}</body>
+        <body className="dark bg-card overflow-hidden">{children}</body>
       </Provider>
     </html>
   );
