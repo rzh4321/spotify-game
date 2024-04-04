@@ -4,6 +4,7 @@ import Provider from "@/components/Provider";
 import { getServerSession } from "next-auth";
 import authOptions from "@/authOptions";
 import { redirect } from "next/navigation";
+import Background from "@/components/background";
 
 export const metadata: Metadata = {
   title: "Guessify",
@@ -22,7 +23,10 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <Provider>
-        <body className="dark bg-card overflow-hidden">{children}</body>
+        <body className="dark bg-card overflow-hidden">
+          <Background />
+          {children}
+        </body>
       </Provider>
     </html>
   );
