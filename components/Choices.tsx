@@ -1,5 +1,5 @@
 import type { Song } from "@/types";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Button } from "./ui/button";
 
 type ChoicesProps = {
@@ -9,6 +9,7 @@ type ChoicesProps = {
   showHints: boolean;
   duration: number;
   timer: number;
+  buttonRef: React.MutableRefObject<HTMLButtonElement | null>;
 };
 
 const Choices = ({
@@ -18,7 +19,9 @@ const Choices = ({
   showHints,
   duration,
   timer,
+  buttonRef,
 }: ChoicesProps) => {
+  // const buttonRef = useRef(null);
   const [choices, setChoices] = useState<Song[]>([]);
   // Function to get 3 random songs that are not the correct song
   const getRandomSongs = (songs: Song[], correctSong: Song) => {
@@ -64,18 +67,21 @@ const Choices = ({
   }, [correctSong]); // if correctSong (a memoized object) changes, get incorrect choices and shuffle
 
   return (
-    <div className="flex flex-col space-y-4 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-4 sm:p-4">
-      {choices.map((song) => (
-        <Button
-          variant={"blue"}
-          key={song.id}
-          className={`${shouldDisappear(song) ? "invisible" : null} md:text-md text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transform transition duration-300 ease-in-out`}
-          onClick={() => onChoiceSelected(song.name)}
-        >
-          {song.name}
-        </Button>
-      ))}
-    </div>
+    <>
+      <div className="flex flex-col space-y-4 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-4 sm:p-4">
+        {choices.map((song) => (
+          <Button
+            ref={song.name === correctSong.name ? buttonRef : undefined}
+            variant={"blue"}
+            key={song.id}
+            className={`${shouldDisappear(song) ? "invisible" : null} md:text-md text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transform transition duration-300 ease-in-out`}
+            onClick={() => onChoiceSelected(song.name)}
+          >
+            {song.name}
+          </Button>
+        ))}
+      </div>
+    </>
   );
 };
 

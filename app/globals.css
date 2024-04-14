@@ -81,9 +81,9 @@
 .circle {
   position: absolute;
   border-radius: 50%;
-  background: #1DB954; /* Spotify's signature green color */
+  background: #1db954; /* Spotify's signature green color */
   animation: ripple 15s infinite;
-  box-shadow: 0px 0px 1px 0px #1DB954; /* Box shadow color adjusted to match */
+  box-shadow: 0px 0px 1px 0px #1db954; /* Box shadow color adjusted to match */
 }
 
 .small {
@@ -124,9 +124,9 @@
 .top-right-circle {
   position: absolute;
   border-radius: 50%;
-  background: #1DB954; /* Spotify's signature green color */
+  background: #1db954; /* Spotify's signature green color */
   animation: ripple 15s infinite;
-  box-shadow: 0px 0px 1px 0px #1DB954; /* Box shadow color adjusted to match */
+  box-shadow: 0px 0px 1px 0px #1db954; /* Box shadow color adjusted to match */
 }
 
 /* Reusing the size classes but positioning the circles at the top right */
@@ -165,36 +165,35 @@
   top: -100px;
 }
 
-
-.shade1{
+.shade1 {
   opacity: 0.2;
 }
-.shade2{
+.shade2 {
   opacity: 0.5;
 }
 
-.shade3{
+.shade3 {
   opacity: 0.7;
 }
 
-.shade4{
+.shade4 {
   opacity: 0.8;
 }
 
-.shade5{
+.shade5 {
   opacity: 0.9;
 }
 
-@keyframes ripple{
-  0%{
+@keyframes ripple {
+  0% {
     transform: scale(0.8);
   }
-  
-  50%{
+
+  50% {
     transform: scale(1.2);
   }
-  
-  100%{
+
+  100% {
     transform: scale(0.8);
   }
 }

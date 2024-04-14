@@ -13,8 +13,8 @@ export default function Error() {
 
   useEffect(() => {
     if (!error) router.back();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [error])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [error]);
   let displayMsg;
   if (error === "Username does not exist") {
     displayMsg = "Try clearing cookies for this site";

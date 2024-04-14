@@ -11,6 +11,7 @@ import type { Song } from "@/types";
 import ErrorMessage from "./ErrorMessage";
 import getHighScore from "@/actions/getHighScore";
 import UpdatePlaylistAndCreatePlay from "@/actions/UpdatePlaylistAndCreatePlay";
+import { Check } from "lucide-react";
 
 const Game = ({
   playlistId,
@@ -19,6 +20,7 @@ const Game = ({
   playlistId: string;
   userId: number;
 }) => {
+  const buttonRef = useRef<null | HTMLButtonElement>(null);
   // will refetch songs every 5 mins
   const { data, isLoading, error } = usePlaylist(playlistId);
   const [score, setScore] = useState<number | null>(null);
@@ -31,6 +33,7 @@ const Game = ({
   const [highScore, setHighScore] = useState<null | number>(null);
   const [selectedSong, setSelectedSong] = useState<string>("");
   const [choseSongThisRound, setChoseSongThisRound] = useState(false);
+  const [showEffect, setShowEffect] = useState(false);
 
   // memoize correct song to prevent Choices component from re-choosing a new set
   // of incorrect choices on initial mount
@@ -70,6 +73,10 @@ const Game = ({
       setChoseSongThisRound(true);
     }
     if (selectedName === chosenSong.name) {
+      setShowEffect(true);
+      setTimeout(() => {
+        setShowEffect(false);
+      }, 500);
       setScore((prevScore) => (prevScore as number) + 1);
       setDuration(timer);
     } else {
@@ -159,6 +166,15 @@ const Game = ({
             showHints={showHints}
             duration={duration}
             timer={timer}
+            buttonRef={buttonRef}
+          />
+          <Check
+            className={`absolute w-24 h-24 stroke-green-700 opacity-0 drop-shadow-xl bg-green-500 rounded-full scale-1
+          ${showEffect && "animate-scaleFade"}`}
+            style={{
+              top: `${buttonRef.current && buttonRef.current?.getBoundingClientRect().top - buttonRef.current?.offsetHeight / 1.5}px`,
+              left: `${buttonRef.current && buttonRef.current?.getBoundingClientRect().left + buttonRef.current?.offsetWidth / 2.5}px`,
+            }}
           />
         </div>
       )}
