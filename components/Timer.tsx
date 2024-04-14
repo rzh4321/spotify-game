@@ -12,7 +12,7 @@ const Timer = ({ duration, setDuration, handleChoice }: TimerProps) => {
     // Set up the interval to decrement the duration every second
     const intervalId = setInterval(() => {
       setDuration((prevDuration) => {
-        const nextDuration = prevDuration - 0;
+        const nextDuration = prevDuration - 1;
         // When the duration reaches 0, clear the interval
         if (nextDuration <= 0) {
           clearInterval(intervalId);

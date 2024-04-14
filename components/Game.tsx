@@ -169,7 +169,7 @@ const Game = ({
             buttonRef={buttonRef}
           />
           <Check
-            className={`absolute w-24 h-24 stroke-green-700 opacity-0 drop-shadow-xl bg-green-500 rounded-full scale-1
+            className={`absolute w-24 h-24 stroke-green-700 opacity-0 drop-shadow-xl bg-green-500 rounded-full scale-0
           ${showEffect && "animate-scaleFade"}`}
             style={{
               top: `${buttonRef.current && buttonRef.current?.getBoundingClientRect().top - buttonRef.current?.offsetHeight / 1.5}px`,
