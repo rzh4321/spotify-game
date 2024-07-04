@@ -67,13 +67,13 @@ const Choices = ({
 
   return (
     <>
-      <div className="flex flex-col space-y-8">
+      <div className="flex flex-col space-y-14 md:space-y-8">
         {choices.map((song) => (
           <Button
             ref={song.name === correctSong.name ? buttonRef : undefined}
             variant={"blue"}
             key={song.id}
-            className={`${shouldDisappear(song) ? "invisible" : null} md:text-xl md:h-[80px] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transform transition duration-300 ease-in-out`}
+            className={`${shouldDisappear(song) ? "invisible" : null} hover:bg-green-700 text-wrap text-2xl h-[80px] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transform transition duration-100 ease-in-out`}
             onClick={() => onChoiceSelected(song.name)}
           >
             {song.name}

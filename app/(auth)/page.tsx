@@ -6,7 +6,7 @@ export default function Login() {
 
   const username = cookieStore.get("visitor")?.value;
   return (
-    <div className="flex justify-center items-center w-full h-screen px-44 xl:px-80">
+    <div className="flex justify-center items-center w-full h-screen px-44 xl:px-80 overflow-hidden">
       <LoginForm visitorUsername={username} />
     </div>
   );

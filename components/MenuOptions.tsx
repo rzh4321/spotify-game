@@ -123,7 +123,6 @@ export default function MenuOptions({
                       </SelectItem>
                       <SelectItem value="15">15</SelectItem>
                       <SelectItem value="10000">10000</SelectItem>
-
                     </SelectContent>
                   </Select>
                   <FormMessage />
