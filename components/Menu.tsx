@@ -8,6 +8,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { Button } from "./ui/button";
 import { Loader } from "lucide-react";
+import Background from "./background";
 
 type MenuProps = {
   setDuration: React.Dispatch<React.SetStateAction<number>>;
@@ -45,7 +46,7 @@ export default function Menu({
   // Get the songs to display
   const itemsToDisplay = songs?.slice(0, visibleCount);
   return (
-    <div className="w-full">
+    <div className="w-full z-[1]">
       <div className="flex flex-col gap-5">
         <div className="flex justify-between">
           {gameReady ? (

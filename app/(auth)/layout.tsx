@@ -24,7 +24,7 @@ export default async function RootLayout({
     <html lang="en">
       <Provider>
         <body className="dark bg-card overflow-hidden">
-          <Background />
+          <Background hideOverflow={true} />
           {children}
         </body>
       </Provider>

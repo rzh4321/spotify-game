@@ -19,10 +19,10 @@ export default function RootLayout({
     <html lang="en">
       <Provider>
         <QueryProvider>
-          <body className="dark font-primary flex flex-col h-screen justify-between items-center">
+          <body className="dark font-primary flex flex-col h-screen w-screen justify-between items-center overflow-x-hidden">
             <div className="bg-inherit w-full">
               <NavBar />
-              <div className="p-5">{children}</div>
+              <div className="p-5" >{children}</div>
             </div>
             <Toaster />
             {/*

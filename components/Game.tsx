@@ -12,6 +12,7 @@ import ErrorMessage from "./ErrorMessage";
 import getHighScore from "@/actions/getHighScore";
 import UpdatePlaylistAndCreatePlay from "@/actions/UpdatePlaylistAndCreatePlay";
 import { Check } from "lucide-react";
+import Background from "./background";
 
 const Game = ({
   playlistId,
@@ -104,7 +105,9 @@ const Game = ({
 
   if (showMenu) {
     return (
-      <div className="flex flex-col gap-10 justify-center items-center">
+      
+      <div className="flex flex-col gap-10 justify-center items-center overflow-hidden">
+        <Background hideOverflow={false} />
         <Menu
           setDuration={setDuration}
           setTimer={setTimer}
@@ -145,9 +148,10 @@ const Game = ({
   // score is not null and theres a duration, game is ongoing
   console.log("a song has been chosen, its ", correct?.name);
   return (
-    <div className="px-5 flex flex-col">
-      <div className="flex justify-between items-center">
-        <h3 className="text-xs">High score: {highScore ?? "N/A"}</h3>
+    <div className="px-5 flex flex-col overflow-x-hidden">
+      <Background hideOverflow={true} />
+      <div className="flex justify-between items-center z-[1]">
+        <h1 className="text-xs">High score: {highScore ?? "N/A"}</h1>
         <Timer
           key={score} // need the key to remount every round
           duration={duration}
