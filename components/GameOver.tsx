@@ -18,6 +18,7 @@ export default function GameOver({
 }: GameOverProps) {
   const score = useStore((state) => state.score);
   const setShowMenu = useStore((state) => state.setShowMenu);
+  console.log('sore is ', score);
 
   useEffect(() => {
     async function update() {
@@ -37,7 +38,7 @@ export default function GameOver({
           {selected && <span className="text-red-400">{selected}</span>}
         </span>
         <div>
-          <div className="text-center text-3xl">{score}</div>
+          <div className="text-center text-3xl">{Math.max(score as number, 0)}</div>
           {beatHighScore && (
             <span className="text-xs bg-green-600 rounded text-black p-1">
               NEW BEST
