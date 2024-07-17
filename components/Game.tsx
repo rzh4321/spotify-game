@@ -32,7 +32,8 @@ const Game = ({
   const setDuration = useStore((state) => state.setDuration);
   const timer = useStore((state) => state.timer);
   const showHints = useStore((state) => state.showHints);
-  const showMenu = useStore((state) => state.showMenu);
+  // const showMenu = useStore((state) => state.showMenu);
+  const [showMenu, setShowMenu] = useState(true);
   const [chosenSong, setChosenSong] = useState<Song | null>(null);
   const [highScore, setHighScore] = useState<null | number>(null);
   const [selectedSong, setSelectedSong] = useState<string>(""); //
@@ -98,8 +99,17 @@ const Game = ({
   };
 
   useEffect(() => {
+    console.log(
+      "score is ",
+      score,
+      " timer is ",
+      timer,
+      " isloading is ",
+      isLoading,
+    );
     // condition means game is ongoing, get a new song after score changes after every round
     if (score !== null && score !== -1 && timer && !isLoading) {
+      console.log("GETTING NEW SONG NOW");
       getSong();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -115,6 +125,7 @@ const Game = ({
           getHighScore={getHighScoreAtGameStart}
           playlistInfo={data?.playlistInfo}
           songs={data?.songsArr}
+          setShowMenu={setShowMenu}
         />
         {error && (
           <ErrorMessage
@@ -133,12 +144,14 @@ const Game = ({
         correct={correct?.name as string}
         selected={choseSongThisRound ? (selectedSong as string) : ""}
         beatHighScore={score > (highScore as number)}
+        setShowMenu={setShowMenu}
       />
     );
   }
 
   // score is not null and theres a duration, game is ongoing
   console.log("a song has been chosen, its ", correct?.name);
+  console.log("SHOWMENY IS ", showMenu);
   return (
     <div className="px-5 flex flex-col overflow-x-hidden">
       <Background />

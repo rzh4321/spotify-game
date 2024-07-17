@@ -15,6 +15,7 @@ type MenuProps = {
   songs: Song[] | undefined;
   userId: number;
   getHighScore: () => Promise<void>;
+  setShowMenu: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function Menu({
@@ -23,6 +24,7 @@ export default function Menu({
   songs,
   userId,
   getHighScore,
+  setShowMenu,
 }: MenuProps) {
   const [visibleCount, setVisibleCount] = useState(10);
 
@@ -75,6 +77,7 @@ export default function Menu({
               gameReady={gameReady}
               getHighScore={getHighScore}
               playlistInfo={playlistInfo}
+              setShowMenu={setShowMenu}
             />
           </div>
         </div>

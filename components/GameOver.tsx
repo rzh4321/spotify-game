@@ -8,6 +8,7 @@ type GameOverProps = {
   correct: string;
   selected: string;
   beatHighScore: boolean;
+  setShowMenu: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function GameOver({
@@ -15,10 +16,10 @@ export default function GameOver({
   correct,
   selected,
   beatHighScore,
+  setShowMenu,
 }: GameOverProps) {
   const score = useStore((state) => state.score);
-  const setShowMenu = useStore((state) => state.setShowMenu);
-  console.log('sore is ', score);
+  const setScore = useStore((state) => state.setScore);
 
   useEffect(() => {
     async function update() {
@@ -27,6 +28,12 @@ export default function GameOver({
     update();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // make sure its only run once to avoid updating db multiple times
+
+  const handlePlayAgain = () => {
+    setShowMenu(true); // take user back to menu page
+    setScore(null); // reset score to null to ensure you get a new song if you play again
+  };
+
   return (
     <div className="flex flex-col gap-10">
       <div className="flex flex-col items-center justify-center gap-5">
@@ -38,7 +45,9 @@ export default function GameOver({
           {selected && <span className="text-red-400">{selected}</span>}
         </span>
         <div>
-          <div className="text-center text-3xl">{Math.max(score as number, 0)}</div>
+          <div className="text-center text-3xl">
+            {Math.max(score as number, 0)}
+          </div>
           {beatHighScore && (
             <span className="text-xs bg-green-600 rounded text-black p-1">
               NEW BEST
@@ -47,7 +56,7 @@ export default function GameOver({
         </div>
       </div>
       <div className="flex gap-3 justify-center">
-        <Button className="bg-green-400" onClick={() => setShowMenu(true)}>
+        <Button className="bg-green-400" onClick={() => handlePlayAgain()}>
           Play again
         </Button>
         <Link href="/home">

@@ -11,8 +11,6 @@ type gameState = {
   setTimer: (timer: number) => void;
   showHints: boolean;
   setShowHints: (showHints: boolean) => void;
-  showMenu: boolean;
-  setShowMenu: (showMenu: boolean) => void;
 };
 
 const useStore = create<gameState>((set) => ({
@@ -36,8 +34,6 @@ const useStore = create<gameState>((set) => ({
   setTimer: (timer: number) => set({ timer }),
   showHints: false,
   setShowHints: (showHints: boolean) => set({ showHints }),
-  showMenu: true,
-  setShowMenu: (showMenu: boolean) => set({ showMenu }),
 }));
 
 export default useStore;

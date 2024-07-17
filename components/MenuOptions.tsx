@@ -43,17 +43,18 @@ type MenuOptionsProps = {
   gameReady: boolean;
   getHighScore: () => Promise<void>;
   playlistInfo: PlaylistInfo | undefined;
+  setShowMenu: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function MenuOptions({
   gameReady,
   getHighScore,
   playlistInfo,
+  setShowMenu,
 }: MenuOptionsProps) {
   const setDuration = useStore((state) => state.setDuration);
   const setTimer = useStore((state) => state.setTimer);
   const setScore = useStore((state) => state.setScore);
-  const setShowMenu = useStore((state) => state.setShowMenu);
   const setShowHints = useStore((state) => state.setShowHints);
 
   const form = useForm<z.infer<typeof FormSchema>>({
