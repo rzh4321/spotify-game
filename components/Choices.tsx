@@ -1,14 +1,12 @@
 import type { Song } from "@/types";
 import { useEffect, useState, useRef } from "react";
 import { Button } from "./ui/button";
+import useStore from "@/gameStore";
 
 type ChoicesProps = {
   songs: Song[];
   correctSong: Song; // The current song that is the correct answer
   onChoiceSelected: (choice: string) => void;
-  showHints: boolean;
-  duration: number;
-  timer: number;
   buttonRef: React.MutableRefObject<HTMLButtonElement | null>;
 };
 
@@ -16,11 +14,12 @@ const Choices = ({
   songs,
   correctSong,
   onChoiceSelected,
-  showHints,
-  duration,
-  timer,
   buttonRef,
 }: ChoicesProps) => {
+  const showHints = useStore((state) => state.showHints);
+  const duration = useStore((state) => state.duration);
+  const timer = useStore((state) => state.timer);
+
   const [choices, setChoices] = useState<Song[]>([]);
   // Function to get 3 random songs that are not the correct song
   const getRandomSongs = (songs: Song[], correctSong: Song) => {

@@ -13,6 +13,7 @@ import getHighScore from "@/actions/getHighScore";
 import UpdatePlaylistAndCreatePlay from "@/actions/UpdatePlaylistAndCreatePlay";
 import { Check } from "lucide-react";
 import Background from "./background";
+import useStore from "@/gameStore";
 
 const Game = ({
   playlistId,
@@ -24,15 +25,17 @@ const Game = ({
   const buttonRef = useRef<null | HTMLButtonElement>(null);
   // will refetch songs every 5 mins
   const { data, isLoading, error } = usePlaylist(playlistId);
-  const [score, setScore] = useState<number | null>(null);
+
+  const score = useStore((state) => state.score);
+  const setScore = useStore((state) => state.setScore);
+  const duration = useStore((state) => state.duration);
+  const setDuration = useStore((state) => state.setDuration);
+  const timer = useStore((state) => state.timer);
+  const showHints = useStore((state) => state.showHints);
+  const showMenu = useStore((state) => state.showMenu);
   const [chosenSong, setChosenSong] = useState<Song | null>(null);
-  const [duration, setDuration] = useState<number>(0);
-  // timer doesn't change once it's set, unlike duration. This is for updating db
-  const [timer, setTimer] = useState(10);
-  const [showMenu, setShowMenu] = useState(true);
-  const [showHints, setShowHints] = useState(false);
   const [highScore, setHighScore] = useState<null | number>(null);
-  const [selectedSong, setSelectedSong] = useState<string>("");
+  const [selectedSong, setSelectedSong] = useState<string>(""); //
   const [choseSongThisRound, setChoseSongThisRound] = useState(false);
   const [showEffect, setShowEffect] = useState(false);
 
@@ -91,7 +94,6 @@ const Game = ({
 
   const getHighScoreAtGameStart = async () => {
     const score = await getHighScore(playlistId, timer, userId, showHints);
-    console.log("score is ", score);
     setHighScore(score);
   };
 
@@ -108,15 +110,8 @@ const Game = ({
       <div className="flex flex-col gap-10 justify-center items-center">
         <Background />
         <Menu
-          setDuration={setDuration}
-          setTimer={setTimer}
-          setScore={setScore}
-          setShowMenu={setShowMenu}
           gameReady={!(isLoading || !data?.songsArr)}
-          showHints={showHints}
-          setShowHints={setShowHints}
           userId={userId}
-          timer={timer}
           getHighScore={getHighScoreAtGameStart}
           playlistInfo={data?.playlistInfo}
           songs={data?.songsArr}
@@ -134,8 +129,6 @@ const Game = ({
   if (score !== null && !duration) {
     return (
       <GameOver
-        score={score === -1 ? 0 : score}
-        setShowMenu={setShowMenu}
         updateDatabase={updateDatabase}
         correct={correct?.name as string}
         selected={choseSongThisRound ? (selectedSong as string) : ""}
@@ -153,8 +146,6 @@ const Game = ({
         <h1 className="text-xs">High score: {highScore ?? "N/A"}</h1>
         <Timer
           key={score} // need the key to remount every round
-          duration={duration}
-          setDuration={setDuration}
           handleChoice={handleChoice}
         />
       </div>
@@ -166,9 +157,6 @@ const Game = ({
             songs={data?.songsArr as Song[]}
             correctSong={correct as Song}
             onChoiceSelected={handleChoice}
-            showHints={showHints}
-            duration={duration}
-            timer={timer}
             buttonRef={buttonRef}
           />
           <Check

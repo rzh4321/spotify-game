@@ -1,13 +1,15 @@
 import { TimerIcon } from "lucide-react";
 import { useEffect } from "react";
+import useStore from "@/gameStore";
 
 type TimerProps = {
-  duration: number;
-  setDuration: React.Dispatch<React.SetStateAction<number>>;
   handleChoice: (selectedName: string) => void;
 };
 
-const Timer = ({ duration, setDuration, handleChoice }: TimerProps) => {
+const Timer = ({ handleChoice }: TimerProps) => {
+  const duration = useStore((state) => state.duration);
+  const setDuration = useStore((state) => state.setDuration);
+
   useEffect(() => {
     // Set up the interval to decrement the duration every second
     const intervalId = setInterval(() => {

@@ -1,11 +1,9 @@
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { useEffect } from "react";
-import UpdatePlaylistAndCreatePlay from "@/actions/UpdatePlaylistAndCreatePlay";
+import useStore from "@/gameStore";
 
 type GameOverProps = {
-  score: number;
-  setShowMenu: React.Dispatch<React.SetStateAction<boolean>>;
   updateDatabase: () => Promise<void>;
   correct: string;
   selected: string;
@@ -13,13 +11,14 @@ type GameOverProps = {
 };
 
 export default function GameOver({
-  score,
-  setShowMenu,
   updateDatabase,
   correct,
   selected,
   beatHighScore,
 }: GameOverProps) {
+  const score = useStore((state) => state.score);
+  const setShowMenu = useStore((state) => state.setShowMenu);
+
   useEffect(() => {
     async function update() {
       await updateDatabase();

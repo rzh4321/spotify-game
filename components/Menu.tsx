@@ -8,29 +8,16 @@ import Image from "next/image";
 import { useState } from "react";
 import { Button } from "./ui/button";
 import { Loader } from "lucide-react";
-import Background from "./background";
 
 type MenuProps = {
-  setDuration: React.Dispatch<React.SetStateAction<number>>;
-  setTimer: React.Dispatch<React.SetStateAction<number>>;
-  setScore: React.Dispatch<React.SetStateAction<number | null>>;
-  setShowMenu: React.Dispatch<React.SetStateAction<boolean>>;
-  setShowHints: React.Dispatch<React.SetStateAction<boolean>>;
   gameReady: boolean;
-  userId: number;
-  showHints: boolean;
-  timer: number;
   playlistInfo: PlaylistInfo | undefined;
   songs: Song[] | undefined;
+  userId: number;
   getHighScore: () => Promise<void>;
 };
 
 export default function Menu({
-  setDuration,
-  setTimer,
-  setScore,
-  setShowMenu,
-  setShowHints,
   gameReady,
   playlistInfo,
   songs,
@@ -85,11 +72,6 @@ export default function Menu({
               name={playlistInfo?.name}
             />
             <MenuOptions
-              setDuration={setDuration}
-              setTimer={setTimer}
-              setScore={setScore}
-              setShowMenu={setShowMenu}
-              setShowHints={setShowHints}
               gameReady={gameReady}
               getHighScore={getHighScore}
               playlistInfo={playlistInfo}

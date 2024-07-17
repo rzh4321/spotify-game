@@ -12,7 +12,7 @@ import {
 import { Play } from "lucide-react";
 
 import { z } from "zod";
-import TopScoresTable from "./TopScoresTable";
+import useStore from "@/gameStore";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -40,26 +40,22 @@ const FormSchema = z.object({
 });
 
 type MenuOptionsProps = {
-  setDuration: React.Dispatch<React.SetStateAction<number>>;
-  setTimer: React.Dispatch<React.SetStateAction<number>>;
-  setScore: React.Dispatch<React.SetStateAction<number | null>>;
-  setShowMenu: React.Dispatch<React.SetStateAction<boolean>>;
-  setShowHints: React.Dispatch<React.SetStateAction<boolean>>;
   gameReady: boolean;
   getHighScore: () => Promise<void>;
   playlistInfo: PlaylistInfo | undefined;
 };
 
 export default function MenuOptions({
-  setDuration,
-  setTimer,
-  setScore,
-  setShowMenu,
-  setShowHints,
   gameReady,
   getHighScore,
   playlistInfo,
 }: MenuOptionsProps) {
+  const setDuration = useStore((state) => state.setDuration);
+  const setTimer = useStore((state) => state.setTimer);
+  const setScore = useStore((state) => state.setScore);
+  const setShowMenu = useStore((state) => state.setShowMenu);
+  const setShowHints = useStore((state) => state.setShowHints);
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
