@@ -2,7 +2,7 @@
 
 export default function Background() {
   return (
-    <div className="fixed w-full h-screen z-[0]">
+    <div className="fixed inset-0 w-screen h-screen overflow-hidden pointer-events-none">
       <div className="circle xxlarge shade1"></div>
       <div className="circle xlarge shade2"></div>
       <div className="circle large shade3"></div>
