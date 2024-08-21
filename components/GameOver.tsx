@@ -9,6 +9,7 @@ type GameOverProps = {
   selected: string;
   beatHighScore: boolean;
   setShowMenu: React.Dispatch<React.SetStateAction<boolean>>;
+  playAgain: () => void;
 };
 
 export default function GameOver({
@@ -16,10 +17,9 @@ export default function GameOver({
   correct,
   selected,
   beatHighScore,
-  setShowMenu,
+  playAgain,
 }: GameOverProps) {
   const score = useStore((state) => state.score);
-  const setScore = useStore((state) => state.setScore);
 
   useEffect(() => {
     async function update() {
@@ -28,11 +28,6 @@ export default function GameOver({
     update();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // make sure its only run once to avoid updating db multiple times
-
-  const handlePlayAgain = () => {
-    setShowMenu(true); // take user back to menu page
-    setScore(null); // reset score to null to ensure you get a new song if you play again
-  };
 
   return (
     <div className="flex flex-col gap-10">
@@ -56,12 +51,12 @@ export default function GameOver({
         </div>
       </div>
       <div className="flex gap-3 justify-center">
-        <Button className="bg-green-400" onClick={() => handlePlayAgain()}>
+        <Button className="bg-green-400" onClick={playAgain}>
           Play again
         </Button>
-        <Link href="/home">
-          <Button className="bg-red-400">Back to playlists</Button>
-        </Link>
+        <Button className="bg-red-400" onClick={() => location.reload()}>
+          Back to playlist
+        </Button>
       </div>
     </div>
   );

@@ -24,7 +24,7 @@ const Game = ({
 }) => {
   const buttonRef = useRef<null | HTMLButtonElement>(null);
   // will refetch songs every 5 mins
-  const { data, isLoading, error } = usePlaylist(playlistId);
+  const { data, isLoading, error, refetch } = usePlaylist(playlistId);
 
   const score = useStore((state) => state.score);
   const setScore = useStore((state) => state.setScore);
@@ -39,6 +39,7 @@ const Game = ({
   const [selectedSong, setSelectedSong] = useState<string>(""); //
   const [choseSongThisRound, setChoseSongThisRound] = useState(false);
   const [showEffect, setShowEffect] = useState(false);
+  const [key, setKey] = useState(0);
 
   // memoize correct song to prevent Choices component from re-choosing a new set
   // of incorrect choices on initial mount
@@ -53,7 +54,7 @@ const Game = ({
     setChoseSongThisRound(false);
     // Randomly select a new song that didn't just play and has a preview url
     const newSongsArr = data?.songsArr.filter(
-      (song) => song.id !== chosenSong?.id && song.url,
+      (song: Song) => song.id !== chosenSong?.id && song.url,
     );
     const newSong = newSongsArr[Math.floor(Math.random() * newSongsArr.length)];
     setChosenSong(newSong);
@@ -67,6 +68,16 @@ const Game = ({
       timer,
       score as number,
     );
+  };
+
+  const playAgain = () => {
+    // reset the states
+    setScore(0);
+    setDuration(timer);
+    // get the high score so its displayed during the rounds
+    getHighScoreAtGameStart();
+    // to force re-render
+    setKey((prev) => prev + 1);
   };
 
   // Function to handle user's choice
@@ -126,6 +137,7 @@ const Game = ({
           playlistInfo={data?.playlistInfo}
           songs={data?.songsArr}
           setShowMenu={setShowMenu}
+          refetch={refetch}
         />
         {error && (
           <ErrorMessage
@@ -145,6 +157,7 @@ const Game = ({
         selected={choseSongThisRound ? (selectedSong as string) : ""}
         beatHighScore={score > (highScore as number)}
         setShowMenu={setShowMenu}
+        playAgain={playAgain}
       />
     );
   }
@@ -153,7 +166,7 @@ const Game = ({
   console.log("a song has been chosen, its ", correct?.name);
   console.log("SHOWMENY IS ", showMenu);
   return (
-    <div className="px-5 flex flex-col overflow-x-hidden">
+    <div key={key} className="px-5 flex flex-col overflow-x-hidden">
       <Background />
       <div className="flex justify-between items-center z-[1]">
         <h1 className="text-xs">High score: {highScore ?? "N/A"}</h1>

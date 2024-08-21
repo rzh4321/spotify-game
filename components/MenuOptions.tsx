@@ -71,6 +71,7 @@ export default function MenuOptions({
     setTimer(+data.timer);
     setShowMenu(false);
     setShowHints(data.showHints);
+    // get the high score so its displayed during the rounds
     getHighScore();
   }
   return (
