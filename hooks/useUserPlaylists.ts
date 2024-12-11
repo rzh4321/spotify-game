@@ -23,11 +23,13 @@ async function fetchUserPlaylists(
   }
   const data = await response.json();
   // map each playlist data to a more readable object that has name, playlistId, and image
-  const playlists = data.items.map((playlist: Playlist) => ({
-    name: playlist.name,
-    playlistId: playlist.id,
-    image: playlist.images[0]?.url ?? null,
-  }));
+  const playlists = data.items
+    .filter((obj: any) => obj !== null)
+    .map((playlist: Playlist) => ({
+      name: playlist.name,
+      playlistId: playlist.id,
+      image: playlist.images[0]?.url ?? null,
+    }));
   const count = data.total;
   return { playlists, count };
 }
@@ -56,6 +58,7 @@ export default function useUserPlaylists(
         ) {
           console.log("Refreshing access token");
           const newAccessToken = await refreshAccessToken();
+          console.log("new token: ", newAccessToken);
           if (newAccessToken) {
             try {
               return await fetchUserPlaylists(

@@ -5,6 +5,7 @@ import useCategoryPlaylists from "@/hooks/useCategoryPlaylists";
 import PlaylistSection from "@/components/PlaylistSection";
 import { usePathname } from "next/navigation";
 import ErrorMessage from "./ErrorMessage";
+import { FaSadCry } from "react-icons/fa";
 
 export default function Playlists({
   userId,
@@ -31,11 +32,17 @@ export default function Playlists({
           hookParams={[userId]}
           label="Your Playlists"
         />
-        <PlaylistSection
+        {/* <PlaylistSection
           usePlaylistHook={useFeaturedPlaylists}
           hookParams={[]}
           label="Featured Playlists"
-        />
+        /> */}
+        <h1 className="text-4xl font-semibold">Featured Playlists</h1>
+
+        <div className="flex items-center justify-center gap-3 my-5">
+          {`Spotify's Web API has deprecated this endpoint`}
+          <FaSadCry />
+        </div>
       </div>
     );
   } else if (pathname.includes("/categories")) {
