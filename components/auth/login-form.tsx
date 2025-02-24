@@ -81,7 +81,7 @@ export const LoginForm = ({
               name="username"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Username</FormLabel>
+                  <FormLabel className="text-md">Username</FormLabel>
                   <FormControl>
                     <Input {...field} disabled={loading} />
                   </FormControl>
@@ -94,7 +94,7 @@ export const LoginForm = ({
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel className="text-md">Password</FormLabel>
                   <FormControl>
                     <Input {...field} disabled={loading} type="password" />
                   </FormControl>

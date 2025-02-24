@@ -74,7 +74,7 @@ export const RegisterForm = () => {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name*</FormLabel>
+                  <FormLabel className="text-md">Name*</FormLabel>
                   <FormControl>
                     <Input {...field} disabled={isPending} />
                   </FormControl>
@@ -87,7 +87,7 @@ export const RegisterForm = () => {
               name="username"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Username*</FormLabel>
+                  <FormLabel className="text-md">Username*</FormLabel>
                   <FormControl>
                     <Input {...field} disabled={isPending} />
                   </FormControl>
@@ -100,7 +100,7 @@ export const RegisterForm = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password*</FormLabel>
+                  <FormLabel className="text-md">Password*</FormLabel>
                   <FormControl>
                     <Input {...field} disabled={isPending} type="password" />
                   </FormControl>
@@ -113,7 +113,7 @@ export const RegisterForm = () => {
               name="spotifyUserId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="flex gap-1">
+                  <FormLabel className="flex gap-1 text-md">
                     Spotify User ID <SpotifyIdInfoCard />
                   </FormLabel>
                   <FormControl>
