@@ -77,7 +77,7 @@ export default function PlaylistSection({
           </div>
         )}
         {error && (
-          <ErrorMessage message="Error fetching playlists" type="link" />
+          <ErrorMessage message="Error fetching playlists. Is your user ID correct?" type="link" />
         )}
       </div>
       <div className="flex justify-center items-center gap-4 mb-10">
