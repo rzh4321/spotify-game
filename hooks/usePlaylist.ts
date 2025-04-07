@@ -11,6 +11,26 @@ import { useState, useRef, useMemo, useCallback } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { QueryKey } from "@tanstack/react-query";
 
+async function buildSong(track: Track): Promise<Song> {
+  const t = track.track;
+  let previewUrl: string | null = t.preview_url;
+  if (!previewUrl) {
+    previewUrl = await getPreviewUrl(t.id);
+  }
+
+  return {
+    id: t.id,
+    name: t.name,
+    url: previewUrl!,
+    album: t.album.name,
+    date_added: track.added_at,
+    artists: t.artists.map((artist) => artist.name),
+    duration: t.duration_ms,
+    popularity: t.popularity,
+    image: t.album.images[0].url,
+  };
+}
+
 async function fetchNextSongs(url: string, accessToken: string) {
   const response = await fetch(url, {
     headers: {
@@ -22,24 +42,11 @@ async function fetchNextSongs(url: string, accessToken: string) {
     throw new Error("Failed to fetch data: " + (await response.text()));
   }
   const data = await response.json();
-  // map each song to a more readable object that includes its previewUrl. If null, fetch it
+  // map each song to a more readable object that includes its previewUrl. If null, fetch it (logic in buildSong)
   const promises = data.items.map(async (track: Track) => {
-    let previewUrl: string | null = track.track.preview_url;
-    if (!previewUrl) {
-      previewUrl = await getPreviewUrl(track.track.id);
-    }
-    return {
-      id: track.track.id,
-      name: track.track.name,
-      url: previewUrl,
-      album: track.track.album.name,
-      date_added: track.added_at,
-      artists: track.track.artists.map((artist) => artist.name),
-      duration: track.track.duration_ms,
-      popularity: track.track.popularity,
-      image: track.track.album.images[0].url,
-    } as Song;
+    return buildSong(track);
   });
+
   return { nextPromises: promises, url: data.next };
 }
 
@@ -47,6 +54,7 @@ async function fetchPlaylistData(
   playlistId: string,
   accessToken: string,
 ): Promise<{ songsArr: Song[]; playlistInfo: PlaylistInfo }> {
+  console.log("IN FETCHPLAYLISTDATA");
   const response = await fetch(
     `https://api.spotify.com/v1/playlists/${playlistId}`,
     {
@@ -71,34 +79,20 @@ async function fetchPlaylistData(
     owner: data.owner.display_name,
   };
 
-  // map each song to a more readable object that includes its previewUrl. If null, fetch it
-  let promises = data.tracks.items.map(async (track: Track) => {
-    if (track.track) {
-      let previewUrl: string | null = track.track.preview_url;
-      if (!previewUrl) {
-        previewUrl = await getPreviewUrl(track.track.id);
-      }
-      return {
-        id: track.track.id,
-        name: track.track.name,
-        url: previewUrl,
-        album: track.track.album.name,
-        date_added: track.added_at,
-        artists: track.track.artists.map((artist) => artist.name),
-        duration: track.track.duration_ms,
-        popularity: track.track.popularity,
-        image: track.track.album.images[0].url,
-      } as Song;
-    }
-  });
+  // map each song to a more readable object that includes its previewUrl. If null, fetch it (logic in buildSong)
+  let promises: Promise<Song>[] = data.tracks.items
+    .filter((t: any) => t.track) // filter null tracks
+    .map((track: Track) => buildSong(track));
+
+  // Fetch paginated items
   let nextUrl = data.tracks.next;
   while (nextUrl) {
-    let { nextPromises, url } = await fetchNextSongs(nextUrl, accessToken);
-    promises = [...promises, ...nextPromises];
+    const { nextPromises, url } = await fetchNextSongs(nextUrl, accessToken);
+    promises.push(...nextPromises);
     nextUrl = url;
   }
 
-  // Wait for all promises to resolve
+  // Wait for all songs to resolve
   const songs = await Promise.all(promises);
   return { songsArr: songs, playlistInfo };
 }
