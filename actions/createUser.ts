@@ -10,6 +10,8 @@ export default async function createUser(
   spotifyUserId?: string, // Optional parameter
   password?: string, // Optional parameter
 ) {
+  const loggedInWithSpotify = password === undefined;
+
   try {
     // Check if the user already exists
     const existingUser = await prisma.user.findMany({
@@ -22,10 +24,13 @@ export default async function createUser(
       },
     });
 
-    if (existingUser.length > 0) {
+    if (!loggedInWithSpotify && existingUser.length > 0) {
       console.log("this username or spotify id already exists");
       throw Error("This username is taken.")
-      // return JSON.stringify(existingUser[0]);
+    }
+    if (loggedInWithSpotify && existingUser.length > 0) {
+      console.log('returning user logging in with spotify');
+      return existingUser[0].userId;
     }
 
     // Hash the password if it is provided

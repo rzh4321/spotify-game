@@ -82,10 +82,9 @@ const authOptions: NextAuthOptions = {
           }
         */
         // will create user in database if they're new
-        const stringData = await createUser(user.email, user.name, user.id);
-        const obj = JSON.parse(stringData);
+        const userId = await createUser(user.email, user.name, user.id);
         // transfer database userId to user since we need to store it in session
-        user.userId = obj.userId;
+        user.userId = userId;
         return true;
       } else if (account.provider === "credentials") {
         // we already have all the necessary data from authorize(), just return true
